@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lupo Solitario</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Libreria PDF.js per generare le copertine dai PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+
+    <!-- ==================== SCHERMATA INIZIALE ==================== -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-header">
+            <h1>Lupo Solitario</h1>
+            <p class="subtitle">Il tuo destino ti attende</p>
+        </div>
+        <div id="book-list">
+            <!-- Le copertine dei libri verranno caricate qui via JS -->
+            <div class="loading-books">Caricamento libreria...</div>
+        </div>
+        <div class="menu-actions">
+            <button id="load-game-btn" class="menu-btn secondary">📂 Carica Partita</button>
+            <button id="settings-menu-btn" class="menu-btn secondary">⚙️ Impostazioni</button>
+        </div>
+    </div>
+
+    <!-- ==================== SCHERMATA DI GIOCO ==================== -->
+    <div id="game-screen" class="screen">
+        <!-- HEADER CON STATISTICHE -->
+        <header id="game-header">
+            <div class="stat-group">
+                <div class="stat-box" id="stat-ls">
+                    <span class="stat-label">RES</span>
+                    <span id="ls-res" class="stat-value">-</span>
+                </div>
+                <div class="stat-box hidden" id="stat-n">
+                    <span class="stat-label">NEMICO</span>
+                    <span id="n-res" class="stat-value">-</span>
+                </div>
+                <div class="stat-box" id="stat-comb">
+                    <span class="stat-label">COMB</span>
+                    <span id="combattività" class="stat-value">-</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="map-btn" class="header-btn" title="Mappa">🗺️</button>
+                <button id="inventory-btn" class="header-btn" title="Inventario">🎒</button>
+                <button id="settings-btn" class="header-btn" title="Impostazioni">⚙️</button>
+                <button id="save-btn" class="header-btn" title="Salva">💾</button>
+                <button id="main-menu-btn" class="header-btn" title="Menu">🏠</button>
+            </div>
+        </header>
+
+        <!-- AREA PRINCIPALE DI TESTO E IMMAGINI -->
+        <main id="content-area">
+            <div id="page-content"></div>
+        </main>
+
+        <!-- AREA DELLE SCELTE -->
+        <footer id="choices-area"></footer>
+    </div>
+
+    <!-- ==================== MODALE DADI ==================== -->
+    <div id="dice-modal" class="modal">
+        <div class="modal-content dice-content">
+            <h2>Lancia i Dadi</h2>
+            <div id="dice-container">
+                <div id="die1" class="die">?</div>
+                <div id="die2" class="die">?</div>
+            </div>
+            <p id="dice-result"></p>
+            <button id="roll-dice-btn" class="menu-btn">Lancia!</button>
+        </div>
+    </div>
+
+    <!-- ==================== MODALE INVENTARIO ==================== -->
+    <div id="inventory-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2>🎒 Inventario</h2>
+            <div id="inventory-list"></div>
+        </div>
+    </div>
+
+    <!-- ==================== MODALE MAPPA ==================== -->
+    <div id="map-modal" class="modal">
+        <div class="modal-content map-modal-content">
+            <span class="close-btn">×</span>
+            <h2>🗺️ Mappa di Magnamund</h2>
+            <div id="map-container">
+                <img src="img/mappa_magnamund.jpg" alt="Mappa" id="map-image">
+                <div id="hero-marker" title="La tua posizione"></div>
+            </div>
+            <p id="current-location-name">Posizione: Sconosciuta</p>
+        </div>
+    </div>
+
+    <!-- ==================== MODALE IMPOSTAZIONI ==================== -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2>⚙️ Impostazioni</h2>
+            <div class="setting-item">
+                <label for="font-size-slider">Dimensione Testo: <span id="font-size-value">18</span>px</label>
+                <input type="range" id="font-size-slider" min="14" max="26" value="18">
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODALE CREAZIONE PERSONAGGIO ==================== -->
+    <div id="character-creation-modal" class="modal">
+        <div class="modal-content">
+            <h2>⚔️ Creazione del Personaggio</h2>
+            <p>Tira i dadi per determinare le tue statistiche iniziali.</p>
+            
+            <div class="creation-step">
+                <h3>Combattività</h3>
+                <p>Tira un dado e aggiungi 10.</p>
+                <button id="roll-comb-btn" class="menu-btn small">🎲 Tira per Combattività</button>
+                <p id="comb-result">Risultato: -</p>
+            </div>
+            
+            <div class="creation-step">
+                <h3>Resistenza</h3>
+                <p>Tira un dado e aggiungi 20.</p>
+                <button id="roll-res-btn" class="menu-btn small">🎲 Tira per Resistenza</button>
+                <p id="res-result">Risultato: -</p>
+            </div>
+
+            <div class="creation-step">
+                <h3>Arti Ramas</h3>
+                <p>Scegli 5 Arti tra quelle disponibili:</p>
+                <div id="ramas-choices"></div>
+            </div>
+
+            <button id="confirm-character-btn" class="menu-btn" disabled>Inizia l'Avventura!</button>
+        </div>
+    </div>
+
+    <!-- INPUT NASCOSTO PER CARICARE IL SALVATAGGIO -->
+    <input type="file" id="load-file-input" accept=".json" style="display: none;">
+
+    <script src="script.js"></script>
+</body>
+</html>
