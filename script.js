@@ -1,6 +1,7 @@
 /* ===================================================================
    LUPO SOLITARIO - MOTORE DI GIOCO
-   Versione: 6.0 - Con suoni sintetici e flash
+   Versione: 7.0 - Con tiri dado creazione personaggio, icone armi,
+   bonus Scherma e messaggi combattimento dettagliati
    =================================================================== */
 
 // ==================== COSTANTI ====================
@@ -10,6 +11,47 @@ const SAVE_KEY = 'lupo_solitario_save';
 const FONT_KEY = 'lupo_solitario_fontSize';
 const DEFAULT_FONT_SIZE = '20';
 const GOOGLE_CLIENT_ID = '1061090074111-2d0ebutt2ri4tdah2qdefq7bpmra37qb.apps.googleusercontent.com';
+
+// ==================== ARMI (Maestria) ====================
+const armiMaestria = {
+    1: { nome: 'Lancia', icona: '🔱' },
+    2: { nome: 'Spada', icona: '⚔️' },
+    3: { nome: 'Daga', icona: '🗡️' },
+    4: { nome: 'Mazza', icona: '🔨' },
+    5: { nome: 'Ascia', icona: '🪓' },
+    6: { nome: 'Ascia', icona: '🪓' },
+    7: { nome: 'Spada', icona: '⚔️' },
+    8: { nome: 'Lancia', icona: '🔱' },
+    9: { nome: 'Asta', icona: '🏑' },
+    0: { nome: 'Spadone', icona: '🗡️' }
+};
+
+// ==================== ARMAMENTO (Tabella iniziale) ====================
+const tabellaArmamento = {
+    1: { tipo: 'arma', nome: 'Spada', icona: '⚔️', descrizione: 'Hai trovato una Spada!' },
+    2: { tipo: 'oggetto', nome: 'Elmo', icona: '⛑️', descrizione: 'Hai trovato un Elmo! (+2 RES)', bonusRes: 2 },
+    3: { tipo: 'cibo', nome: 'Due Pasti', icona: '🍞', descrizione: 'Hai trovato cibo per due Pasti!', pasti: 2 },
+    4: { tipo: 'oggetto', nome: 'Cotta di Maglia', icona: '🛡️', descrizione: 'Hai trovato una Cotta di Maglia! (+4 RES)', bonusRes: 4 },
+    5: { tipo: 'arma', nome: 'Mazza', icona: '🔨', descrizione: 'Hai trovato una Mazza!' },
+    6: { tipo: 'oggetto', nome: 'Pozione Magica', icona: '🧪', descrizione: 'Hai trovato una Pozione Magica! (recupera 4 RES)' },
+    7: { tipo: 'arma', nome: 'Asta', icona: '🏑', descrizione: 'Hai trovato un\'Asta!' },
+    8: { tipo: 'arma', nome: 'Lancia', icona: '🔱', descrizione: 'Hai trovato una Lancia!' },
+    9: { tipo: 'corone', nome: '12 Corone d\'Oro', icona: '💰', descrizione: 'Hai trovato 12 Corone d\'Oro!', corone: 12 },
+    0: { tipo: 'arma', nome: 'Spadone', icona: '🗡️', descrizione: 'Hai trovato uno Spadone!' }
+};
+
+// ==================== MAPPA ICONE ARMI ====================
+const armiIcone = {
+    'Ascia': '🪓',
+    'Spada': '⚔️',
+    'Spadone': '🗡️',
+    'Daga': '🗡️',
+    'Mazza': '🔨',
+    'Lancia': '🔱',
+    'Asta': '🏑',
+    'Martello da guerra': '🔨',
+    'Pugnale': '🗡️'
+};
 
 // ==================== STATO GLOBALE ====================
 let gameState = createEmptyGameState();
@@ -35,7 +77,12 @@ function createEmptyGameState() {
         player: {
             combattività: 0, resistenza: 0, resistenzaIniziale: 0, combattivitàIniziale: 0,
             zaino: [], armi: [], borsa: 0, artiRamas: [], oggettiSpeciali: [],
-            currentLocation: 'monastero_ramas'
+            currentLocation: 'monastero_ramas',
+            maestriaArma: null,
+            armaTrovata: null,
+            maestriaTirata: false,
+            armamentoTirato: false,
+            armamentoRoll: null
         },
         enemy: { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 },
         history: [], inCombat: false, combatData: null,
@@ -50,7 +97,7 @@ const artiRamasDisponibili = [
     { nome: 'Sesto Senso', icona: '👁️', descrizione: 'Ti avverte dei pericoli imminenti.' },
     { nome: 'Orientamento', icona: '🧭', descrizione: 'Ti dà sempre la percezione esatta della direzione.' },
     { nome: 'Guarigione', icona: '💊', descrizione: 'Recupera 1 RES ogni tappa senza combattimenti.' },
-    { nome: 'Scherma', icona: '⚔️', descrizione: 'Scegli un\'arma; +2 COMB se la impugni.' },
+    { nome: 'Scherma', icona: '⚔️', descrizione: 'Scegli un\'arma; +2 COMB se la impugni. Se combatti disarmato, -4 COMB.' },
     { nome: 'Psicoschermo', icona: '🛡️', descrizione: 'Protezione dagli attacchi Psicolaser.' },
     { nome: 'Psicolaser', icona: '🧠', descrizione: 'Attacca i nemici con la mente. +2 COMB.' },
     { nome: 'Affinità Animale', icona: '🐺', descrizione: 'Comunica con gli animali.' },
@@ -90,13 +137,11 @@ function initAudio() {
             console.warn('Audio non supportato:', err);
         }
     }
-    // Riprendi il context se sospeso (richiesto da browser moderni)
     if (audioContext && audioContext.state === 'suspended') {
         audioContext.resume();
     }
 }
 
-// Suono sintetico del dado che rotola (6 tick)
 function playDiceSound() {
     initAudio();
     if (!audioContext) return;
@@ -122,7 +167,6 @@ function playDiceSound() {
     }
 }
 
-// Suono risultato: positivo (ascendente) o negativo (discendente)
 function playResultSound(isPositive) {
     initAudio();
     if (!audioContext) return;
@@ -130,8 +174,7 @@ function playResultSound(isPositive) {
     const now = audioContext.currentTime;
     
     if (isPositive) {
-        // Arpeggio ascendente per vittoria
-        const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+        const notes = [523.25, 659.25, 783.99];
         notes.forEach((freq, i) => {
             const osc = audioContext.createOscillator();
             const gain = audioContext.createGain();
@@ -149,7 +192,6 @@ function playResultSound(isPositive) {
             osc.stop(now + i * 0.1 + 0.3);
         });
     } else {
-        // Suono discendente per sconfitta
         const osc = audioContext.createOscillator();
         const gain = audioContext.createGain();
         
@@ -168,7 +210,6 @@ function playResultSound(isPositive) {
     }
 }
 
-// Flash a schermo intero
 function showFlash(isPositive) {
     const existing = document.querySelector('.flash-overlay');
     if (existing) existing.remove();
@@ -508,17 +549,30 @@ function setupEventListeners() {
         });
     }
 
+    // ==================== CREAZIONE PERSONAGGIO ====================
     const rollCombBtn = document.getElementById('roll-comb-btn');
     if (rollCombBtn) rollCombBtn.addEventListener('click', rollForCombattività);
     
     const rollResBtn = document.getElementById('roll-res-btn');
     if (rollResBtn) rollResBtn.addEventListener('click', rollForResistenza);
     
+    const goToTiriBtn = document.getElementById('go-to-tiri-btn');
+    if (goToTiriBtn) goToTiriBtn.addEventListener('click', goToTiriDadoStep);
+    
+    const rollMaestriaBtn = document.getElementById('roll-maestria-btn');
+    if (rollMaestriaBtn) rollMaestriaBtn.addEventListener('click', rollForMaestria);
+    
+    const rollArmamentoBtn = document.getElementById('roll-armamento-btn');
+    if (rollArmamentoBtn) rollArmamentoBtn.addEventListener('click', rollForArmamento);
+    
+    const backToStatsFromTiriBtn = document.getElementById('back-to-stats-from-tiri-btn');
+    if (backToStatsFromTiriBtn) backToStatsFromTiriBtn.addEventListener('click', goToStatsFromTiri);
+    
     const goToRamasBtn = document.getElementById('go-to-ramas-btn');
     if (goToRamasBtn) goToRamasBtn.addEventListener('click', goToRamasStep);
     
-    const backToStatsBtn = document.getElementById('back-to-stats-btn');
-    if (backToStatsBtn) backToStatsBtn.addEventListener('click', goToStatsStep);
+    const backToTiriBtn = document.getElementById('back-to-tiri-btn');
+    if (backToTiriBtn) backToTiriBtn.addEventListener('click', goToTiriFromRamas);
     
     const confirmBtn = document.getElementById('confirm-character-btn');
     if (confirmBtn) confirmBtn.addEventListener('click', confirmCharacter);
@@ -551,7 +605,7 @@ function startNewGame(bookId) {
     gameState = createEmptyGameState();
     gameState.currentBook = bookId;
     gameState.currentPage = '1';
-    gameState.player.borsa = Math.floor(Math.random() * 10) + 10;
+    gameState.player.borsa = 0;
     
     currentBookData = booksData[bookId];
     if (!currentBookData) { alert('❌ Libro non trovato!'); return; }
@@ -564,16 +618,35 @@ function showCharacterCreation() {
     const combResult = document.getElementById('comb-result');
     const resResult = document.getElementById('res-result');
     const confirmBtn = document.getElementById('confirm-character-btn');
+    const goToTiriBtn = document.getElementById('go-to-tiri-btn');
     const goToRamasBtn = document.getElementById('go-to-ramas-btn');
     
     if (combResult) combResult.textContent = 'Risultato: -';
     if (resResult) resResult.textContent = 'Risultato: -';
     if (confirmBtn) confirmBtn.disabled = true;
+    if (goToTiriBtn) goToTiriBtn.disabled = true;
     if (goToRamasBtn) goToRamasBtn.disabled = true;
     
+    const maestriaResult = document.getElementById('maestria-result');
+    const armamentoResult = document.getElementById('armamento-result');
+    const armamentoDetail = document.getElementById('armamento-detail');
+    if (maestriaResult) maestriaResult.textContent = 'Risultato: -';
+    if (armamentoResult) armamentoResult.textContent = 'Risultato: -';
+    if (armamentoDetail) {
+        armamentoDetail.textContent = '';
+        armamentoDetail.style.display = 'none';
+    }
+    
+    gameState.player.maestriaArma = null;
+    gameState.player.armaTrovata = null;
+    gameState.player.armamentoTirato = false;
+    gameState.player.maestriaTirata = false;
+    
     const stepStats = document.getElementById('creation-step-stats');
+    const stepTiriDado = document.getElementById('creation-step-tiri-dado');
     const stepRamas = document.getElementById('creation-step-ramas');
     if (stepStats) stepStats.style.display = 'flex';
+    if (stepTiriDado) stepTiriDado.style.display = 'none';
     if (stepRamas) stepRamas.style.display = 'none';
     
     generateRamasGrid();
@@ -647,20 +720,43 @@ function updateConfirmButton() {
     confirmBtn.disabled = selectedCount !== 5;
 }
 
-function goToRamasStep() {
-    const stepStats = document.getElementById('creation-step-stats');
-    const stepRamas = document.getElementById('creation-step-ramas');
-    if (stepStats) stepStats.style.display = 'none';
-    if (stepRamas) stepRamas.style.display = 'flex';
-}
-
+// ==================== NAVIGAZIONE STEP ====================
 function goToStatsStep() {
     const stepStats = document.getElementById('creation-step-stats');
+    const stepTiriDado = document.getElementById('creation-step-tiri-dado');
     const stepRamas = document.getElementById('creation-step-ramas');
     if (stepStats) stepStats.style.display = 'flex';
+    if (stepTiriDado) stepTiriDado.style.display = 'none';
     if (stepRamas) stepRamas.style.display = 'none';
 }
 
+function goToTiriDadoStep() {
+    const stepStats = document.getElementById('creation-step-stats');
+    const stepTiriDado = document.getElementById('creation-step-tiri-dado');
+    const stepRamas = document.getElementById('creation-step-ramas');
+    if (stepStats) stepStats.style.display = 'none';
+    if (stepTiriDado) stepTiriDado.style.display = 'flex';
+    if (stepRamas) stepRamas.style.display = 'none';
+}
+
+function goToStatsFromTiri() {
+    goToStatsStep();
+}
+
+function goToRamasStep() {
+    const stepStats = document.getElementById('creation-step-stats');
+    const stepTiriDado = document.getElementById('creation-step-tiri-dado');
+    const stepRamas = document.getElementById('creation-step-ramas');
+    if (stepStats) stepStats.style.display = 'none';
+    if (stepTiriDado) stepTiriDado.style.display = 'none';
+    if (stepRamas) stepRamas.style.display = 'flex';
+}
+
+function goToTiriFromRamas() {
+    goToTiriDadoStep();
+}
+
+// ==================== TIRI CREAZIONE ====================
 function rollForCombattività() {
     const roll = Math.floor(Math.random() * 10);
     const combattività = roll + 10;
@@ -669,7 +765,7 @@ function rollForCombattività() {
     
     const resultEl = document.getElementById('comb-result');
     if (resultEl) resultEl.textContent = `Risultato: ${combattività} (${roll} + 10)`;
-    checkCharacterReady();
+    checkTiriDadoReady();
 }
 
 function rollForResistenza() {
@@ -680,14 +776,97 @@ function rollForResistenza() {
     
     const resultEl = document.getElementById('res-result');
     if (resultEl) resultEl.textContent = `Risultato: ${resistenza} (${roll} + 20)`;
-    checkCharacterReady();
+    checkTiriDadoReady();
+}
+
+function rollForMaestria() {
+    if (gameState.player.maestriaTirata) return;
+    
+    const roll = Math.floor(Math.random() * 10);
+    const arma = armiMaestria[roll];
+    
+    gameState.player.maestriaArma = arma.nome;
+    gameState.player.maestriaTirata = true;
+    
+    const resultEl = document.getElementById('maestria-result');
+    if (resultEl) {
+        resultEl.innerHTML = `${arma.icona} <strong>${arma.nome}</strong> (tiro: ${roll})`;
+        resultEl.style.color = '#5cb85c';
+    }
+    
+    playDiceSound();
+    checkTiriDadoReady();
+}
+
+function rollForArmamento() {
+    if (gameState.player.armamentoTirato) return;
+    
+    const roll = Math.floor(Math.random() * 10);
+    const oggetto = tabellaArmamento[roll];
+    
+    if (oggetto.tipo === 'arma') {
+        if (gameState.player.armi.length < 2) {
+            gameState.player.armi.push(oggetto.nome);
+        }
+        gameState.player.armaTrovata = oggetto.nome;
+    } else if (oggetto.tipo === 'oggetto') {
+        gameState.player.oggettiSpeciali.push(oggetto.nome);
+        if (oggetto.bonusRes) {
+            gameState.player.resistenza += oggetto.bonusRes;
+            gameState.player.resistenzaIniziale += oggetto.bonusRes;
+        }
+    } else if (oggetto.tipo === 'cibo') {
+        for (let i = 0; i < oggetto.pasti; i++) {
+            if (gameState.player.zaino.length < 8) {
+                gameState.player.zaino.push('Pasto');
+            }
+        }
+    } else if (oggetto.tipo === 'corone') {
+        gameState.player.borsa += oggetto.corone;
+    }
+    
+    gameState.player.armamentoTirato = true;
+    gameState.player.armamentoRoll = roll;
+    
+    const resultEl = document.getElementById('armamento-result');
+    const detailEl = document.getElementById('armamento-detail');
+    
+    if (resultEl) {
+        resultEl.innerHTML = `${oggetto.icona} <strong>${oggetto.nome}</strong> (tiro: ${roll})`;
+        resultEl.style.color = '#5cb85c';
+    }
+    if (detailEl) {
+        detailEl.textContent = oggetto.descrizione;
+        detailEl.style.display = 'block';
+        detailEl.style.color = '#d4af37';
+        detailEl.style.fontStyle = 'italic';
+        detailEl.style.marginTop = '8px';
+        detailEl.style.fontSize = '0.9em';
+    }
+    
+    playDiceSound();
+    checkTiriDadoReady();
+}
+
+function checkTiriDadoReady() {
+    const hasComb = gameState.player.combattività > 0;
+    const hasRes = gameState.player.resistenza > 0;
+    const hasMaestria = gameState.player.maestriaTirata;
+    const hasArmamento = gameState.player.armamentoTirato;
+    
+    const goToTiriBtn = document.getElementById('go-to-tiri-btn');
+    if (goToTiriBtn) {
+        goToTiriBtn.disabled = !(hasComb && hasRes);
+    }
+    
+    const goToRamasBtn = document.getElementById('go-to-ramas-btn');
+    if (goToRamasBtn) {
+        goToRamasBtn.disabled = !(hasMaestria && hasArmamento);
+    }
 }
 
 function checkCharacterReady() {
-    const hasComb = gameState.player.combattività > 0;
-    const hasRes = gameState.player.resistenza > 0;
-    const goToRamasBtn = document.getElementById('go-to-ramas-btn');
-    if (goToRamasBtn) goToRamasBtn.disabled = !(hasComb && hasRes);
+    checkTiriDadoReady();
 }
 
 function confirmCharacter() {
@@ -699,9 +878,26 @@ function confirmCharacter() {
         return;
     }
     
-    gameState.player.armi = ['Ascia'];
-    gameState.player.zaino = ['Pasto'];
-    gameState.player.oggettiSpeciali = ['Mappa di Sommerlund'];
+    if (gameState.player.artiRamas.includes('Scherma') && gameState.player.maestriaArma) {
+        const armaInInventario = gameState.player.armi.includes(gameState.player.maestriaArma);
+        if (armaInInventario) {
+            console.log(`✅ Maestro di Scherma in ${gameState.player.maestriaArma}: +2 COMB`);
+        }
+    }
+    
+    if (!gameState.player.armi.includes('Ascia')) {
+        if (gameState.player.armi.length < 2) {
+            gameState.player.armi.push('Ascia');
+        }
+    }
+    if (!gameState.player.zaino.includes('Pasto')) {
+        if (gameState.player.zaino.length < 8) {
+            gameState.player.zaino.push('Pasto');
+        }
+    }
+    if (!gameState.player.oggettiSpeciali.includes('Mappa di Sommerlund')) {
+        gameState.player.oggettiSpeciali.push('Mappa di Sommerlund');
+    }
     
     characterCreationModal.classList.remove('active');
     showScreen('game-screen');
@@ -715,6 +911,28 @@ function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const screen = document.getElementById(screenId);
     if (screen) screen.classList.add('active');
+}
+
+// ==================== BONUS SCHERMA ====================
+function getBonusScherma() {
+    if (!gameState.player.artiRamas.includes('Scherma')) return 0;
+    if (!gameState.player.maestriaArma) return 0;
+    
+    const armaAttuale = gameState.player.armi[0];
+    if (!armaAttuale) return 0;
+    
+    if (armaAttuale === gameState.player.maestriaArma) {
+        return 2;
+    }
+    return 0;
+}
+
+function getArmaAttuale() {
+    return gameState.player.armi[0] || null;
+}
+
+function getIconaArma(nomeArma) {
+    return armiIcone[nomeArma] || '⚔️';
 }
 
 // ==================== RENDERIZZAZIONE PAGINA ====================
@@ -768,7 +986,6 @@ function renderPage(pageId) {
     if (drivedb && googleToken) saveToDrive();
 }
 
-// ==================== GESTIONE SCELTA ====================
 function handleChoice(choice) {
     if (choice.target === 'restart') startNewGame(gameState.currentBook);
     else if (choice.target === 'next_book') goToNextBook();
@@ -884,6 +1101,22 @@ function renderCombatChoices(combatData) {
 function performAttack() {
     openDiceModal((diceRoll) => {
         let playerCombattività = gameState.player.combattività;
+        let modificatoriMsg = [];
+        
+        // Bonus Scherma
+        const bonusScherma = getBonusScherma();
+        if (bonusScherma > 0) {
+            playerCombattività += bonusScherma;
+            modificatoriMsg.push(`+${bonusScherma} COMB da Scherma`);
+        }
+        
+        // Bonus Psicolaser
+        if (gameState.player.artiRamas.includes('Psicolaser')) {
+            playerCombattività += 2;
+            modificatoriMsg.push('+2 COMB da Psicolaser');
+        }
+        
+        // Modificatori del nemico
         if (enemyState.modificatori && enemyState.modificatori.combattività) {
             const annullaCon = enemyState.modificatori.annullaCon;
             const annullaSe = enemyState.modificatori.annullaSe;
@@ -892,7 +1125,10 @@ function performAttack() {
             if (annullaSe && annullaSe.every(item => 
                 gameState.player.zaino.includes(item) || 
                 gameState.player.oggettiSpeciali.includes(item))) annullato = true;
-            if (!annullato) playerCombattività += enemyState.modificatori.combattività;
+            if (!annullato) {
+                playerCombattività += enemyState.modificatori.combattività;
+                modificatoriMsg.push(`${enemyState.modificatori.combattività} COMB (${enemyState.name})`);
+            }
         }
         
         const rapportoForza = playerCombattività - enemyState.combattività;
@@ -908,9 +1144,25 @@ function performAttack() {
 
         updateHeader();
 
-        // 🎯 Flash verde SOLO se i danni inflitti superano quelli subiti
+        // Flash verde/rosso
         const isPositive = risultato.dannoN > risultato.dannoLS;
         showFlash(isPositive);
+
+        // Messaggio dettagliato
+        const armaAttuale = getArmaAttuale();
+        let msgArma = '';
+        if (armaAttuale) {
+            const iconaArma = getIconaArma(armaAttuale);
+            msgArma = `Attacchi con <strong>${iconaArma} ${armaAttuale}</strong>`;
+        } else {
+            msgArma = `Attacchi a <strong>mani nude</strong> (-4 COMB)`;
+        }
+        if (modificatoriMsg.length > 0) {
+            msgArma += ` <span style="color:#d4af37">(${modificatoriMsg.join(', ')})</span>`;
+        }
+        msgArma += `<br>Hai inflitto <strong>${risultato.dannoN}</strong> danni! Hai subito <strong>${risultato.dannoLS}</strong> danni!`;
+        
+        showCombatMessage(msgArma, 'info');
 
         if (gameState.player.resistenza <= 0) { inCombat = false; renderGameOver(); return; }
         
@@ -955,8 +1207,6 @@ function performAttack() {
                     }, 100);
                 } else if (onWin) renderPage(onWin);
             }
-        } else {
-            showCombatMessage(`Hai inflitto <strong>${risultato.dannoN}</strong> danni! Hai subito <strong>${risultato.dannoLS}</strong> danni!`, 'info');
         }
     });
 }
@@ -1136,7 +1386,6 @@ function rollDice(callback) {
     rollDiceBtn.disabled = true;
     diceResult.textContent = '';
     
-    // 🎵 Suono del dado che rotola
     playDiceSound();
 
     setTimeout(() => {
@@ -1145,9 +1394,6 @@ function rollDice(callback) {
         die1.classList.remove('rolling');
         diceResult.textContent = `Risultato: ${roll}`;
         rollDiceBtn.disabled = false;
-        
-        // Nota: il flash visivo verde/rosso viene mostrato DOPO il calcolo dei danni
-        // (in performAttack o in base al risultato). Qui mostriamo solo il numero.
 
         if (callback) setTimeout(() => callback(roll), 1000);
     }, 1000);
@@ -1191,9 +1437,25 @@ function showInventory() {
     html += `<h3>⚔️ Armi (max 2)</h3>`;
     if (gameState.player.armi && gameState.player.armi.length > 0) {
         html += '<ul>';
-        gameState.player.armi.forEach(item => { html += `<li>${item}</li>`; });
+        gameState.player.armi.forEach((item, idx) => {
+            const icona = getIconaArma(item);
+            const isMaestria = item === gameState.player.maestriaArma;
+            const badge = isMaestria ? ' <span style="color:#d4af37;font-size:0.8em">⭐ Maestro</span>' : '';
+            const inUso = idx === 0 ? ' <span style="color:#5cb85c;font-size:0.8em">(in uso)</span>' : '';
+            html += `<li>${icona} ${item}${badge}${inUso}</li>`;
+        });
         html += '</ul>';
-    } else html += '<p class="inventory-empty">Nessuna arma equipaggiata.</p>';
+    } else {
+        html += '<p class="inventory-empty">Nessuna arma equipaggiata. Combatti a mani nude (-4 COMB).</p>';
+    }
+    
+    if (gameState.player.maestriaArma) {
+        html += `<h3>🎯 Maestria d'Arma</h3>`;
+        html += `<p>${getIconaArma(gameState.player.maestriaArma)} <strong>${gameState.player.maestriaArma}</strong></p>`;
+        if (gameState.player.artiRamas.includes('Scherma')) {
+            html += `<p style="font-size:0.85em;color:#a89070;font-style:italic">+2 COMB se impugni quest'arma</p>`;
+        }
+    }
     
     html += `<h3>🎒 Zaino (max 8)</h3>`;
     if (gameState.player.zaino.length > 0) {

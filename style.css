@@ -1,6 +1,7 @@
 /* ===================================================================
    LUPO SOLITARIO - STILE EPICO
    Tema: pergamena, oro, rune
+   Versione: 7.0 - Con stili per tiri dado, icone armi, badge
    =================================================================== */
 
 :root {
@@ -1009,6 +1010,26 @@ body {
     font-family: var(--font-serif);
 }
 
+.creation-hint {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin: 10px 0 14px;
+    font-size: 0.8em;
+    font-family: var(--font-sans);
+}
+
+.creation-hint span {
+    padding: 3px 8px;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    color: var(--text-gold);
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
 .creation-step {
     margin: 20px 0;
     padding: 18px;
@@ -1042,6 +1063,19 @@ body {
     margin-bottom: 0;
     font-family: var(--font-display);
     text-shadow: 0 0 10px rgba(92, 184, 92, 0.4);
+}
+
+/* ==================== ARMAMENTO DETTAGLIO ==================== */
+#armamento-detail {
+    font-size: 0.9em;
+    color: var(--accent-color);
+    font-style: italic;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    border-left: 3px solid var(--accent-color);
+    display: none;
 }
 
 /* ==================== GRIGLIA ARTI RAMAS ==================== */
@@ -1248,6 +1282,11 @@ body {
     border-left: 4px solid var(--accent-color);
     animation: slideIn 0.3s;
     font-family: var(--font-serif);
+    line-height: 1.5;
+}
+
+.combat-message strong {
+    color: var(--accent-bright);
 }
 
 @keyframes slideIn {
@@ -1380,6 +1419,14 @@ body {
     
     .description-text {
         font-size: 0.85rem;
+    }
+    
+    .creation-hint {
+        font-size: 0.7em;
+    }
+    
+    .creation-hint span {
+        padding: 2px 6px;
     }
 }
 

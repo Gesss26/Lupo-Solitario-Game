@@ -13,7 +13,7 @@
     <!-- Favicon inline -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=7">
     
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -159,8 +159,11 @@
         </div>
     </div>
 
+    <!-- ==================== CREAZIONE PERSONAGGIO (3 STEP) ==================== -->
     <div id="character-creation-modal" class="modal">
         <div class="modal-content creation-content">
+            
+            <!-- ========== STEP 1: STATISTICHE ========== -->
             <div id="creation-step-stats" class="creation-page">
                 <h2>⚔️ Creazione del Personaggio</h2>
                 <p class="creation-intro">Tira i dadi per determinare le tue statistiche iniziali.</p>
@@ -179,12 +182,45 @@
                     <p id="res-result" class="result">Risultato: -</p>
                 </div>
 
-                <button id="go-to-ramas-btn" class="menu-btn" disabled>➡️ Continua alle Arti Ramas</button>
+                <button id="go-to-tiri-btn" class="menu-btn" disabled>➡️ Continua ai Tiri del Destino</button>
             </div>
 
+            <!-- ========== STEP 2: TIRI DEL DESTINO ========== -->
+            <div id="creation-step-tiri-dado" class="creation-page" style="display: none;">
+                <h2>🎲 Tiri del Destino</h2>
+                <p class="creation-intro">Tira i dadi per scoprire la tua maestria d'arma e l'equipaggiamento trovato tra le rovine.</p>
+                
+                <div class="creation-step">
+                    <h3>🎯 Maestria d'Arma</h3>
+                    <p>Se sceglierai l'Arte della <strong>Scherma</strong>, sarai maestro in quest'arma.</p>
+                    <p class="creation-hint">
+                        <span>1=Lancia</span> · <span>2-7=Spada/Ascia</span> · <span>0=Spadone</span>
+                    </p>
+                    <button id="roll-maestria-btn" class="menu-btn small">🎲 Tira per Maestria</button>
+                    <p id="maestria-result" class="result">Risultato: -</p>
+                </div>
+                
+                <div class="creation-step">
+                    <h3>🎁 Armamento</h3>
+                    <p>Cosa trovi tra le rovine fumanti del monastero?</p>
+                    <p class="creation-hint">
+                        Armi, oggetti, cibo o Corone d'oro
+                    </p>
+                    <button id="roll-armamento-btn" class="menu-btn small">🎲 Tira per Armamento</button>
+                    <p id="armamento-result" class="result">Risultato: -</p>
+                    <p id="armamento-detail"></p>
+                </div>
+                
+                <div class="ramas-actions">
+                    <button id="back-to-stats-from-tiri-btn" class="menu-btn secondary small">⬅️ Indietro</button>
+                    <button id="go-to-ramas-btn" class="menu-btn small" disabled>➡️ Continua alle Arti Ramas</button>
+                </div>
+            </div>
+
+            <!-- ========== STEP 3: ARTI RAMAS ========== -->
             <div id="creation-step-ramas" class="creation-page" style="display: none;">
                 <h2>🧘 Scegli le tue Arti Ramas</h2>
-                <p class="creation-intro">Seleziona <strong>5 Arti</strong> tra le 10 disponibili.</p>
+                <p class="creation-intro">Seleziona <strong>5 Arti</strong> tra le 10 disponibili. Tocca un'Arte per leggere la sua descrizione.</p>
                 
                 <div id="ramas-grid" class="ramas-grid"></div>
                 
@@ -197,11 +233,12 @@
                 <div class="ramas-footer">
                     <p id="ramas-counter" class="ramas-counter">Selezionate: 0 / 5</p>
                     <div class="ramas-actions">
-                        <button id="back-to-stats-btn" class="menu-btn secondary small">⬅️ Indietro</button>
+                        <button id="back-to-tiri-btn" class="menu-btn secondary small">⬅️ Indietro</button>
                         <button id="confirm-character-btn" class="menu-btn small" disabled>✨ Inizia l'Avventura!</button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
