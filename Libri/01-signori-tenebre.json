@@ -2225,12 +2225,13 @@
         { "text": "Vai al 328.", "target": "328" }
       ]
     },
-    "329": {
-      "testo": "Se hai abbastanza animo da affrontare i pericoli sconosciuti del Cimitero degli Antichi, vai al 329.",
-      "choices": [
-        { "text": "Vai al 329.", "target": "329" }
-      ]
-    },
+   "329": {
+    "testo": "Scendendo tra le rocce verso il Cimitero degli Antichi, ti accorgi che una strana foschia avvolge questo luogo sinistro, offuscando la luce del sole e dando al Cimitero un'aria di mestizia. Un gelido soffio ti dà il benvenuto. Con un senso di inquieto timore ti inoltri nella cupa necropoli.",
+    "location": "cimitero_antichi",
+    "choices": [
+        { "text": "Vai al 284.", "target": "284" }
+    ]
+}
     "330": {
       "testo": "Se vuoi continuare in questa direzione aprendoti la strada a colpi d'Ascia, vai al 330.",
       "choices": [
