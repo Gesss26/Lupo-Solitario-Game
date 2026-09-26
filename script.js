@@ -1,7 +1,6 @@
 /* ===================================================================
    LUPO SOLITARIO - MOTORE DI GIOCO
-   Versione: 7.0 - Con tiri dado creazione personaggio, icone armi,
-   bonus Scherma e messaggi combattimento dettagliati
+   Versione: 8.0 - Layout 3 colonne desktop
    =================================================================== */
 
 // ==================== COSTANTI ====================
@@ -11,6 +10,9 @@ const SAVE_KEY = 'lupo_solitario_save';
 const FONT_KEY = 'lupo_solitario_fontSize';
 const DEFAULT_FONT_SIZE = '20';
 const GOOGLE_CLIENT_ID = '1061090074111-2d0ebutt2ri4tdah2qdefq7bpmra37qb.apps.googleusercontent.com';
+
+// Soglia desktop (px)
+const DESKTOP_BREAKPOINT = 1024;
 
 // ==================== ARMI (Maestria) ====================
 const armiMaestria = {
@@ -69,6 +71,9 @@ let syncStatus = 'disconnected';
 // Audio
 let audioContext = null;
 
+// Dadi pannello laterale (desktop)
+let sideDicePendingCallback = null;
+
 // ==================== CREAZIONE STATO VUOTO ====================
 function createEmptyGameState() {
     return {
@@ -123,12 +128,19 @@ const mapLocations = {
 let mainMenu, gameScreen, bookList, pageContent, choicesArea;
 let diceModal, die1, rollDiceBtn, diceResult;
 let inventoryModal, inventoryList;
+let inventorySidebarContent;
 let mapModal, heroMarker, currentLocationName;
 let settingsModal, characterCreationModal;
 let fontSizeSlider, fontSizeValue;
 let loadFileInput;
+let dicePanelDie, dicePanelResult, dicePanelRollBtn, dicePanelStatus;
 
-// ==================== AUDIO (Web Audio API) ====================
+// ==================== RILEVAMENTO DESKTOP ====================
+function isDesktop() {
+    return window.innerWidth >= DESKTOP_BREAKPOINT;
+}
+
+// ==================== AUDIO ====================
 function initAudio() {
     if (!audioContext) {
         try {
@@ -234,6 +246,7 @@ function initDom() {
     diceResult = document.getElementById('dice-result');
     inventoryModal = document.getElementById('inventory-modal');
     inventoryList = document.getElementById('inventory-list');
+    inventorySidebarContent = document.getElementById('inventory-sidebar-content');
     mapModal = document.getElementById('map-modal');
     heroMarker = document.getElementById('hero-marker');
     currentLocationName = document.getElementById('current-location-name');
@@ -242,6 +255,12 @@ function initDom() {
     fontSizeSlider = document.getElementById('font-size-slider');
     fontSizeValue = document.getElementById('font-size-value');
     loadFileInput = document.getElementById('load-file-input');
+    
+    // Pannello dadi laterale
+    dicePanelDie = document.getElementById('dice-panel-die');
+    dicePanelResult = document.getElementById('dice-panel-result');
+    dicePanelRollBtn = document.getElementById('dice-panel-roll-btn');
+    dicePanelStatus = document.getElementById('dice-panel-status');
 }
 
 async function init() {
@@ -253,6 +272,15 @@ async function init() {
     createClickZones();
     checkAutoSave();
     await initGoogleDrive();
+    
+    // Ascolta resize per aggiornare layout
+    window.addEventListener('resize', handleResize);
+}
+
+function handleResize() {
+    // Aggiorna inventario e pannello dadi in base alla modalità
+    updateSideInventory();
+    updateDicePanelStatus();
 }
 
 // ==================== GOOGLE DRIVE ====================
@@ -519,6 +547,11 @@ function setupEventListeners() {
     }
 
     if (rollDiceBtn) rollDiceBtn.addEventListener('click', () => rollDice());
+
+    // Pulsante dadi pannello laterale (desktop)
+    if (dicePanelRollBtn) {
+        dicePanelRollBtn.addEventListener('click', () => rollDiceSidePanel());
+    }
 
     const resetBtn = document.getElementById('reset-game-btn');
     if (resetBtn) resetBtn.addEventListener('click', () => {
@@ -838,10 +871,6 @@ function rollForArmamento() {
     if (detailEl) {
         detailEl.textContent = oggetto.descrizione;
         detailEl.style.display = 'block';
-        detailEl.style.color = '#d4af37';
-        detailEl.style.fontStyle = 'italic';
-        detailEl.style.marginTop = '8px';
-        detailEl.style.fontSize = '0.9em';
     }
     
     playDiceSound();
@@ -865,10 +894,6 @@ function checkTiriDadoReady() {
     }
 }
 
-function checkCharacterReady() {
-    checkTiriDadoReady();
-}
-
 function confirmCharacter() {
     const selectedCards = document.querySelectorAll('.rama-card.selected');
     gameState.player.artiRamas = Array.from(selectedCards).map(card => card.dataset.arte);
@@ -876,13 +901,6 @@ function confirmCharacter() {
     if (gameState.player.artiRamas.length !== 5) {
         alert('⚠️ Devi selezionare esattamente 5 Arti Ramas!');
         return;
-    }
-    
-    if (gameState.player.artiRamas.includes('Scherma') && gameState.player.maestriaArma) {
-        const armaInInventario = gameState.player.armi.includes(gameState.player.maestriaArma);
-        if (armaInInventario) {
-            console.log(`✅ Maestro di Scherma in ${gameState.player.maestriaArma}: +2 COMB`);
-        }
     }
     
     if (!gameState.player.armi.includes('Ascia')) {
@@ -911,6 +929,11 @@ function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const screen = document.getElementById(screenId);
     if (screen) screen.classList.add('active');
+    
+    // Su desktop, aggiorna l'inventario laterale quando si entra nella schermata di gioco
+    if (screenId === 'game-screen') {
+        updateSideInventory();
+    }
 }
 
 // ==================== BONUS SCHERMA ====================
@@ -933,6 +956,147 @@ function getArmaAttuale() {
 
 function getIconaArma(nomeArma) {
     return armiIcone[nomeArma] || '⚔️';
+}
+
+// ==================== SIDEBAR INVENTARIO (DESKTOP) ====================
+function updateSideInventory() {
+    if (!inventorySidebarContent) return;
+    
+    // Genera HTML per il pannello laterale
+    let html = '';
+    
+    // Borsa
+    html += `<h3>💰 Borsa</h3>`;
+    html += `<p><strong>${gameState.player.borsa}</strong> Corone</p>`;
+    
+    // Armi
+    html += `<h3>⚔️ Armi</h3>`;
+    if (gameState.player.armi && gameState.player.armi.length > 0) {
+        html += '<ul>';
+        gameState.player.armi.forEach((item, idx) => {
+            const icona = getIconaArma(item);
+            const isMaestria = item === gameState.player.maestriaArma;
+            const badge = isMaestria ? '<span class="badge-maestro">⭐</span>' : '';
+            const inUso = idx === 0 ? '<span class="badge-inuso">(in uso)</span>' : '';
+            html += `<li>${icona} ${item}${badge}${inUso}</li>`;
+        });
+        html += '</ul>';
+    } else {
+        html += '<p class="inventory-empty">Nessuna arma</p>';
+    }
+    
+    // Maestria
+    if (gameState.player.maestriaArma) {
+        html += `<h3>🎯 Maestria</h3>`;
+        html += `<p>${getIconaArma(gameState.player.maestriaArma)} <strong>${gameState.player.maestriaArma}</strong></p>`;
+        if (gameState.player.artiRamas.includes('Scherma')) {
+            html += `<p style="font-size:0.75em;color:#a89070;font-style:italic">+2 COMB se impugni</p>`;
+        }
+    }
+    
+    // Zaino
+    html += `<h3>🎒 Zaino</h3>`;
+    if (gameState.player.zaino.length > 0) {
+        html += '<ul>';
+        gameState.player.zaino.forEach(item => {
+            html += `<li>${item}</li>`;
+        });
+        html += '</ul>';
+    } else {
+        html += '<p class="inventory-empty">Vuoto</p>';
+    }
+    
+    // Oggetti Speciali
+    if (gameState.player.oggettiSpeciali.length > 0) {
+        html += `<h3>✨ Speciali</h3>`;
+        html += '<ul>';
+        gameState.player.oggettiSpeciali.forEach(item => {
+            html += `<li>${item}</li>`;
+        });
+        html += '</ul>';
+    }
+    
+    // Arti Ramas
+    if (gameState.player.artiRamas.length > 0) {
+        html += `<h3>🧘 Arti Ramas</h3>`;
+        html += '<ul>';
+        gameState.player.artiRamas.forEach(arte => {
+            html += `<li>${arte}</li>`;
+        });
+        html += '</ul>';
+    }
+    
+    inventorySidebarContent.innerHTML = html;
+}
+
+// ==================== SIDEBAR DADI (DESKTOP) ====================
+function updateDicePanelStatus(active = false, message = '') {
+    if (!dicePanelStatus) return;
+    
+    if (active) {
+        dicePanelStatus.textContent = message || 'Pronto per il lancio';
+        dicePanelStatus.classList.add('active');
+    } else {
+        dicePanelStatus.textContent = message || 'In attesa...';
+        dicePanelStatus.classList.remove('active');
+    }
+}
+
+function enableDicePanel(callback) {
+    if (!isDesktop()) return false;
+    
+    if (dicePanelRollBtn) {
+        dicePanelRollBtn.disabled = false;
+    }
+    sideDicePendingCallback = callback;
+    updateDicePanelStatus(true, 'Lancia il dado!');
+    return true;
+}
+
+function disableDicePanel() {
+    if (dicePanelRollBtn) {
+        dicePanelRollBtn.disabled = true;
+    }
+    sideDicePendingCallback = null;
+    updateDicePanelStatus(false, 'In attesa...');
+}
+
+function rollDiceSidePanel() {
+    if (!sideDicePendingCallback) return;
+    
+    if (dicePanelRollBtn) dicePanelRollBtn.disabled = true;
+    if (dicePanelDie) {
+        dicePanelDie.classList.add('rolling');
+        dicePanelDie.textContent = '?';
+    }
+    if (dicePanelResult) dicePanelResult.textContent = '';
+    
+    playDiceSound();
+    
+    setTimeout(() => {
+        const roll = Math.floor(Math.random() * 10);
+        
+        if (dicePanelDie) {
+            dicePanelDie.classList.remove('rolling');
+            dicePanelDie.textContent = roll;
+        }
+        if (dicePanelResult) {
+            dicePanelResult.textContent = `Risultato: ${roll}`;
+        }
+        
+        const callback = sideDicePendingCallback;
+        sideDicePendingCallback = null;
+        
+        if (callback) callback(roll);
+    }, 1200);
+}
+
+function showDicePanelResult(isPositive) {
+    if (!dicePanelDie) return;
+    dicePanelDie.classList.add(isPositive ? 'flash-positive' : 'flash-negative');
+    setTimeout(() => {
+        dicePanelDie.classList.remove('flash-positive', 'flash-negative');
+    }, 800);
 }
 
 // ==================== RENDERIZZAZIONE PAGINA ====================
@@ -960,6 +1124,7 @@ function renderPage(pageId) {
     if (page.location) updatePlayerLocation(page.location);
 
     updateHeader();
+    updateSideInventory(); // Aggiorna sidebar desktop
 
     let contentHTML = `<p>${page.testo}</p>`;
     pageContent.innerHTML = contentHTML;
@@ -981,6 +1146,11 @@ function renderPage(pageId) {
         });
     }
     
+    // Reset pannello dadi quando non serve
+    if (isDesktop()) {
+        disableDicePanel();
+    }
+    
     document.getElementById('content-area').scrollTop = 0;
     autoSave();
     if (drivedb && googleToken) saveToDrive();
@@ -992,24 +1162,45 @@ function handleChoice(choice) {
     else renderPage(choice.target);
 }
 
-// ==================== TIRO DADO ====================
+// ==================== TIRO DADO PAGINA ====================
 function renderDiceChoices(diceConfig) {
     choicesArea.innerHTML = '';
+    
     const btn = document.createElement('button');
     btn.className = 'choice-btn';
     btn.textContent = '🎲 Lancia il dado';
-    btn.onclick = () => {
-        openDiceModal((roll) => {
-            for (const range of Object.keys(diceConfig)) {
-                const parts = range.split('-').map(Number);
-                const min = parts[0];
-                const max = parts.length > 1 ? parts[1] : min;
-                if (roll >= min && roll <= max) { renderPage(diceConfig[range]); return; }
+    
+    const handleRoll = (roll) => {
+        for (const range of Object.keys(diceConfig)) {
+            const parts = range.split('-').map(Number);
+            const min = parts[0];
+            const max = parts.length > 1 ? parts[1] : min;
+            if (roll >= min && roll <= max) {
+                renderPage(diceConfig[range]);
+                return;
             }
-            renderPage(diceConfig[Object.keys(diceConfig)[0]]);
-        });
+        }
+        renderPage(diceConfig[Object.keys(diceConfig)[0]]);
     };
-    choicesArea.appendChild(btn);
+    
+    // Su desktop: usa il pannello laterale
+    if (isDesktop()) {
+        btn.onclick = () => {
+            if (enableDicePanel((roll) => {
+                disableDicePanel();
+                handleRoll(roll);
+            })) {
+                // Pannello pronto, aspetta il click su "Lancia"
+            }
+        };
+        choicesArea.appendChild(btn);
+    } else {
+        // Mobile: modale
+        btn.onclick = () => {
+            openDiceModal((roll) => handleRoll(roll));
+        };
+        choicesArea.appendChild(btn);
+    }
 }
 
 // ==================== SCELTE CONDIZIONALI ====================
@@ -1085,7 +1276,21 @@ function renderCombatChoices(combatData) {
     attackBtn.id = 'attack-btn';
     attackBtn.className = 'choice-btn combat-btn';
     attackBtn.textContent = 'Attacca!';
-    attackBtn.onclick = () => performAttack();
+    
+    if (isDesktop()) {
+        attackBtn.onclick = () => {
+            if (enableDicePanel((roll) => {
+                disableDicePanel();
+                performAttackWithRoll(roll);
+            })) {
+                // Pannello pronto, aspetta il click su "Lancia"
+            }
+        };
+    } else {
+        attackBtn.onclick = () => {
+            openDiceModal((roll) => performAttackWithRoll(roll));
+        };
+    }
     choicesArea.appendChild(attackBtn);
     
     if (enemyState && enemyState.onFlee) {
@@ -1096,119 +1301,122 @@ function renderCombatChoices(combatData) {
         fleeBtn.onclick = () => attemptFlee(enemyState.onFlee);
         choicesArea.appendChild(fleeBtn);
     }
+    
+    // Reset pannello dadi
+    if (isDesktop()) disableDicePanel();
 }
 
-function performAttack() {
-    openDiceModal((diceRoll) => {
-        let playerCombattività = gameState.player.combattività;
-        let modificatoriMsg = [];
-        
-        // Bonus Scherma
-        const bonusScherma = getBonusScherma();
-        if (bonusScherma > 0) {
-            playerCombattività += bonusScherma;
-            modificatoriMsg.push(`+${bonusScherma} COMB da Scherma`);
+function performAttackWithRoll(diceRoll) {
+    let playerCombattività = gameState.player.combattività;
+    let modificatoriMsg = [];
+    
+    // Bonus Scherma
+    const bonusScherma = getBonusScherma();
+    if (bonusScherma > 0) {
+        playerCombattività += bonusScherma;
+        modificatoriMsg.push(`+${bonusScherma} COMB da Scherma`);
+    }
+    
+    // Bonus Psicolaser
+    if (gameState.player.artiRamas.includes('Psicolaser')) {
+        playerCombattività += 2;
+        modificatoriMsg.push('+2 COMB da Psicolaser');
+    }
+    
+    // Modificatori del nemico
+    if (enemyState.modificatori && enemyState.modificatori.combattività) {
+        const annullaCon = enemyState.modificatori.annullaCon;
+        const annullaSe = enemyState.modificatori.annullaSe;
+        let annullato = false;
+        if (annullaCon && gameState.player.artiRamas.includes(annullaCon)) annullato = true;
+        if (annullaSe && annullaSe.every(item => 
+            gameState.player.zaino.includes(item) || 
+            gameState.player.oggettiSpeciali.includes(item))) annullato = true;
+        if (!annullato) {
+            playerCombattività += enemyState.modificatori.combattività;
+            modificatoriMsg.push(`${enemyState.modificatori.combattività} COMB (${enemyState.name})`);
         }
-        
-        // Bonus Psicolaser
-        if (gameState.player.artiRamas.includes('Psicolaser')) {
-            playerCombattività += 2;
-            modificatoriMsg.push('+2 COMB da Psicolaser');
-        }
-        
-        // Modificatori del nemico
-        if (enemyState.modificatori && enemyState.modificatori.combattività) {
-            const annullaCon = enemyState.modificatori.annullaCon;
-            const annullaSe = enemyState.modificatori.annullaSe;
-            let annullato = false;
-            if (annullaCon && gameState.player.artiRamas.includes(annullaCon)) annullato = true;
-            if (annullaSe && annullaSe.every(item => 
-                gameState.player.zaino.includes(item) || 
-                gameState.player.oggettiSpeciali.includes(item))) annullato = true;
-            if (!annullato) {
-                playerCombattività += enemyState.modificatori.combattività;
-                modificatoriMsg.push(`${enemyState.modificatori.combattività} COMB (${enemyState.name})`);
-            }
-        }
-        
-        const rapportoForza = playerCombattività - enemyState.combattività;
-        const risultato = calcolaRisultatoCombattimento(rapportoForza, diceRoll);
-        
-        gameState.player.resistenza -= risultato.dannoLS;
-        enemyState.resistenza -= risultato.dannoN;
-        enemyState.round++;
-        gameState.enemy.resistenza = enemyState.resistenza;
+    }
+    
+    const rapportoForza = playerCombattività - enemyState.combattività;
+    const risultato = calcolaRisultatoCombattimento(rapportoForza, diceRoll);
+    
+    gameState.player.resistenza -= risultato.dannoLS;
+    enemyState.resistenza -= risultato.dannoN;
+    enemyState.round++;
+    gameState.enemy.resistenza = enemyState.resistenza;
 
-        if (gameState.player.resistenza < 0) gameState.player.resistenza = 0;
-        if (enemyState.resistenza < 0) enemyState.resistenza = 0;
+    if (gameState.player.resistenza < 0) gameState.player.resistenza = 0;
+    if (enemyState.resistenza < 0) enemyState.resistenza = 0;
 
-        updateHeader();
+    updateHeader();
+    updateSideInventory();
 
-        // Flash verde/rosso
-        const isPositive = risultato.dannoN > risultato.dannoLS;
-        showFlash(isPositive);
+    // Flash
+    const isPositive = risultato.dannoN > risultato.dannoLS;
+    showFlash(isPositive);
+    if (isDesktop()) showDicePanelResult(isPositive);
 
-        // Messaggio dettagliato
-        const armaAttuale = getArmaAttuale();
-        let msgArma = '';
-        if (armaAttuale) {
-            const iconaArma = getIconaArma(armaAttuale);
-            msgArma = `Attacchi con <strong>${iconaArma} ${armaAttuale}</strong>`;
+    // Messaggio
+    const armaAttuale = getArmaAttuale();
+    let msgArma = '';
+    if (armaAttuale) {
+        const iconaArma = getIconaArma(armaAttuale);
+        msgArma = `Attacchi con <strong>${iconaArma} ${armaAttuale}</strong>`;
+    } else {
+        msgArma = `Attacchi a <strong>mani nude</strong> (-4 COMB)`;
+    }
+    if (modificatoriMsg.length > 0) {
+        msgArma += ` <span style="color:#d4af37">(${modificatoriMsg.join(', ')})</span>`;
+    }
+    msgArma += `<br>Hai inflitto <strong>${risultato.dannoN}</strong> danni! Hai subito <strong>${risultato.dannoLS}</strong> danni!`;
+    
+    showCombatMessage(msgArma, 'info');
+
+    if (gameState.player.resistenza <= 0) { inCombat = false; renderGameOver(); return; }
+    
+    if (enemyState.resistenza <= 0) {
+        inCombat = false;
+        if (enemyState.nextEnemy) {
+            let next;
+            if (Array.isArray(enemyState.nextEnemy)) next = enemyState.nextEnemy.shift();
+            else next = enemyState.nextEnemy;
+            const remainingNext = Array.isArray(enemyState.nextEnemy) && enemyState.nextEnemy.length > 0 ? enemyState.nextEnemy : null;
+            const onWin = enemyState.onWin;
+            const modificatori = enemyState.modificatori;
+            enemyState = {
+                name: next.name, combattività: next.combattività,
+                resistenza: next.resistenza, resistenzaIniziale: next.resistenza,
+                nextEnemy: remainingNext, onWin: onWin, modificatori: modificatori, round: 0
+            };
+            gameState.enemy = {
+                name: enemyState.name, combattività: enemyState.combattività,
+                resistenza: enemyState.resistenza, resistenzaIniziale: enemyState.resistenza
+            };
+            updateHeader();
+            renderCombatChoices({ onFlee: null });
+            showCombatMessage(`⚔️ Nemico sconfitto! Ora affronti: ${enemyState.name}`, 'success');
         } else {
-            msgArma = `Attacchi a <strong>mani nude</strong> (-4 COMB)`;
+            const onWin = enemyState.onWin;
+            const onWinChoices = enemyState.onWinChoices;
+            enemyState = null;
+            gameState.enemy = { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 };
+            updateHeader();
+            if (onWinChoices) {
+                renderPage(onWin);
+                setTimeout(() => {
+                    choicesArea.innerHTML = '';
+                    onWinChoices.forEach(choice => {
+                        const btn = document.createElement('button');
+                        btn.className = 'choice-btn';
+                        btn.textContent = choice.text;
+                        btn.onclick = () => renderPage(choice.target);
+                        choicesArea.appendChild(btn);
+                    });
+                }, 100);
+            } else if (onWin) renderPage(onWin);
         }
-        if (modificatoriMsg.length > 0) {
-            msgArma += ` <span style="color:#d4af37">(${modificatoriMsg.join(', ')})</span>`;
-        }
-        msgArma += `<br>Hai inflitto <strong>${risultato.dannoN}</strong> danni! Hai subito <strong>${risultato.dannoLS}</strong> danni!`;
-        
-        showCombatMessage(msgArma, 'info');
-
-        if (gameState.player.resistenza <= 0) { inCombat = false; renderGameOver(); return; }
-        
-        if (enemyState.resistenza <= 0) {
-            inCombat = false;
-            if (enemyState.nextEnemy) {
-                let next;
-                if (Array.isArray(enemyState.nextEnemy)) next = enemyState.nextEnemy.shift();
-                else next = enemyState.nextEnemy;
-                const remainingNext = Array.isArray(enemyState.nextEnemy) && enemyState.nextEnemy.length > 0 ? enemyState.nextEnemy : null;
-                const onWin = enemyState.onWin;
-                const modificatori = enemyState.modificatori;
-                enemyState = {
-                    name: next.name, combattività: next.combattività,
-                    resistenza: next.resistenza, resistenzaIniziale: next.resistenza,
-                    nextEnemy: remainingNext, onWin: onWin, modificatori: modificatori, round: 0
-                };
-                gameState.enemy = {
-                    name: enemyState.name, combattività: enemyState.combattività,
-                    resistenza: enemyState.resistenza, resistenzaIniziale: enemyState.resistenza
-                };
-                updateHeader();
-                renderCombatChoices({ onFlee: null });
-                showCombatMessage(`⚔️ Nemico sconfitto! Ora affronti: ${enemyState.name}`, 'success');
-            } else {
-                const onWin = enemyState.onWin;
-                const onWinChoices = enemyState.onWinChoices;
-                enemyState = null;
-                gameState.enemy = { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 };
-                updateHeader();
-                if (onWinChoices) {
-                    renderPage(onWin);
-                    setTimeout(() => {
-                        choicesArea.innerHTML = '';
-                        onWinChoices.forEach(choice => {
-                            const btn = document.createElement('button');
-                            btn.className = 'choice-btn';
-                            btn.textContent = choice.text;
-                            btn.onclick = () => renderPage(choice.target);
-                            choicesArea.appendChild(btn);
-                        });
-                    }, 100);
-                } else if (onWin) renderPage(onWin);
-            }
-        }
-    });
+    }
 }
 
 function showCombatMessage(message, type) {
@@ -1245,12 +1453,15 @@ function attemptFlee(fleeTarget) {
         enemyState = null;
         gameState.enemy = { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 };
         updateHeader();
+        if (isDesktop()) disableDicePanel();
         renderPage(fleeTarget);
     }
 }
 
 // ==================== GAME OVER ====================
 function renderGameOver() {
+    if (isDesktop()) disableDicePanel();
+    
     pageContent.innerHTML = `
         <div class="game-over">
             <h2>☠️ La tua avventura finisce qui</h2>
@@ -1273,6 +1484,8 @@ function renderGameOver() {
 
 // ==================== FINE LIBRO ====================
 function renderEnding(page) {
+    if (isDesktop()) disableDicePanel();
+    
     pageContent.innerHTML = `
         <div class="book-ending">
             <h2>🎉 Hai completato il Libro ${gameState.currentBook}!</h2>
@@ -1360,7 +1573,7 @@ function updateHeader() {
     }
 }
 
-// ==================== MODALE DADI ====================
+// ==================== MODALE DADI (MOBILE) ====================
 function openDiceModal(callback) {
     diceModal.classList.add('active');
     diceResult.textContent = '';
@@ -1429,7 +1642,7 @@ function updatePlayerLocation(newLocationKey) {
     }
 }
 
-// ==================== INVENTARIO ====================
+// ==================== INVENTARIO MODALE (MOBILE) ====================
 function showInventory() {
     let html = '';
     html += `<h3>💰 Borsa</h3><p>${gameState.player.borsa} Corone d'Oro</p>`;
@@ -1446,7 +1659,7 @@ function showInventory() {
         });
         html += '</ul>';
     } else {
-        html += '<p class="inventory-empty">Nessuna arma equipaggiata. Combatti a mani nude (-4 COMB).</p>';
+        html += '<p class="inventory-empty">Nessuna arma equipaggiata.</p>';
     }
     
     if (gameState.player.maestriaArma) {

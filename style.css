@@ -1,7 +1,7 @@
 /* ===================================================================
    LUPO SOLITARIO - STILE EPICO
    Tema: pergamena, oro, rune
-   Versione: 7.0 - Con stili per tiri dado, icone armi, badge
+   Versione: 8.0 - Layout 3 colonne desktop + pannelli laterali
    =================================================================== */
 
 :root {
@@ -41,6 +41,7 @@
     
     /* Layout */
     --header-height: 68px;
+    --sidebar-width: 280px;
     --border-radius: 10px;
     --border-radius-lg: 16px;
     
@@ -519,7 +520,16 @@ body {
     border-color: var(--border-gold);
 }
 
-/* ==================== CONTENUTO PRINCIPALE ==================== */
+/* ==================== LAYOUT 3 COLONNE (DESKTOP) ==================== */
+#game-layout {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    /* MOBILE: layout a colonna singola */
+    flex-direction: column;
+}
+
+/* Mobile: contenuto principale prende tutto lo spazio */
 #content-area {
     flex: 1;
     overflow-y: auto;
@@ -530,14 +540,227 @@ body {
     background: 
         radial-gradient(ellipse at top, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
         var(--bg-color);
+    display: flex;
+    flex-direction: column;
 }
 
 #page-content {
     max-width: 780px;
     margin: 0 auto;
     padding-bottom: 40px;
+    width: 100%;
 }
 
+/* Mobile: pannelli laterali nascosti */
+#inventory-panel,
+#dice-panel {
+    display: none;
+}
+
+/* Mobile: choices-area in fondo */
+#choices-area {
+    min-height: 120px;
+    max-height: 42vh;
+    background: linear-gradient(0deg, var(--panel-bg), #1a120b);
+    border-top: 2px solid var(--border-gold);
+    padding: 14px 16px calc(14px + var(--safe-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* ==================== PANNELLI LATERALI (BASE) ==================== */
+.sidebar-panel {
+    background: linear-gradient(180deg, var(--panel-bg), #1a120b);
+    border-right: 2px solid var(--border-gold);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+#dice-panel {
+    border-right: none;
+    border-left: 2px solid var(--border-gold);
+}
+
+.panel-title {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    padding: 16px 14px;
+    margin: 0;
+    text-align: center;
+    border-bottom: 1px solid var(--border-gold);
+    font-family: var(--font-display);
+    letter-spacing: 1px;
+    text-shadow: 0 0 15px var(--accent-glow);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 14px;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ==================== INVENTARIO SIDEBAR ==================== */
+#inventory-sidebar-content h3 {
+    color: var(--accent-color);
+    font-size: 0.95rem;
+    margin: 16px 0 8px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-gold);
+    font-family: var(--font-display);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#inventory-sidebar-content h3:first-child {
+    margin-top: 0;
+}
+
+#inventory-sidebar-content p {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    line-height: 1.4;
+    text-align: left;
+    text-indent: 0;
+}
+
+#inventory-sidebar-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#inventory-sidebar-content li {
+    padding: 8px 10px;
+    background: var(--panel-bg-light);
+    margin-bottom: 4px;
+    border-radius: 6px;
+    border-left: 3px solid var(--accent-color);
+    font-size: 0.85rem;
+    line-height: 1.3;
+    font-family: var(--font-serif);
+    color: var(--text-color);
+    transition: background 0.2s;
+}
+
+#inventory-sidebar-content li:hover {
+    background: var(--panel-bg-hover);
+}
+
+#inventory-sidebar-content .inventory-empty {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.8rem;
+    padding: 6px;
+}
+
+#inventory-sidebar-content strong {
+    color: var(--accent-color);
+}
+
+#inventory-sidebar-content .badge-maestro {
+    color: var(--accent-color);
+    font-size: 0.75em;
+    margin-left: 4px;
+}
+
+#inventory-sidebar-content .badge-inuso {
+    color: var(--success-bright);
+    font-size: 0.75em;
+    margin-left: 4px;
+}
+
+/* ==================== PANNELLO DADI (DESTRA) ==================== */
+.dice-panel-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 14px;
+    gap: 20px;
+}
+
+#dice-panel-die {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(145deg, var(--parchment), var(--parchment-dark));
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4em;
+    font-weight: bold;
+    color: #1a120b;
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.6),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+        inset 0 4px 8px rgba(255, 255, 255, 0.5);
+    transition: transform 0.5s ease-out;
+    font-family: var(--font-display);
+    border: 4px solid var(--accent-deep);
+    flex-shrink: 0;
+}
+
+#dice-panel-die.rolling {
+    animation: roll 0.4s infinite linear;
+}
+
+#dice-panel-die.flash-positive {
+    animation: flashGreen 0.8s ease-out;
+}
+
+#dice-panel-die.flash-negative {
+    animation: flashRed 0.8s ease-out;
+}
+
+.dice-panel-result {
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    font-weight: bold;
+    text-align: center;
+    min-height: 1.5em;
+    font-family: var(--font-display);
+    text-shadow: 0 0 15px var(--accent-glow);
+    margin: 0;
+}
+
+.dice-panel-status {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+    font-style: italic;
+    margin: 0;
+    min-height: 1.5em;
+}
+
+.dice-panel-status.active {
+    color: var(--accent-color);
+    font-style: normal;
+    font-weight: bold;
+}
+
+#dice-panel-roll-btn {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1rem;
+    min-width: auto;
+    max-width: 220px;
+}
+
+/* ==================== CONTENUTO PRINCIPALE ==================== */
 #page-content p {
     margin-bottom: 1.2em;
     text-align: justify;
@@ -586,23 +809,7 @@ body {
 #prev-page-zone { top: 0; }
 #next-page-zone { bottom: 0; }
 
-/* ==================== AREA SCELTE ==================== */
-#choices-area {
-    min-height: 120px;
-    max-height: 42vh;
-    background: linear-gradient(0deg, var(--panel-bg), #1a120b);
-    border-top: 2px solid var(--border-gold);
-    padding: 14px 16px calc(14px + var(--safe-bottom));
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: center;
-    flex-shrink: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
-}
-
+/* ==================== SCELTE ==================== */
 .choice-btn {
     width: 100%;
     max-width: 700px;
@@ -619,6 +826,7 @@ body {
     font-family: var(--font-serif);
     line-height: 1.45;
     position: relative;
+    flex-shrink: 0;
 }
 
 .choice-btn::before {
@@ -770,7 +978,7 @@ body {
     transform: rotate(90deg);
 }
 
-/* ==================== DADI ==================== */
+/* ==================== DADI (MODALE MOBILE) ==================== */
 .dice-content {
     max-width: 380px;
 }
@@ -879,7 +1087,7 @@ body {
     font-family: var(--font-serif);
 }
 
-/* ==================== INVENTARIO ==================== */
+/* ==================== INVENTARIO MODALE ==================== */
 #inventory-list {
     text-align: left;
 }
@@ -915,6 +1123,10 @@ body {
 
 #inventory-list li:hover {
     background: var(--panel-bg-hover);
+}
+
+#inventory-list strong {
+    color: var(--accent-color);
 }
 
 .inventory-empty {
@@ -1065,7 +1277,6 @@ body {
     text-shadow: 0 0 10px rgba(92, 184, 92, 0.4);
 }
 
-/* ==================== ARMAMENTO DETTAGLIO ==================== */
 #armamento-detail {
     font-size: 0.9em;
     color: var(--accent-color);
@@ -1305,7 +1516,8 @@ body {
 .modal-content::-webkit-scrollbar,
 #main-menu::-webkit-scrollbar,
 .ramas-grid::-webkit-scrollbar,
-.ramas-description::-webkit-scrollbar {
+.ramas-description::-webkit-scrollbar,
+.sidebar-content::-webkit-scrollbar {
     width: 6px;
 }
 
@@ -1314,7 +1526,8 @@ body {
 .modal-content::-webkit-scrollbar-track,
 #main-menu::-webkit-scrollbar-track,
 .ramas-grid::-webkit-scrollbar-track,
-.ramas-description::-webkit-scrollbar-track {
+.ramas-description::-webkit-scrollbar-track,
+.sidebar-content::-webkit-scrollbar-track {
     background: transparent;
 }
 
@@ -1323,12 +1536,109 @@ body {
 .modal-content::-webkit-scrollbar-thumb,
 #main-menu::-webkit-scrollbar-thumb,
 .ramas-grid::-webkit-scrollbar-thumb,
-.ramas-description::-webkit-scrollbar-thumb {
+.ramas-description::-webkit-scrollbar-thumb,
+.sidebar-content::-webkit-scrollbar-thumb {
     background: var(--border-gold);
     border-radius: 3px;
 }
 
-/* ==================== RESPONSIVE ==================== */
+/* ==================== RESPONSIVE (MOBILE) ==================== */
+@media (max-width: 1023px) {
+    /* Mobile: nasconde i pannelli laterali */
+    #inventory-panel,
+    #dice-panel {
+        display: none !important;
+    }
+    
+    /* Mobile: mostra i pulsanti header nascosti su desktop */
+    .desktop-hide {
+        display: flex !important;
+    }
+}
+
+/* ==================== DESKTOP (>=1024px) ==================== */
+@media (min-width: 1024px) {
+    /* Layout a 3 colonne */
+    #game-layout {
+        flex-direction: row;
+    }
+    
+    /* Colonna sinistra: inventario */
+    #inventory-panel {
+        display: flex;
+        width: var(--sidebar-width);
+    }
+    
+    /* Colonna centrale: contenuto */
+    #content-area {
+        flex: 1;
+        padding: 24px 30px;
+    }
+    
+    /* Colonna destra: dadi */
+    #dice-panel {
+        display: flex;
+        width: var(--sidebar-width);
+    }
+    
+    /* Nasconde i pulsanti header ridondanti su desktop */
+    .desktop-hide {
+        display: none !important;
+    }
+    
+    /* Su desktop: max-width del contenuto più stretto per far spazio alle sidebar */
+    #page-content {
+        max-width: 100%;
+    }
+    
+    /* Su desktop: choices-area max-width */
+    .choice-btn {
+        max-width: 100%;
+    }
+    
+    /* Su desktop: inventario modale mai usato */
+    #inventory-modal {
+        display: none !important;
+    }
+    
+    /* Su desktop: modale dadi mai usato */
+    #dice-modal {
+        display: none !important;
+    }
+}
+
+/* ==================== RESPONSIVE TABLET ==================== */
+@media (min-width: 1024px) and (max-width: 1280px) {
+    :root {
+        --sidebar-width: 240px;
+    }
+    
+    .panel-title {
+        font-size: 1rem;
+        padding: 12px 10px;
+    }
+    
+    .sidebar-content {
+        padding: 12px 10px;
+    }
+    
+    #inventory-sidebar-content h3 {
+        font-size: 0.85rem;
+    }
+    
+    #inventory-sidebar-content li {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+    }
+    
+    #dice-panel-die {
+        width: 100px;
+        height: 100px;
+        font-size: 3em;
+    }
+}
+
+/* ==================== RESPONSIVE MOBILE (<=480px) ==================== */
 @media (max-width: 480px) {
     :root {
         --header-height: 62px;
@@ -1431,7 +1741,7 @@ body {
 }
 
 /* ==================== ORIENTAMENTO LANDSCAPE ==================== */
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-height: 500px) and (orientation: landscape) and (max-width: 1023px) {
     .menu-header {
         padding: 10px 0 15px;
     }

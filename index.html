@@ -13,7 +13,7 @@
     <!-- Favicon inline -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
     
-    <link rel="stylesheet" href="style.css?v=7">
+    <link rel="stylesheet" href="style.css?v=8">
     
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,10 +81,11 @@
     <!-- ==================== SCHERMATA DI GIOCO ==================== -->
     <div id="game-screen" class="screen">
         
+        <!-- HEADER CON STATISTICHE -->
         <header id="game-header">
             <div class="stat-group">
                 <div class="stat-box" id="stat-ls">
-                    <span class="stat-label">RES</span>
+                    <span class="stat-label">VITA</span>
                     <span id="ls-res" class="stat-value">-</span>
                 </div>
                 <div class="stat-box hidden" id="stat-n">
@@ -98,18 +99,44 @@
             </div>
             <div class="header-actions">
                 <button id="map-btn" class="header-btn" title="Mappa">🗺️</button>
-                <button id="inventory-btn" class="header-btn" title="Inventario">🎒</button>
+                <button id="inventory-btn" class="header-btn desktop-hide" title="Inventario">🎒</button>
                 <button id="settings-btn" class="header-btn" title="Impostazioni">⚙️</button>
                 <button id="save-btn" class="header-btn" title="Salva">💾</button>
                 <button id="main-menu-btn" class="header-btn" title="Menu">🏠</button>
             </div>
         </header>
 
-        <main id="content-area">
-            <div id="page-content"></div>
-        </main>
-
-        <footer id="choices-area"></footer>
+        <!-- ==================== LAYOUT A 3 COLONNE (DESKTOP) ==================== -->
+        <div id="game-layout">
+            
+            <!-- COLONNA SINISTRA: INVENTARIO SEMPRE VISIBILE -->
+            <aside id="inventory-panel" class="sidebar-panel">
+                <h2 class="panel-title">🎒 Inventario</h2>
+                <div id="inventory-sidebar-content" class="sidebar-content">
+                    <!-- Popolato via JS -->
+                </div>
+            </aside>
+            
+            <!-- COLONNA CENTRALE: TESTO + SCELTE -->
+            <main id="content-area">
+                <div id="page-content"></div>
+                <footer id="choices-area"></footer>
+            </main>
+            
+            <!-- COLONNA DESTRA: PANNELLO DADI -->
+            <aside id="dice-panel" class="sidebar-panel">
+                <h2 class="panel-title">🎲 Dadi</h2>
+                <div class="dice-panel-content">
+                    <div id="dice-panel-die" class="die">?</div>
+                    <p id="dice-panel-result" class="dice-panel-result"></p>
+                    <button id="dice-panel-roll-btn" class="menu-btn" disabled>🎲 Lancia il Dado</button>
+                    <p id="dice-panel-status" class="dice-panel-status">In attesa...</p>
+                </div>
+            </aside>
+            
+        </div>
+        <!-- ==================== FINE LAYOUT A 3 COLONNE ==================== -->
+        
     </div>
 
     <!-- ==================== MODALI ==================== -->
@@ -163,7 +190,7 @@
     <div id="character-creation-modal" class="modal">
         <div class="modal-content creation-content">
             
-            <!-- ========== STEP 1: STATISTICHE ========== -->
+            <!-- STEP 1: STATISTICHE -->
             <div id="creation-step-stats" class="creation-page">
                 <h2>⚔️ Creazione del Personaggio</h2>
                 <p class="creation-intro">Tira i dadi per determinare le tue statistiche iniziali.</p>
@@ -185,7 +212,7 @@
                 <button id="go-to-tiri-btn" class="menu-btn" disabled>➡️ Continua ai Tiri del Destino</button>
             </div>
 
-            <!-- ========== STEP 2: TIRI DEL DESTINO ========== -->
+            <!-- STEP 2: TIRI DEL DESTINO -->
             <div id="creation-step-tiri-dado" class="creation-page" style="display: none;">
                 <h2>🎲 Tiri del Destino</h2>
                 <p class="creation-intro">Tira i dadi per scoprire la tua maestria d'arma e l'equipaggiamento trovato tra le rovine.</p>
@@ -194,7 +221,7 @@
                     <h3>🎯 Maestria d'Arma</h3>
                     <p>Se sceglierai l'Arte della <strong>Scherma</strong>, sarai maestro in quest'arma.</p>
                     <p class="creation-hint">
-                        <span>1=Lancia</span> · <span>2-7=Spada/Ascia</span> · <span>0=Spadone</span>
+                        <span>1=Lancia</span> · <span>6=Ascia</span> · <span>7=Spada</span> · <span>0=Spadone</span>
                     </p>
                     <button id="roll-maestria-btn" class="menu-btn small">🎲 Tira per Maestria</button>
                     <p id="maestria-result" class="result">Risultato: -</p>
@@ -217,7 +244,7 @@
                 </div>
             </div>
 
-            <!-- ========== STEP 3: ARTI RAMAS ========== -->
+            <!-- STEP 3: ARTI RAMAS -->
             <div id="creation-step-ramas" class="creation-page" style="display: none;">
                 <h2>🧘 Scegli le tue Arti Ramas</h2>
                 <p class="creation-intro">Seleziona <strong>5 Arti</strong> tra le 10 disponibili. Tocca un'Arte per leggere la sua descrizione.</p>
