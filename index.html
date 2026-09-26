@@ -156,34 +156,59 @@
 
     <!-- ==================== MODALE CREAZIONE PERSONAGGIO ==================== -->
     <div id="character-creation-modal" class="modal">
-        <div class="modal-content">
-            <h2>⚔️ Creazione del Personaggio</h2>
-            <p class="creation-intro">Tira i dadi per determinare le tue statistiche iniziali.</p>
+        <div class="modal-content creation-content">
             
-            <div class="creation-step">
-                <h3>💪 Combattività</h3>
-                <p>Tira un dado e aggiungi 10.</p>
-                <button id="roll-comb-btn" class="menu-btn small">🎲 Tira per Combattività</button>
-                <p id="comb-result" class="result">Risultato: -</p>
-            </div>
-            
-            <div class="creation-step">
-                <h3>❤️ Resistenza</h3>
-                <p>Tira un dado e aggiungi 20.</p>
-                <button id="roll-res-btn" class="menu-btn small">🎲 Tira per Resistenza</button>
-                <p id="res-result" class="result">Risultato: -</p>
+            <!-- STEP 1: Statistiche -->
+            <div id="creation-step-stats" class="creation-page">
+                <h2>⚔️ Creazione del Personaggio</h2>
+                <p class="creation-intro">Tira i dadi per determinare le tue statistiche iniziali.</p>
+                
+                <div class="creation-step">
+                    <h3>💪 Combattività</h3>
+                    <p>Tira un dado e aggiungi 10.</p>
+                    <button id="roll-comb-btn" class="menu-btn small">🎲 Tira per Combattività</button>
+                    <p id="comb-result" class="result">Risultato: -</p>
+                </div>
+                
+                <div class="creation-step">
+                    <h3>❤️ Resistenza</h3>
+                    <p>Tira un dado e aggiungi 20.</p>
+                    <button id="roll-res-btn" class="menu-btn small">🎲 Tira per Resistenza</button>
+                    <p id="res-result" class="result">Risultato: -</p>
+                </div>
+
+                <button id="go-to-ramas-btn" class="menu-btn" disabled>
+                    ➡️ Continua alle Arti Ramas
+                </button>
             </div>
 
-            <div class="creation-step">
-                <h3>🧘 Arti Ramas</h3>
-                <p>Scegli <strong>5 Arti</strong> tra quelle disponibili:</p>
-                <div id="ramas-choices"></div>
-                <p id="ramas-counter" class="ramas-counter">Selezionate: 0 / 5</p>
+            <!-- STEP 2: Arti Ramas -->
+            <div id="creation-step-ramas" class="creation-page" style="display: none;">
+                <h2>🧘 Scegli le tue Arti Ramas</h2>
+                <p class="creation-intro">Seleziona <strong>5 Arti</strong> tra le 10 disponibili. Tocca un'Arte per leggere la sua descrizione.</p>
+                
+                <!-- Metà superiore: griglia delle Arti -->
+                <div id="ramas-grid" class="ramas-grid">
+                    <!-- Popolato via JS -->
+                </div>
+                
+                <!-- Metà inferiore: descrizione dell'Arte selezionata -->
+                <div id="ramas-description" class="ramas-description">
+                    <div class="description-icon">👆</div>
+                    <h3 class="description-title">Seleziona un'Arte</h3>
+                    <p class="description-text">Tocca una delle Arti qui sopra per leggere la sua descrizione dettagliata.</p>
+                </div>
+                
+                <!-- Contatore e pulsanti -->
+                <div class="ramas-footer">
+                    <p id="ramas-counter" class="ramas-counter">Selezionate: 0 / 5</p>
+                    <div class="ramas-actions">
+                        <button id="back-to-stats-btn" class="menu-btn secondary small">⬅️ Indietro</button>
+                        <button id="confirm-character-btn" class="menu-btn small" disabled>✨ Inizia l'Avventura!</button>
+                    </div>
+                </div>
             </div>
 
-            <button id="confirm-character-btn" class="menu-btn" disabled>
-                ✨ Inizia l'Avventura!
-            </button>
         </div>
     </div>
 
