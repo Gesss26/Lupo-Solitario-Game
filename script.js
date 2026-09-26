@@ -1,6 +1,6 @@
 /* ===================================================================
    LUPO SOLITARIO - MOTORE DI GIOCO
-   Versione: 4.0 - Con Google Drive Sync (DriveDB)
+   Versione: 5.0 - Con Google Drive Sync (DriveDB)
    =================================================================== */
 
 // ==================== COSTANTI ====================
@@ -30,43 +30,28 @@ function createEmptyGameState() {
         currentBook: null,
         currentPage: null,
         player: {
-            combattività: 0,
-            resistenza: 0,
-            resistenzaIniziale: 0,
-            combattivitàIniziale: 0,
-            zaino: [],
-            armi: [],
-            borsa: 0,
-            artiRamas: [],
-            oggettiSpeciali: [],
+            combattività: 0, resistenza: 0, resistenzaIniziale: 0, combattivitàIniziale: 0,
+            zaino: [], armi: [], borsa: 0, artiRamas: [], oggettiSpeciali: [],
             currentLocation: 'monastero_ramas'
         },
-        enemy: {
-            name: '',
-            combattività: 0,
-            resistenza: 0,
-            resistenzaIniziale: 0
-        },
-        history: [],
-        inCombat: false,
-        combatData: null,
-        completedBooks: [],
-        unlockedBooks: ['01']
+        enemy: { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 },
+        history: [], inCombat: false, combatData: null,
+        completedBooks: [], unlockedBooks: ['01']
     };
 }
 
 // ==================== ARTI RAMAS ====================
 const artiRamasDisponibili = [
-    { nome: 'Mimetismo', icona: '🌿', descrizione: 'Ti permette di nasconderti e mimetizzarti con l\'ambiente circostante.' },
-    { nome: 'Caccia', icona: '🏹', descrizione: 'Ti consente di seguire tracce e riconoscere le impronte degli animali e delle creature.' },
-    { nome: 'Sesto Senso', icona: '👁️', descrizione: 'Ti avverte dei pericoli imminenti e ti permette di percepire presenze ostili.' },
-    { nome: 'Orientamento', icona: '🧭', descrizione: 'Ti dà sempre la percezione esatta della direzione e della posizione.' },
-    { nome: 'Guarigione', icona: '💊', descrizione: 'Ti permette di recuperare 1 punto di Resistenza ogni volta che superi una tappa senza combattimenti.' },
-    { nome: 'Scherma', icona: '⚔️', descrizione: 'Scegli un\'arma in cui sei maestro. Se la impugni, aggiungi 2 punti alla tua Combattività.' },
-    { nome: 'Psicoschermo', icona: '🛡️', descrizione: 'Ti protegge dagli attacchi Psicolaser dei Signori delle Tenebre.' },
-    { nome: 'Psicolaser', icona: '🧠', descrizione: 'Ti permette di attaccare i nemici con la forza della tua mente.' },
-    { nome: 'Affinità Animale', icona: '🐺', descrizione: 'Ti permette di comunicare con alcuni animali e comprendere le loro intenzioni.' },
-    { nome: 'Telecinesi', icona: '✨', descrizione: 'Ti consente di muovere piccoli oggetti con la sola forza del pensiero.' }
+    { nome: 'Mimetismo', icona: '🌿', descrizione: 'Ti permette di nasconderti e mimetizzarti con l\'ambiente.' },
+    { nome: 'Caccia', icona: '🏹', descrizione: 'Ti consente di seguire tracce e riconoscere le impronte.' },
+    { nome: 'Sesto Senso', icona: '👁️', descrizione: 'Ti avverte dei pericoli imminenti.' },
+    { nome: 'Orientamento', icona: '🧭', descrizione: 'Ti dà sempre la percezione esatta della direzione.' },
+    { nome: 'Guarigione', icona: '💊', descrizione: 'Recupera 1 RES ogni tappa senza combattimenti.' },
+    { nome: 'Scherma', icona: '⚔️', descrizione: 'Scegli un\'arma; +2 COMB se la impugni.' },
+    { nome: 'Psicoschermo', icona: '🛡️', descrizione: 'Protezione dagli attacchi Psicolaser.' },
+    { nome: 'Psicolaser', icona: '🧠', descrizione: 'Attacca i nemici con la mente. +2 COMB.' },
+    { nome: 'Affinità Animale', icona: '🐺', descrizione: 'Comunica con gli animali.' },
+    { nome: 'Telecinesi', icona: '✨', descrizione: 'Muovi piccoli oggetti con la mente.' }
 ];
 
 // ==================== POSIZIONI MAPPA ====================
@@ -123,8 +108,6 @@ async function init() {
     setupEventListeners();
     createClickZones();
     checkAutoSave();
-    
-    // Inizializza Google Drive se connesso
     await initGoogleDrive();
 }
 
@@ -145,7 +128,7 @@ async function initGoogleDrive() {
 async function setupDriveDB(token) {
     try {
         if (typeof window.DriveDB === 'undefined') {
-            console.warn('DriveDB non ancora caricato');
+            console.warn('⚠️ DriveDB non ancora caricato');
             return;
         }
         
@@ -160,15 +143,17 @@ async function setupDriveDB(token) {
         await drivedb.init();
         console.log('✅ DriveDB inizializzato');
         
-        drivedb.onSyncChange(({ status, error }) => {
-            if (status === 'syncing') {
-                updateGDriveStatus('syncing', 'Sincronizzazione...');
-            } else if (status === 'synced') {
-                updateGDriveStatus('synced', 'Sincronizzato');
-            } else if (status === 'error') {
-                updateGDriveStatus('error', `Errore: ${error || 'sconosciuto'}`);
-            }
-        });
+        if (drivedb.onSyncChange) {
+            drivedb.onSyncChange(({ status, error }) => {
+                if (status === 'syncing') {
+                    updateGDriveStatus('syncing', 'Sincronizzazione...');
+                } else if (status === 'synced') {
+                    updateGDriveStatus('synced', 'Sincronizzato');
+                } else if (status === 'error') {
+                    updateGDriveStatus('error', `Errore: ${error || 'sconosciuto'}`);
+                }
+            });
+        }
         
         await loadFromDrive();
         
@@ -217,7 +202,6 @@ async function connectGoogleDrive() {
                 }
                 
                 googleToken = response.access_token;
-                
                 localStorage.setItem('gdrive_token', googleToken);
                 localStorage.setItem('gdrive_token_expiry', (Date.now() + 3500 * 1000).toString());
                 
@@ -238,7 +222,7 @@ async function loadFromDrive() {
     
     try {
         const docs = drivedb.list();
-        if (docs.length > 0) {
+        if (docs && docs.length > 0) {
             const latest = docs[0];
             gameState = { ...createEmptyGameState(), ...latest.data };
             console.log('✅ Salvataggio caricato da Google Drive');
@@ -265,9 +249,7 @@ async function saveToDrive() {
 
 // ==================== CARICAMENTO LIBRI ====================
 async function loadAllBooks() {
-    const bookFiles = [
-        '01-signori-tenebre.json'
-    ];
+    const bookFiles = ['01-signori-tenebre.json'];
     
     console.log('📚 Cerco i libri in:', BOOKS_FOLDER);
     
@@ -303,11 +285,7 @@ async function loadBooksToMenu() {
     bookList.innerHTML = '';
     
     if (Object.keys(booksData).length === 0) {
-        bookList.innerHTML = `
-            <div class="loading-books">
-                <p>📭 Nessun libro trovato nella cartella <strong>Libri/</strong></p>
-            </div>
-        `;
+        bookList.innerHTML = `<div class="loading-books"><p>📭 Nessun libro trovato</p></div>`;
         return;
     }
 
@@ -349,11 +327,8 @@ async function loadBooksToMenu() {
         }
         
         coverDiv.onclick = () => {
-            if (isUnlocked) {
-                startNewGame(bookId);
-            } else {
-                alert('🔒 Questo libro è ancora bloccato. Completa prima il libro precedente!');
-            }
+            if (isUnlocked) startNewGame(bookId);
+            else alert('🔒 Questo libro è ancora bloccato.');
         };
         
         bookList.appendChild(coverDiv);
@@ -368,7 +343,7 @@ function setupEventListeners() {
     const mainMenuBtn = document.getElementById('main-menu-btn');
     if (mainMenuBtn) {
         mainMenuBtn.addEventListener('click', () => {
-            if (confirm("Sei sicuro di voler tornare al menu principale?\n\nI progressi non salvati andranno persi.")) {
+            if (confirm("Tornare al menu? I progressi non salvati andranno persi.")) {
                 autoSave();
                 showScreen('main-menu');
             }
@@ -390,9 +365,7 @@ function setupEventListeners() {
     const saveBtn = document.getElementById('save-btn');
     if (saveBtn) saveBtn.addEventListener('click', async () => {
         saveGame();
-        if (drivedb && googleToken) {
-            await saveToDrive();
-        }
+        if (drivedb && googleToken) await saveToDrive();
     });
     
     const loadGameBtn = document.getElementById('load-game-btn');
@@ -406,9 +379,7 @@ function setupEventListeners() {
     });
 
     window.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal')) {
-            e.target.classList.remove('active');
-        }
+        if (e.target.classList.contains('modal')) e.target.classList.remove('active');
     });
 
     if (fontSizeSlider) {
@@ -426,7 +397,7 @@ function setupEventListeners() {
     const resetBtn = document.getElementById('reset-game-btn');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
-            if (confirm("⚠️ Sei sicuro di voler ricominciare da capo?\n\nPerderai tutti i progressi non salvati.")) {
+            if (confirm("⚠️ Ricominciare da capo? Perderai tutti i progressi.")) {
                 localStorage.removeItem(SAVE_KEY);
                 location.reload();
             }
@@ -448,7 +419,7 @@ function setupEventListeners() {
                         updateHeader();
                     });
                 } catch (err) {
-                    alert("❌ File di salvataggio non valido!");
+                    alert("❌ File non valido!");
                 }
             };
             reader.readAsText(file);
@@ -503,11 +474,7 @@ function startNewGame(bookId) {
     gameState.player.borsa = Math.floor(Math.random() * 10) + 10;
     
     currentBookData = booksData[bookId];
-    
-    if (!currentBookData) {
-        alert('❌ Libro non trovato!');
-        return;
-    }
+    if (!currentBookData) { alert('❌ Libro non trovato!'); return; }
     
     showCharacterCreation();
 }
@@ -641,9 +608,7 @@ function checkCharacterReady() {
     const hasComb = gameState.player.combattività > 0;
     const hasRes = gameState.player.resistenza > 0;
     const goToRamasBtn = document.getElementById('go-to-ramas-btn');
-    if (goToRamasBtn) {
-        goToRamasBtn.disabled = !(hasComb && hasRes);
-    }
+    if (goToRamasBtn) goToRamasBtn.disabled = !(hasComb && hasRes);
 }
 
 function confirmCharacter() {
@@ -663,9 +628,7 @@ function confirmCharacter() {
     showScreen('game-screen');
     renderPage('1');
     
-    if (drivedb && googleToken) {
-        saveToDrive();
-    }
+    if (drivedb && googleToken) saveToDrive();
 }
 
 // ==================== MOSTRA SCHERMATA ====================
@@ -678,12 +641,11 @@ function showScreen(screenId) {
 // ==================== RENDERIZZAZIONE PAGINA ====================
 function renderPage(pageId) {
     if (!currentBookData || !currentBookData.pagine) {
-        pageContent.innerHTML = '<p>❌ Errore: libro non caricato correttamente.</p>';
+        pageContent.innerHTML = '<p>❌ Errore: libro non caricato.</p>';
         return;
     }
 
     const page = currentBookData.pagine[pageId];
-
     if (!page) {
         pageContent.innerHTML = `<p>📄 Pagina ${pageId} non trovata.</p>`;
         choicesArea.innerHTML = `<button class="choice-btn" onclick="renderPage('1')">Torna all'inizio</button>`;
@@ -695,50 +657,24 @@ function renderPage(pageId) {
     }
     gameState.currentPage = pageId;
 
-    if (page.onEnter) {
-        applyOnEnterEffects(page.onEnter);
-    }
-
-    if (page.gameOver) {
-        renderGameOver();
-        return;
-    }
-
-    if (page.isEnding) {
-        renderEnding(page);
-        return;
-    }
-
-    if (page.location) {
-        updatePlayerLocation(page.location);
-    }
+    if (page.onEnter) applyOnEnterEffects(page.onEnter);
+    if (page.gameOver) { renderGameOver(); return; }
+    if (page.isEnding) { renderEnding(page); return; }
+    if (page.location) updatePlayerLocation(page.location);
 
     updateHeader();
 
     let contentHTML = `<p>${page.testo}</p>`;
     pageContent.innerHTML = contentHTML;
 
-    if (page.combat) {
-        startCombat(page.combat);
-        return;
-    }
-
-    if (page.dice) {
-        renderDiceChoices(page.dice);
-        return;
-    }
-
-    if (page.conditional) {
-        renderConditionalChoices(page.conditional);
-        return;
-    }
+    if (page.combat) { startCombat(page.combat); return; }
+    if (page.dice) { renderDiceChoices(page.dice); return; }
+    if (page.conditional) { renderConditionalChoices(page.conditional); return; }
 
     choicesArea.innerHTML = '';
     if (page.choices) {
         page.choices.forEach(choice => {
-            if (choice.requisito && !gameState.player.artiRamas.includes(choice.requisito)) {
-                return;
-            }
+            if (choice.requisito && !gameState.player.artiRamas.includes(choice.requisito)) return;
             
             const btn = document.createElement('button');
             btn.className = 'choice-btn';
@@ -750,27 +686,19 @@ function renderPage(pageId) {
     
     document.getElementById('content-area').scrollTop = 0;
     autoSave();
-    
-    if (drivedb && googleToken) {
-        saveToDrive();
-    }
+    if (drivedb && googleToken) saveToDrive();
 }
 
 // ==================== GESTIONE SCELTA ====================
 function handleChoice(choice) {
-    if (choice.target === 'restart') {
-        startNewGame(gameState.currentBook);
-    } else if (choice.target === 'next_book') {
-        goToNextBook();
-    } else {
-        renderPage(choice.target);
-    }
+    if (choice.target === 'restart') startNewGame(gameState.currentBook);
+    else if (choice.target === 'next_book') goToNextBook();
+    else renderPage(choice.target);
 }
 
 // ==================== TIRO DADO ====================
 function renderDiceChoices(diceConfig) {
     choicesArea.innerHTML = '';
-    
     const btn = document.createElement('button');
     btn.className = 'choice-btn';
     btn.textContent = '🎲 Lancia il dado';
@@ -780,14 +708,9 @@ function renderDiceChoices(diceConfig) {
                 const parts = range.split('-').map(Number);
                 const min = parts[0];
                 const max = parts.length > 1 ? parts[1] : min;
-                
-                if (roll >= min && roll <= max) {
-                    renderPage(diceConfig[range]);
-                    return;
-                }
+                if (roll >= min && roll <= max) { renderPage(diceConfig[range]); return; }
             }
-            const firstKey = Object.keys(diceConfig)[0];
-            renderPage(diceConfig[firstKey]);
+            renderPage(diceConfig[Object.keys(diceConfig)[0]]);
         });
     };
     choicesArea.appendChild(btn);
@@ -796,24 +719,15 @@ function renderDiceChoices(diceConfig) {
 // ==================== SCELTE CONDIZIONALI ====================
 function renderConditionalChoices(conditional) {
     choicesArea.innerHTML = '';
-    
     for (const key of Object.keys(conditional)) {
         if (key === 'else') continue;
-        
         const hasIt = gameState.player.artiRamas.includes(key) || 
                       gameState.player.oggettiSpeciali.includes(key) ||
                       gameState.player.zaino.includes(key) ||
                       gameState.player.armi.includes(key);
-        
-        if (hasIt) {
-            renderPage(conditional[key]);
-            return;
-        }
+        if (hasIt) { renderPage(conditional[key]); return; }
     }
-    
-    if (conditional.else) {
-        renderPage(conditional.else);
-    }
+    if (conditional.else) renderPage(conditional.else);
 }
 
 // ==================== EFFETTI ON ENTER ====================
@@ -822,50 +736,27 @@ function applyOnEnterEffects(effects) {
         gameState.player.resistenza -= effects.damage;
         if (gameState.player.resistenza < 0) gameState.player.resistenza = 0;
     }
-    
     if (effects.addCorone) {
         gameState.player.borsa += effects.addCorone;
         if (gameState.player.borsa > 50) gameState.player.borsa = 50;
     }
-    
     if (effects.addItems) {
         effects.addItems.forEach(item => {
-            if (gameState.player.zaino.length < 8) {
-                gameState.player.zaino.push(item);
-            }
+            if (gameState.player.zaino.length < 8) gameState.player.zaino.push(item);
         });
     }
-    
-    if (effects.loseAllItems) {
-        gameState.player.zaino = [];
-    }
-    
-    if (effects.loseAllWeapons) {
-        gameState.player.armi = [];
-    }
-    
-    if (effects.breakOneWeapon) {
-        if (gameState.player.armi.length > 0) {
-            gameState.player.armi.pop();
-        }
-    }
-    
-    if (effects.permanentCombattività) {
-        gameState.player.combattività += effects.permanentCombattività;
-    }
-    
+    if (effects.loseAllItems) gameState.player.zaino = [];
+    if (effects.loseAllWeapons) gameState.player.armi = [];
+    if (effects.breakOneWeapon) { if (gameState.player.armi.length > 0) gameState.player.armi.pop(); }
+    if (effects.permanentCombattività) gameState.player.combattività += effects.permanentCombattività;
     if (effects.consumePasto) {
-        const pastoIndex = gameState.player.zaino.findIndex(item => 
-            item.toLowerCase().includes('pasto')
-        );
-        if (pastoIndex >= 0) {
-            gameState.player.zaino.splice(pastoIndex, 1);
-        } else if (effects.penaltySeNoPasto) {
+        const pastoIndex = gameState.player.zaino.findIndex(item => item.toLowerCase().includes('pasto'));
+        if (pastoIndex >= 0) gameState.player.zaino.splice(pastoIndex, 1);
+        else if (effects.penaltySeNoPasto) {
             gameState.player.resistenza += effects.penaltySeNoPasto;
             if (gameState.player.resistenza < 0) gameState.player.resistenza = 0;
         }
     }
-    
     if (effects.randomLoseItem) {
         if (gameState.player.zaino.length > 0) {
             const randomIndex = Math.floor(Math.random() * gameState.player.zaino.length);
@@ -877,34 +768,23 @@ function applyOnEnterEffects(effects) {
 // ==================== COMBATTIMENTO ====================
 function startCombat(combatData) {
     inCombat = true;
-    
     enemyState = {
-        name: combatData.name,
-        combattività: combatData.combattività,
-        resistenza: combatData.resistenza,
-        resistenzaIniziale: combatData.resistenza,
-        nextEnemy: combatData.nextEnemy,
-        onWin: combatData.onWin,
-        onWinChoices: combatData.onWinChoices,
-        onFlee: combatData.onFlee,
-        modificatori: combatData.modificatori,
-        round: 0
+        name: combatData.name, combattività: combatData.combattività,
+        resistenza: combatData.resistenza, resistenzaIniziale: combatData.resistenza,
+        nextEnemy: combatData.nextEnemy, onWin: combatData.onWin,
+        onWinChoices: combatData.onWinChoices, onFlee: combatData.onFlee,
+        modificatori: combatData.modificatori, round: 0
     };
-    
     gameState.enemy = {
-        name: enemyState.name,
-        combattività: enemyState.combattività,
-        resistenza: enemyState.resistenza,
-        resistenzaIniziale: enemyState.resistenza
+        name: enemyState.name, combattività: enemyState.combattività,
+        resistenza: enemyState.resistenza, resistenzaIniziale: enemyState.resistenza
     };
-    
     updateHeader();
     renderCombatChoices(combatData);
 }
 
 function renderCombatChoices(combatData) {
     choicesArea.innerHTML = '';
-    
     const attackBtn = document.createElement('button');
     attackBtn.id = 'attack-btn';
     attackBtn.className = 'choice-btn combat-btn';
@@ -925,20 +805,15 @@ function renderCombatChoices(combatData) {
 function performAttack() {
     openDiceModal((diceRoll) => {
         let playerCombattività = gameState.player.combattività;
-        
         if (enemyState.modificatori && enemyState.modificatori.combattività) {
             const annullaCon = enemyState.modificatori.annullaCon;
             const annullaSe = enemyState.modificatori.annullaSe;
-            
             let annullato = false;
             if (annullaCon && gameState.player.artiRamas.includes(annullaCon)) annullato = true;
             if (annullaSe && annullaSe.every(item => 
                 gameState.player.zaino.includes(item) || 
                 gameState.player.oggettiSpeciali.includes(item))) annullato = true;
-            
-            if (!annullato) {
-                playerCombattività += enemyState.modificatori.combattività;
-            }
+            if (!annullato) playerCombattività += enemyState.modificatori.combattività;
         }
         
         const rapportoForza = playerCombattività - enemyState.combattività;
@@ -954,45 +829,25 @@ function performAttack() {
 
         updateHeader();
 
-        if (gameState.player.resistenza <= 0) {
-            inCombat = false;
-            renderGameOver();
-            return;
-        }
+        if (gameState.player.resistenza <= 0) { inCombat = false; renderGameOver(); return; }
         
         if (enemyState.resistenza <= 0) {
             inCombat = false;
-            
             if (enemyState.nextEnemy) {
                 let next;
-                if (Array.isArray(enemyState.nextEnemy)) {
-                    next = enemyState.nextEnemy.shift();
-                } else {
-                    next = enemyState.nextEnemy;
-                }
-                
-                const remainingNext = Array.isArray(enemyState.nextEnemy) && enemyState.nextEnemy.length > 0 
-                    ? enemyState.nextEnemy 
-                    : null;
-                
+                if (Array.isArray(enemyState.nextEnemy)) next = enemyState.nextEnemy.shift();
+                else next = enemyState.nextEnemy;
+                const remainingNext = Array.isArray(enemyState.nextEnemy) && enemyState.nextEnemy.length > 0 ? enemyState.nextEnemy : null;
                 const onWin = enemyState.onWin;
                 const modificatori = enemyState.modificatori;
-                
                 enemyState = {
-                    name: next.name,
-                    combattività: next.combattività,
-                    resistenza: next.resistenza,
-                    resistenzaIniziale: next.resistenza,
-                    nextEnemy: remainingNext,
-                    onWin: onWin,
-                    modificatori: modificatori,
-                    round: 0
+                    name: next.name, combattività: next.combattività,
+                    resistenza: next.resistenza, resistenzaIniziale: next.resistenza,
+                    nextEnemy: remainingNext, onWin: onWin, modificatori: modificatori, round: 0
                 };
                 gameState.enemy = {
-                    name: enemyState.name,
-                    combattività: enemyState.combattività,
-                    resistenza: enemyState.resistenza,
-                    resistenzaIniziale: enemyState.resistenza
+                    name: enemyState.name, combattività: enemyState.combattività,
+                    resistenza: enemyState.resistenza, resistenzaIniziale: enemyState.resistenza
                 };
                 updateHeader();
                 renderCombatChoices({ onFlee: null });
@@ -1003,7 +858,6 @@ function performAttack() {
                 enemyState = null;
                 gameState.enemy = { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 };
                 updateHeader();
-                
                 if (onWinChoices) {
                     renderPage(onWin);
                     setTimeout(() => {
@@ -1016,9 +870,7 @@ function performAttack() {
                             choicesArea.appendChild(btn);
                         });
                     }, 100);
-                } else if (onWin) {
-                    renderPage(onWin);
-                }
+                } else if (onWin) renderPage(onWin);
             }
         } else {
             showCombatMessage(`Hai inflitto <strong>${risultato.dannoN}</strong> danni! Hai subito <strong>${risultato.dannoLS}</strong> danni!`, 'info');
@@ -1029,7 +881,6 @@ function performAttack() {
 function showCombatMessage(message, type) {
     const existing = choicesArea.querySelector('.combat-message');
     if (existing) existing.remove();
-    
     const msg = document.createElement('p');
     msg.className = 'combat-message';
     msg.style.color = type === 'success' ? '#5cb85c' : '#e74c3c';
@@ -1041,10 +892,8 @@ function showCombatMessage(message, type) {
 function calcolaRisultatoCombattimento(rapportoForza, dado) {
     if (rapportoForza > 11) rapportoForza = 11;
     if (rapportoForza < -11) rapportoForza = -11;
-    
     let dannoLS = 0;
     let dannoN = 0;
-    
     if (rapportoForza >= 0) {
         dannoLS = Math.max(0, Math.floor((10 - dado) / 3));
         dannoN = Math.max(1, Math.floor((dado + rapportoForza) / 2));
@@ -1052,15 +901,13 @@ function calcolaRisultatoCombattimento(rapportoForza, dado) {
         dannoLS = Math.max(0, Math.floor((10 - dado - rapportoForza) / 2));
         dannoN = Math.max(0, Math.floor((dado + rapportoForza) / 2));
     }
-    
     dannoLS = Math.min(Math.max(dannoLS, 0), 6);
     dannoN = Math.min(Math.max(dannoN, 0), 12);
-    
     return { dannoLS, dannoN };
 }
 
 function attemptFlee(fleeTarget) {
-    if (confirm("⚠️ Sei sicuro di voler fuggire?\n\nPerderai tutti i punti di Resistenza persi finora in questo combattimento.")) {
+    if (confirm("⚠️ Fuggire? Perderai i punti di Resistenza persi finora.")) {
         inCombat = false;
         enemyState = null;
         gameState.enemy = { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 };
@@ -1074,13 +921,10 @@ function renderGameOver() {
     pageContent.innerHTML = `
         <div class="game-over">
             <h2>☠️ La tua avventura finisce qui</h2>
-            <p>Sei caduto in battaglia. La tua missione è fallita, ma il tuo sacrificio non sarà dimenticato.</p>
-            <p><em>Che il tuo prossimo tentativo sia più fortunato...</em></p>
+            <p>Sei caduto in battaglia. La tua missione è fallita.</p>
         </div>
     `;
-    
     choicesArea.innerHTML = '';
-    
     const restartBtn = document.createElement('button');
     restartBtn.className = 'choice-btn';
     restartBtn.textContent = 'Ricomincia l\'avventura';
@@ -1102,19 +946,14 @@ function renderEnding(page) {
             <p>${page.testo}</p>
         </div>
     `;
-    
     if (!gameState.completedBooks.includes(gameState.currentBook)) {
         gameState.completedBooks.push(gameState.currentBook);
     }
-    
     if (page.nextBook && !gameState.unlockedBooks.includes(page.nextBook)) {
         gameState.unlockedBooks.push(page.nextBook);
     }
-    
     autoSave();
-    
     choicesArea.innerHTML = '';
-    
     if (page.nextBook && booksData[page.nextBook]) {
         const nextBtn = document.createElement('button');
         nextBtn.className = 'choice-btn combat-btn';
@@ -1122,7 +961,6 @@ function renderEnding(page) {
         nextBtn.onclick = () => goToNextBook(page.nextBook);
         choicesArea.appendChild(nextBtn);
     }
-    
     const menuBtn = document.createElement('button');
     menuBtn.className = 'choice-btn';
     menuBtn.textContent = 'Torna al menu principale';
@@ -1142,7 +980,6 @@ function goToNextBook(nextBookId) {
     gameState.currentPage = '1';
     gameState.unlockedBooks = unlockedBooks;
     gameState.completedBooks = completedBooks;
-    
     if (!gameState.unlockedBooks.includes(gameState.currentBook)) {
         gameState.unlockedBooks.push(gameState.currentBook);
     }
@@ -1197,7 +1034,6 @@ function openDiceModal(callback) {
     rollDiceBtn.disabled = false;
     die1.textContent = '?';
     die1.classList.remove('rolling');
-    
     pendingDiceCallback = callback;
     
     rollDiceBtn.onclick = () => {
@@ -1219,13 +1055,10 @@ function rollDice(callback) {
 
     setTimeout(() => {
         const roll = Math.floor(Math.random() * 10);
-        
         die1.textContent = roll;
         die1.classList.remove('rolling');
-        
         diceResult.textContent = `Risultato: ${roll}`;
         rollDiceBtn.disabled = false;
-
         if (callback) setTimeout(() => callback(roll), 800);
     }, 1000);
 }
@@ -1242,7 +1075,6 @@ function navigateHistory(direction) {
 function showMap() {
     const locationKey = gameState.player.currentLocation;
     const locationData = mapLocations[locationKey];
-
     if (locationData && heroMarker && currentLocationName) {
         heroMarker.style.top = locationData.top;
         heroMarker.style.left = locationData.left;
@@ -1252,7 +1084,6 @@ function showMap() {
         heroMarker.style.left = '50%';
         currentLocationName.textContent = 'Posizione: Sconosciuta';
     }
-    
     mapModal.classList.add('active');
 }
 
@@ -1265,53 +1096,35 @@ function updatePlayerLocation(newLocationKey) {
 // ==================== INVENTARIO ====================
 function showInventory() {
     let html = '';
-    
-    html += `<h3>💰 Borsa</h3>`;
-    html += `<p>${gameState.player.borsa} Corone d'Oro</p>`;
+    html += `<h3>💰 Borsa</h3><p>${gameState.player.borsa} Corone d'Oro</p>`;
     
     html += `<h3>⚔️ Armi (max 2)</h3>`;
     if (gameState.player.armi && gameState.player.armi.length > 0) {
         html += '<ul>';
-        gameState.player.armi.forEach(item => {
-            html += `<li>${item}</li>`;
-        });
+        gameState.player.armi.forEach(item => { html += `<li>${item}</li>`; });
         html += '</ul>';
-    } else {
-        html += '<p class="inventory-empty">Nessuna arma equipaggiata.</p>';
-    }
+    } else html += '<p class="inventory-empty">Nessuna arma equipaggiata.</p>';
     
     html += `<h3>🎒 Zaino (max 8)</h3>`;
     if (gameState.player.zaino.length > 0) {
         html += '<ul>';
-        gameState.player.zaino.forEach(item => {
-            html += `<li>${item}</li>`;
-        });
+        gameState.player.zaino.forEach(item => { html += `<li>${item}</li>`; });
         html += '</ul>';
-    } else {
-        html += '<p class="inventory-empty">Lo zaino è vuoto.</p>';
-    }
+    } else html += '<p class="inventory-empty">Lo zaino è vuoto.</p>';
     
     html += `<h3>✨ Oggetti Speciali</h3>`;
     if (gameState.player.oggettiSpeciali.length > 0) {
         html += '<ul>';
-        gameState.player.oggettiSpeciali.forEach(item => {
-            html += `<li>${item}</li>`;
-        });
+        gameState.player.oggettiSpeciali.forEach(item => { html += `<li>${item}</li>`; });
         html += '</ul>';
-    } else {
-        html += '<p class="inventory-empty">Nessun oggetto speciale.</p>';
-    }
+    } else html += '<p class="inventory-empty">Nessun oggetto speciale.</p>';
     
     html += `<h3>🧘 Arti Ramas</h3>`;
     if (gameState.player.artiRamas.length > 0) {
         html += '<ul>';
-        gameState.player.artiRamas.forEach(arte => {
-            html += `<li>${arte}</li>`;
-        });
+        gameState.player.artiRamas.forEach(arte => { html += `<li>${arte}</li>`; });
         html += '</ul>';
-    } else {
-        html += '<p class="inventory-empty">Nessuna Arte Ramas appresa.</p>';
-    }
+    } else html += '<p class="inventory-empty">Nessuna Arte Ramas appresa.</p>';
     
     inventoryList.innerHTML = html;
     inventoryModal.classList.add('active');
@@ -1322,7 +1135,6 @@ function saveGame() {
     const saveData = JSON.stringify(gameState, null, 2);
     const blob = new Blob([saveData], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    
     const a = document.createElement('a');
     a.href = url;
     a.download = `lupo_solitario_${gameState.currentBook}_pag${gameState.currentPage}_${new Date().toISOString().slice(0,10)}.json`;
@@ -1330,16 +1142,12 @@ function saveGame() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
     alert("💾 Partita salvata! Il file è stato scaricato.");
 }
 
 function autoSave() {
-    try {
-        localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
-    } catch (err) {
-        console.warn('Auto-salvataggio fallito:', err);
-    }
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(gameState)); } 
+    catch (err) { console.warn('Auto-salvataggio fallito:', err); }
 }
 
 function checkAutoSave() {
@@ -1358,20 +1166,15 @@ function checkAutoSave() {
                         showScreen('game-screen');
                         renderPage(gameState.currentPage);
                         updateHeader();
-                    }).catch(err => {
-                        alert('❌ Impossibile caricare il salvataggio.');
-                    });
+                    }).catch(err => alert('❌ Impossibile caricare il salvataggio.'));
                 };
-                
                 const menuActions = document.querySelector('.menu-actions');
                 if (menuActions && !document.getElementById('continue-game-btn')) {
                     menuActions.insertBefore(continueBtn, menuActions.firstChild);
                 }
             }
         }
-    } catch (err) {
-        console.warn('Errore caricando auto-salvataggio:', err);
-    }
+    } catch (err) { console.warn('Errore caricando auto-salvataggio:', err); }
 }
 
 // ==================== IMPOSTAZIONI ====================
@@ -1379,13 +1182,8 @@ function applySettings() {
     const savedFontSize = localStorage.getItem(FONT_KEY) || DEFAULT_FONT_SIZE;
     document.documentElement.style.setProperty('--font-size', `${savedFontSize}px`);
     document.documentElement.style.fontSize = `${savedFontSize}px`;
-    
-    if (fontSizeSlider) {
-        fontSizeSlider.value = savedFontSize;
-    }
-    if (fontSizeValue) {
-        fontSizeValue.textContent = savedFontSize;
-    }
+    if (fontSizeSlider) fontSizeSlider.value = savedFontSize;
+    if (fontSizeValue) fontSizeValue.textContent = savedFontSize;
 }
 
 // ==================== AVVIO ====================

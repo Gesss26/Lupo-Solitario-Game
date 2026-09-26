@@ -10,30 +10,49 @@
     
     <title>Lupo Solitario</title>
     
+    <!-- Favicon inline -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
+    
     <link rel="stylesheet" href="style.css">
     
-    <!-- Font decorativo per titoli -->
+    <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Google API per OAuth -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- DriveDB via ESM CDN -->
+    <script type="module">
+        import { DriveDB } from 'https://cdn.jsdelivr.net/npm/@aldian/drivedb@0.2.1/+esm';
+        window.DriveDB = DriveDB;
+        console.log('✅ DriveDB caricato');
+    </script>
 </head>
 <body>
 
-    <!-- ==================== SCHERMATA INIZIALE / MENU ==================== -->
+    <!-- ==================== MENU PRINCIPALE ==================== -->
     <div id="main-menu" class="screen active">
         <div class="menu-container">
             
-            <!-- Header con titolo -->
             <header class="menu-header">
                 <div class="header-emblem">⚔️</div>
                 <h1>Lupo Solitario</h1>
                 <p class="subtitle">Il tuo destino ti attende</p>
-                <div class="header-divider">
-                    <span>✦</span>
-                </div>
+                <div class="header-divider"><span>✦</span></div>
             </header>
 
-            <!-- Lista dei libri (copertine caricate via JS) -->
+            <!-- Google Drive Sync Status -->
+            <div id="gdrive-status" class="gdrive-status">
+                <button id="gdrive-connect-btn" class="menu-btn secondary small">
+                    <span class="btn-icon">☁️</span>
+                    <span>Connetti a Google Drive</span>
+                </button>
+                <p id="gdrive-sync-info" class="gdrive-sync-info"></p>
+            </div>
+
+            <!-- Lista dei libri -->
             <div id="book-list" class="book-list">
                 <div class="loading-books">
                     <div class="spinner"></div>
@@ -53,7 +72,6 @@
                 </button>
             </div>
 
-            <!-- Footer -->
             <footer class="menu-footer">
                 <p>Un'avventura di Joe Dever e Gary Chalk</p>
             </footer>
@@ -63,7 +81,6 @@
     <!-- ==================== SCHERMATA DI GIOCO ==================== -->
     <div id="game-screen" class="screen">
         
-        <!-- HEADER CON STATISTICHE -->
         <header id="game-header">
             <div class="stat-group">
                 <div class="stat-box" id="stat-ls">
@@ -80,86 +97,70 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button id="map-btn" class="header-btn" title="Mappa" aria-label="Mappa">🗺️</button>
-                <button id="inventory-btn" class="header-btn" title="Inventario" aria-label="Inventario">🎒</button>
-                <button id="settings-btn" class="header-btn" title="Impostazioni" aria-label="Impostazioni">⚙️</button>
-                <button id="save-btn" class="header-btn" title="Salva" aria-label="Salva">💾</button>
-                <button id="main-menu-btn" class="header-btn" title="Menu" aria-label="Menu">🏠</button>
+                <button id="map-btn" class="header-btn" title="Mappa">🗺️</button>
+                <button id="inventory-btn" class="header-btn" title="Inventario">🎒</button>
+                <button id="settings-btn" class="header-btn" title="Impostazioni">⚙️</button>
+                <button id="save-btn" class="header-btn" title="Salva">💾</button>
+                <button id="main-menu-btn" class="header-btn" title="Menu">🏠</button>
             </div>
         </header>
 
-        <!-- AREA PRINCIPALE DI TESTO -->
         <main id="content-area">
             <div id="page-content"></div>
         </main>
 
-        <!-- AREA DELLE SCELTE -->
         <footer id="choices-area"></footer>
     </div>
 
-    <!-- ==================== MODALE DADI ==================== -->
+    <!-- ==================== MODALI ==================== -->
     <div id="dice-modal" class="modal">
         <div class="modal-content dice-content">
             <h2>🎲 Lancia il Dado</h2>
-            <div id="dice-container">
-                <div id="die1" class="die">?</div>
-            </div>
+            <div id="dice-container"><div id="die1" class="die">?</div></div>
             <p id="dice-result" class="dice-result"></p>
             <button id="roll-dice-btn" class="menu-btn">Lancia!</button>
         </div>
     </div>
 
-    <!-- ==================== MODALE INVENTARIO ==================== -->
     <div id="inventory-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" aria-label="Chiudi">×</span>
+            <span class="close-btn">×</span>
             <h2>🎒 Inventario</h2>
             <div id="inventory-list"></div>
         </div>
     </div>
 
-    <!-- ==================== MODALE MAPPA ==================== -->
     <div id="map-modal" class="modal">
         <div class="modal-content map-modal-content">
-            <span class="close-btn" aria-label="Chiudi">×</span>
+            <span class="close-btn">×</span>
             <h2>🗺️ Mappa di Magnamund</h2>
             <div id="map-container">
-                <img src="img/mappa_magnamund.jpg" alt="Mappa" id="map-image" onerror="this.style.display='none'">
+                <img src="Mappa/mappa_magnamund.jpg" alt="Mappa" id="map-image" onerror="this.style.display='none'">
                 <div id="hero-marker" title="La tua posizione"></div>
             </div>
             <p id="current-location-name">Posizione: Sconosciuta</p>
         </div>
     </div>
 
-    <!-- ==================== MODALE IMPOSTAZIONI ==================== -->
     <div id="settings-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" aria-label="Chiudi">×</span>
+            <span class="close-btn">×</span>
             <h2>⚙️ Impostazioni</h2>
-            
             <div class="setting-item">
                 <label for="font-size-slider">
                     Dimensione Testo: <span id="font-size-value">20</span>px
                 </label>
                 <input type="range" id="font-size-slider" min="14" max="32" value="20" step="1">
-                <div class="font-preview">
-                    <p>Anteprima del testo di gioco</p>
-                </div>
+                <div class="font-preview"><p>Anteprima del testo di gioco</p></div>
             </div>
-
             <div class="setting-item">
-                <button id="reset-game-btn" class="menu-btn secondary small">
-                    🔄 Ricomincia da Capo
-                </button>
+                <button id="reset-game-btn" class="menu-btn secondary small">🔄 Ricomincia da Capo</button>
             </div>
         </div>
     </div>
 
-    <!-- ==================== MODALE CREAZIONE PERSONAGGIO ==================== -->
     <div id="character-creation-modal" class="modal">
         <div class="modal-content creation-content">
-            
-            <!-- STEP 1: Statistiche -->
             <div id="creation-step-stats" class="creation-page">
                 <h2>⚔️ Creazione del Personaggio</h2>
                 <p class="creation-intro">Tira i dadi per determinare le tue statistiche iniziali.</p>
@@ -178,29 +179,21 @@
                     <p id="res-result" class="result">Risultato: -</p>
                 </div>
 
-                <button id="go-to-ramas-btn" class="menu-btn" disabled>
-                    ➡️ Continua alle Arti Ramas
-                </button>
+                <button id="go-to-ramas-btn" class="menu-btn" disabled>➡️ Continua alle Arti Ramas</button>
             </div>
 
-            <!-- STEP 2: Arti Ramas -->
             <div id="creation-step-ramas" class="creation-page" style="display: none;">
                 <h2>🧘 Scegli le tue Arti Ramas</h2>
-                <p class="creation-intro">Seleziona <strong>5 Arti</strong> tra le 10 disponibili. Tocca un'Arte per leggere la sua descrizione.</p>
+                <p class="creation-intro">Seleziona <strong>5 Arti</strong> tra le 10 disponibili.</p>
                 
-                <!-- Metà superiore: griglia delle Arti -->
-                <div id="ramas-grid" class="ramas-grid">
-                    <!-- Popolato via JS -->
-                </div>
+                <div id="ramas-grid" class="ramas-grid"></div>
                 
-                <!-- Metà inferiore: descrizione dell'Arte selezionata -->
                 <div id="ramas-description" class="ramas-description">
                     <div class="description-icon">👆</div>
                     <h3 class="description-title">Seleziona un'Arte</h3>
-                    <p class="description-text">Tocca una delle Arti qui sopra per leggere la sua descrizione dettagliata.</p>
+                    <p class="description-text">Tocca una delle Arti qui sopra per leggere la sua descrizione.</p>
                 </div>
                 
-                <!-- Contatore e pulsanti -->
                 <div class="ramas-footer">
                     <p id="ramas-counter" class="ramas-counter">Selezionate: 0 / 5</p>
                     <div class="ramas-actions">
@@ -209,11 +202,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-    <!-- INPUT NASCOSTO PER CARICARE IL SALVATAGGIO -->
     <input type="file" id="load-file-input" accept=".json" style="display: none;">
 
     <script src="script.js"></script>
