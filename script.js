@@ -501,11 +501,11 @@ async function loadAllBooks() {
             console.log(`📖 Manifest trovato: ${bookFiles.length} libri`);
         } else {
             console.warn('⚠️ Manifest non trovato (HTTP ' + manifestResponse.status + '), fallback');
-            bookFiles = ['01-signori-tenebre.json'];
+            bookFiles = ['01-I-Signori-delle-Tenebre.json'];
         }
     } catch (err) {
         console.warn('⚠️ Errore lettura manifest:', err);
-        bookFiles = ['01-signori-tenebre.json'];
+        bookFiles = ['01-I-Signori-delle-Tenebre.json'];
     }
     
     let okCount = 0, failCount = 0;
