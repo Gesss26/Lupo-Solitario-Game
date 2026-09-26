@@ -1,0 +1,2400 @@
+{
+  "id": "01",
+  "titolo": "I Signori delle Tenebre",
+  "serie": "Lupo Solitario",
+  "numero": 1,
+  "autori": ["Joe Dever", "Gary Chalk"],
+  "pagine": {
+    "1": {
+      "testo": "Devi far presto, perché qualcosa ti dice che non è prudente indugiare presso le rovine fumanti del monastero. I Kraan, i mostri dalle nere ali, potrebbero tornare da un momento all'altro. Devi raggiungere Holmgard, la capitale di Sommerlund, e portare al Re la terribile notizia: tutti i cavalieri Ramas, salvo te, sono stati massacrati. Senza i Ramas alla testa del suo esercito, Sommerlund sarà alla mercé del suo antico nemico, i Signori delle Tenebre. Trattenendo le lacrime, dai un ultimo saluto ai tuoi compagni uccisi. Dentro di te giuri che la loro morte sarà vendicata. Volti le spalle alle rovine e scendi con circospezione il ripido sentiero. Ai piedi della collina il sentiero si biforca, ma entrambe le piste portano nel folto della foresta.",
+      "location": "monastero_ramas",
+      "choices": [
+        { "text": "Se scegli il sentiero di destra, vai all'85.", "target": "85" },
+        { "text": "Se scegli quello di sinistra, vai al 275.", "target": "275" },
+        { "text": "Se vuoi utilizzare l'Arte del Sesto Senso, vai al 141.", "target": "141", "requisito": "Sesto Senso" }
+      ]
+    },
+    "2": {
+      "testo": "Mentre corri nel bosco sempre più fitto le grida dei Giak si sentono sempre meno. Ormai li hai quasi seminati, ma improvvisamente inciampi in un ramo basso e finisci dentro un cespuglio.",
+      "dice": { "0-4": "343", "5-9": "276" }
+    },
+    "3": {
+      "testo": "Seguendo passo passo l'ufficiale attraversi un portale ad arco, e salendo per una stretta scala arrivi in un ampio cortile. C'è tutto un via vai di soldati, i quali portano agli ufficiali di guardia sulle mura della città gli ordini scritti su pergamene decorate. Un uomo scarno e con la faccia coperta di cicatrici, che indossa l'abito bianco e porpora dei cortigiani, si avvicina e ti invita a seguirlo nella rocca.",
+      "choices": [
+        { "text": "Se vuoi seguirlo, vai al 196.", "target": "196" },
+        { "text": "Se rifiuti il suo invito e vuoi tornare nelle strade affollate, vai al 144.", "target": "144" }
+      ]
+    },
+    "4": {
+      "testo": "È una piccola canoa, molto in cattivo stato. Il legno è marcio e pieno di fessure, e l'acqua entra da tutte le parti. Rapidamente tappi i buchi più grossi con dell'argilla, e butti fuori l'acqua. Sembra che per adesso tenga. Sistemi il tuo equipaggiamento sotto prua, e con un pezzo di legno trovato lì vicino cominci a remare giù per la corrente. Dopo un po' senti dei cavalli al galoppo avvicinarsi sulla riva sinistra.",
+      "choices": [
+        { "text": "Se vuoi nasconderti sul fondo della canoa, vai al 75.", "target": "75" },
+        { "text": "Se vuoi richiamare la loro attenzione, vai al 175.", "target": "175" },
+        { "text": "Se vuoi utilizzare l'Arte del Sesto Senso, vai al 218.", "target": "218", "requisito": "Sesto Senso" }
+      ]
+    },
+    "5": {
+      "testo": "Dopo aver camminato per circa un'ora, ecco che il sentiero piega leggermente a est. Arrivi a un guado che attraversa un rapido torrente che scende a sud. Poco dopo il guado incontri un sentiero più largo che va da nord a sud. Capisci che se vai a nord ti allontani dalla capitale, quindi all'incrocio giri a destra e ti dirigi a sud.",
+      "choices": [
+        { "text": "Vai al 111.", "target": "111" }
+      ]
+    },
+    "6": {
+      "testo": "In lontananza senti un galoppo di cavalli che si avvicinano. Ti nascondi dietro un albero e aspetti è la cavalleria della Guardia Reale con le bianche uniformi di Sua Maestà.",
+      "choices": [
+        { "text": "Se vuoi chiamarli, vai al 183.", "target": "183" },
+        { "text": "Se vuoi lasciarli passare per poi continuare il tuo cammino nella foresta, vai al 200.", "target": "200" }
+      ]
+    },
+    "7": {
+      "testo": "Per quella che ti sembra un'eternità, l'impeto della folla ti trascina come una foglia sull'onda della corrente. Tenti disperatamente di stare in piedi, ma ti senti debole e ti gira la testa, e le tue gambe pesano come il piombo. Improvvisamente intravvedi una lunga e stretta scala di pietra che porta sul tetto di una locanda. Raccogliendo le ultime forze ti precipiti verso la scala e cominci faticosamente a salire. Da lì vedi il magnifico panorama dei tetti e delle torri di Holmgard, con le alte mura di pietra della rocca splendenti nel sole. Le case e i palazzi della capitale sono costruiti molto vicini uno all'altro, ed è possibile saltare da un tetto all'altro. Valutato il pro e il contro, decidi di seguire questa via: l'unica che ti consente di raggiungere il Re. Con un salto dopo l'altro sorvoli diverse strade: te ne manca solo una. Quest'ultima però è molto più larga delle altre, e il salto è molto più impegnativo. La paura ti attanaglia lo stomaco. Deciso a raggiungere la fortezza, fai qualche passo indietro e prendi la rincorsa per il salto. Con il cuore in gola arrivi al bordo del tetto e ti lanci nel vuoto, con gli occhi fissi sul tetto di fronte.",
+      "dice": { "0-2": "108", "3-9": "25" }
+    },
+    "8": {
+      "testo": "Il tuo Sesto Senso ti dice che a sud infuria una violenta battaglia. Tuttavia sai che la via più rapida per la capitale è proprio quella che va verso sud.",
+      "choices": [
+        { "text": "Vai al 70 e scegli la tua strada.", "target": "70" }
+      ]
+    },
+    "9": {
+      "testo": "Non riesci a muoverti: sei come immobilizzato da una forza misteriosa. I tuoi occhi sono attratti irresistibilmente dalla bocca dello scheletro. Dalle viscere della terra sale un cupo rumore, come il ronzio di milioni di api impazzite. Nelle vuote occhiaie dello scheletro del Re appare un lieve chiarore di brace, mentre il ronzio aumenta fino a diventare assordante. Sei in presenza di una forza malefica.",
+      "conditional": {
+        "Psicoschermo": "166",
+        "else": "morte_292"
+      }
+    },
+    "10": {
+      "testo": "Hai corso per venti minuti quando intravedi un branco di Tigerwolf sul fianco di un'altura alla tua destra.",
+      "choices": [
+        { "text": "Se decidi di acquattarti tra le rocce lungo la via per aspettare che passino, vai al 286.", "target": "286" },
+        { "text": "Se decidi di continuare a correre, ma tenendo pronta l'Arma in caso di attacco, vai al 160.", "target": "160" }
+      ]
+    },
+    "11": {
+      "testo": "Pochi minuti dopo aver lasciato l'incrocio vedi in distanza una piccola capanna di legno con una stalla. Arrivando dai un'occhiata attraverso una finestra laterale. La capanna sembra deserta.",
+      "choices": [
+        { "text": "Se vuoi entrare, vai al 57.", "target": "57" },
+        { "text": "Se vuoi esaminare la stalla, vai al 308.", "target": "308" }
+      ]
+    },
+    "12": {
+      "testo": "Se decidi di offrirgli delle Corone d'oro per farti portare alla capitale, vai al 262.",
+      "choices": [
+        { "text": "Vai al 262.", "target": "262" }
+      ]
+    },
+    "13": {
+      "testo": "Presto capiti su uno stretto sentiero che percorre la foresta da nord a sud.",
+      "choices": [
+        { "text": "Se vuoi seguirlo verso nord, vai al 240.", "target": "240" },
+        { "text": "Se vuoi seguirlo verso sud, vai al 5.", "target": "5" }
+      ]
+    },
+    "14": {
+      "testo": "Sei in una radura dove alcuni alberi sono stati abbattuti per costruire una traballante torretta di osservazione. Dalla torre partono tre sentieri in direzioni diverse.",
+      "choices": [
+        { "text": "Se vai a sud, vai al 215.", "target": "215" },
+        { "text": "Se vai a est, vai al 252.", "target": "252" },
+        { "text": "Se vai a sud-ovest, vai al 215.", "target": "215" },
+        { "text": "Se decidi di arrampicarti sulla torretta, vai al 36.", "target": "36" }
+      ]
+    },
+    "15": {
+      "testo": "I rami bassi degli alberi formano una specie di lunga galleria molto buia, alla fine della quale ti trovi in un'ampia radura. Sopra un altare di pietra al centro della radura c'è una Spada, protetta da un fodero di cuoio nero. Legato all'impugnatura c'è un messaggio, scritto in una lingua che non conosci. Puoi prendere la Spada, se vuoi, e segnala sul tuo Registro di Guerra. Ci sono tre uscite da questa radura.",
+      "choices": [
+        { "text": "Se vuoi andare a est, vai al 207.", "target": "207" },
+        { "text": "Se vuoi andare a ovest, vai al 201.", "target": "201" },
+        { "text": "Se vuoi andare a sud, vai al 35.", "target": "35" }
+      ]
+    },
+    "16": {
+      "testo": "Riesci a sciogliere uno dei cavalli legati al carrozzone. È spaventato dall'odore dei Tigerwolf, e dalle urla dei loro malvagi cavalieri, i Giak. Con la tua Arma in pugno inciti il cavallo verso le belve che avanzano. Sono a meno di cinquanta metri, e si precipitano verso di te con le lance abbassate. State per arrivare allo scontro frontale.",
+      "choices": [
+        { "text": "Vai al 192.", "target": "192" }
+      ]
+    },
+    "17": {
+      "testo": "Alzi la tua Arma per colpire il mostro, mentre i suoi denti affilati scattano a pochi centimetri dalla tua testa. È difficile tenersi in piedi sotto i battiti delle sue ali. Togli un punto dalla tua Combattività e combatti contro il Kraan.",
+      "combat": {
+        "name": "Kraan",
+        "combattività": 16,
+        "resistenza": 24,
+        "modificatori": { "combattività": -1 },
+        "onWin": "dice_53_274_331"
+      }
+    },
+    "18": {
+      "testo": "Vieni svegliato dal rumore di un esercito in lontananza. Oltre il lago distingui le figure dei Drakkar con i loro mantelli neri, e un branco di Tigerwolf con i loro cavalieri. Un Kraan compare sopra gli alberi, e atterra sul tetto di una piccola capanna di legno. Lo cavalca un essere vestito di rosso. Il Kraan si alza di nuovo in volo e attraversa il lago dirigendosi verso il tuo nascondiglio.",
+      "choices": [
+        { "text": "Se vuoi inoltrarti nella foresta, vai al 239.", "target": "239" },
+        { "text": "Se vuoi usare l'Arte del Mimetismo, vai al 114.", "target": "114", "requisito": "Mimetismo" },
+        { "text": "Se vuoi combattere con il mostro, vai al 29.", "target": "29" }
+      ]
+    },
+    "19": {
+      "testo": "Ai piedi degli alberi distingui le macchie rossastre di un cespuglio dalle spine acuminate. Questa pianta è chiamata comunemente Dente del sonno, perché le sue spine sono molto affilate e se graffiano la pelle provocano debolezza e sonnolenza. Puoi evitare il Dente del sonno se ritorni sul sentiero.",
+      "choices": [
+        { "text": "Vai al 272.", "target": "272" },
+        { "text": "Oppure puoi avanzare tra i rovi, inoltrandoti nella foresta, se vai al 119.", "target": "119" }
+      ]
+    },
+    "20": {
+      "testo": "Chi abitava qui dev'essere andato via da poco, e in gran fretta. Sulla tavola ci sono i resti di un pasto non consumato, e una tazza di Jala scura ancora tiepida. Frugando in una cassa e in un piccolo armadio, trovi uno Zaino, cibo sufficiente per due Pasti, e un Pugnale. Se vuoi prendere questi oggetti ricordati di segnarli sul tuo Registro di Guerra. Il tuo viaggio continua.",
+      "onEnter": { "addItems": ["Zaino", "Pasto", "Pasto", "Pugnale"] },
+      "choices": [
+        { "text": "Vai al 273.", "target": "273" }
+      ]
+    },
+    "21": {
+      "testo": "Hai cavalcato per circa cinque chilometri nell'intrico degli alberi, e ora il terreno sta diventando paludoso.",
+      "dice": { "0-4": "palude_1", "5-9": "189" }
+    },
+    "22": {
+      "testo": "Dando una spinta al capopattuglia scappi via per la strada. Ma il rumore sinistro di una balestra che si carica dietro di te ti fa correre un brivido lungo la schiena.",
+      "dice": { "0-4": "181", "5-9": "145" }
+    },
+    "23": {
+      "testo": "Il corridoio porta in un'ampia sala. In fondo una scala di pietra sale verso un'enorme porta. Due candele nere ai lati della scala illuminano a malapena la sala. Eppure la cera non sembra sciogliersi, e avvicinandoti ti accorgi che non emettono calore. La superficie del muro presenta antichi disegni scolpiti. Non vedi l'ora di lasciare questa tomba diabolica, e cerchi di capire il sistema di apertura della porta. Sembra che uno spillo decorato tenga chiusa la porta, ma c'è anche il buco per la chiave.",
+      "choices": [
+        { "text": "Se vuoi togliere lo spillo, vai al 337.", "target": "337" },
+        { "text": "Se hai l'Arte della Telecinesi, vai al 151.", "target": "151", "requisito": "Telecinesi" },
+        { "text": "Se hai una Chiave d'Oro, vai al 326.", "target": "326", "requisito": "Chiave d'Oro" }
+      ]
+    },
+    "24": {
+      "testo": "Il mercante grida al cocchiere di saltar giù. 'Ci stanno attaccando!' grida, e sparisce per una finestrella rotonda.",
+      "choices": [
+        { "text": "Se decidi di saltar giù anche tu, vai al 234.", "target": "234" },
+        { "text": "Se invece decidi di salire a cassetta per controllare i cavalli, vai al 184.", "target": "184" }
+      ]
+    },
+    "25": {
+      "testo": "Ci metti un paio di minuti per capire che ce l'hai fatta e che sei al sicuro. Appena ti sei ripreso ti alzi in piedi gridando di felicità. Trovi subito il modo di attraversare il tetto, e scendi in strada lungo il tubo di una grondaia. Vedi che le grandi porte di ferro della rocca sono aperte; un carro trascinato da due grossi cavalli sta uscendo proprio in quel momento. I cavalli sono spaventati dalla folla rumorosa e si impennano, provocando la rottura di una ruota anteriore del carro contro uno dei battenti. Nella confusione vedi la possibilità di entrare, e riesci a infilarti dentro un attimo prima che la guardia chiuda il portone.",
+      "choices": [
+        { "text": "Vai al 139.", "target": "139" }
+      ]
+    },
+    "26": {
+      "testo": "Cautamente percorri il corridoio fin dove questo svolta bruscamente a est. In lontananza vedi una strana luce verdastra.",
+      "choices": [
+        { "text": "Se vuoi continuare, vai al 249.", "target": "249" },
+        { "text": "Se vuoi tornare indietro, e provare in direzione sud, vai al 100.", "target": "100" }
+      ]
+    },
+    "27": {
+      "testo": "Se vinci, vai al 270.",
+      "choices": [
+        { "text": "Vai al 270.", "target": "270" }
+      ]
+    },
+    "28": {
+      "testo": "Cammini per questo sentiero per più di un'ora, guardando attentamente il cielo per non farti sorprendere da un altro attacco dei Kraan. Davanti a te un grande albero è caduto di traverso sul sentiero. Avvicinandoti senti delle voci che vengono da dietro l'enorme tronco.",
+      "choices": [
+        { "text": "Se vuoi attaccare, vai al 250.", "target": "250" },
+        { "text": "Se vuoi ascoltare quello che dicono, vai al 52.", "target": "52" }
+      ]
+    },
+    "29": {
+      "testo": "Ti avvicini alla riva e ti prepari al combattimento. Il Kraan e il suo cavaliere ti vedono e si lanciano attraverso il lago volando a pochi centimetri sul pelo dell'acqua. Il cavaliere emette un urlo che ti gela il sangue. È uno dei Vordak, i feroci ufficiali dei Signori delle Tenebre. Oramai ti è addosso, e devi combatterlo. Togli due punti dalla tua Combattività, a meno che tu non abbia lo Psicoschermo; il nemico ti sta attaccando anche con il suo Psicolaser, non solo con la sua mazza.",
+      "combat": {
+        "name": "Vordak",
+        "combattività": 17,
+        "resistenza": 25,
+        "modificatori": { "combattività": -2, "annullaCon": "Psicoschermo" },
+        "onWin": "328"
+      }
+    },
+    "30": {
+      "testo": "La gente sembra stanca e affamata. Hanno percorso molti chilometri fuggendo dalla loro città incendiata. Improvvisamente senti il battito di enormi ali che arrivano da nord. 'I Kraan, i Kraan! Nascondetevi!' grida la gente lungo la strada. Proprio davanti a te un carro pieno di bambini piccoli si blocca con la ruota in un fosso. I bambini gridano in preda al panico.",
+      "choices": [
+        { "text": "Se vuoi aiutare i bambini, vai al 194.", "target": "194" },
+        { "text": "Se preferisci ripararti tra gli alberi, vai al 261.", "target": "261" }
+      ]
+    },
+    "31": {
+      "testo": "Tenti di soccorrere l'uomo ferito meglio che puoi, ma le sue ferite sono gravi e cade di nuovo svenuto. Lo copri con il suo mantello e torni a inoltrarti nella foresta.",
+      "choices": [
+        { "text": "Vai al 264.", "target": "264" }
+      ]
+    },
+    "32": {
+      "testo": "Dopo aver cavalcato per un paio di chilometri vedi in lontananza l'inconfondibile sagoma di cinque grandi Tigerwolf. In groppa portano dei Giak. Stanno avanzando lungo il sentiero che porta ad un ampio prato. Improvvisamente uno dei Giak lascia gli altri, si gira, e viene nella tua direzione.",
+      "choices": [
+        { "text": "Se vuoi nasconderti nel sottobosco e lasciarlo passare, vai al 176.", "target": "176" },
+        { "text": "Se vuoi affrontarlo, vai al 340.", "target": "340" }
+      ]
+    },
+    "33": {
+      "testo": "Il pavimento della grotta è asciutto e polveroso. Cominci a muoverti nella penombra, e ad un certo punto senti odore di carne in decomposizione. In un avvallamento sono sparsi dei resti di piccoli animali: ossa, denti, pezzi di pelliccia. Vedi una piccola borsa di stoffa tra questi resti, con dentro tre Corone d'oro. Le prendi e lasci quella che sembra la tana di un gatto selvatico, poi con cautela scendi la collina.",
+      "onEnter": { "addCorone": 3 },
+      "choices": [
+        { "text": "Vai al 248.", "target": "248" }
+      ]
+    },
+    "34": {
+      "testo": "Mentre meno te l'aspetti, una orribile figura vestita di rosso scende dal cielo a cavallo di un Kraan. Il suo grido ti congela il sangue. È un Vordak, uno dei feroci ufficiali dei Signori delle Tenebre. Ormai ti è addosso, e devi combatterlo.",
+      "combat": {
+        "name": "Vordak",
+        "combattività": 17,
+        "resistenza": 25,
+        "modificatori": { "combattività": -2, "annullaCon": "Psicoschermo" },
+        "onWin": "328"
+      }
+    },
+    "35": {
+      "testo": "La foresta sta diventando più fitta, e il sentiero è invaso da cespugli spinosi. Verso est si diparte un altro sentiero, appena visibile nel sottobosco. Siccome il tuo sentiero sembra perdersi, decidi di seguire quello verso est.",
+      "choices": [
+        { "text": "Vai al 207.", "target": "207" }
+      ]
+    },
+    "36": {
+      "testo": "La scala che porta alla vecchia torre di guardia è marcia, e diversi gradini si rompono mentre sali.",
+      "dice": { "0-4": "caduta_140", "5-9": "323" }
+    },
+    "37": {
+      "testo": "Ti senti stanco e affamato, e devi fermarti per mangiare, altrimenti perdi 3 punti di Resistenza. Dopo il tuo Pasto, torni sui tuoi passi fino alla rocca e cominci a fare il giro delle mura, alte e inviolabili. Scopri un'altra entrata sul lato est, anche questa con due soldati di guardia.",
+      "onEnter": { "consumePasto": true, "penaltySeNoPasto": -3 },
+      "choices": [
+        { "text": "Se vuoi avvicinarti a loro e raccontare la tua storia, vai al 289.", "target": "289" }
+      ]
+    },
+    "38": {
+      "testo": "Per più di mezz'ora continui a camminare nella foresta, tra le felci e la ricca vegetazione. Ti imbatti in un ruscello, dove ti fermi un paio di minuti per lavarti il viso e bere un po' d'acqua fresca. Rinfrescato, attraversi il ruscello e avanzi. Dopo un po' senti odore di legna bruciata, e ti sembra che arrivi da nord.",
+      "choices": [
+        { "text": "Se vuoi scoprire da dove viene l'odore, vai al 128.", "target": "128" },
+        { "text": "Se vuoi tenerti alla larga, vai al 347.", "target": "347" }
+      ]
+    },
+    "39": {
+      "testo": "Dopo un attimo due piccole facce pelose e spaventate compaiono da dietro il tronco. Dicono di essere Kakarmi e ti informano che i Kraan sono dappertutto. Il loro paese si trova verso ovest, ma ormai ne rimane ben poco. Stanno cercando gli altri della loro tribù che sono fuggiti nella foresta durante l'attacco dei Kraan. Ti dicono che il sentiero verso est, quello dietro a loro, è senza uscita; però qualche metro più avanti nel sottobosco puoi trovare una vecchia torre di guardia, dove il sentiero si biforca. Tu devi prendere quello che porta a est, fino alla grande strada che collega Holmgard, la capitale, con il porto settentrionale di Toran. Ringrazi i Kakarmi e li saluti.",
+      "choices": [
+        { "text": "Vai al 228.", "target": "228" }
+      ]
+    },
+    "40": {
+      "testo": "Tenendo d'occhio le capanne nel caso che il nemico si faccia vedere, fai il giro della radura tenendoti al riparo degli alberi e dei cespugli. Tornato sul sentiero, ti allontani in fretta da Fogwood.",
+      "choices": [
+        { "text": "Vai al 105.", "target": "105" }
+      ]
+    },
+    "41": {
+      "testo": "Tre Rangers passano al galoppo sulla riva del fiume, inseguiti da vicino dai Giak sui loro ringhiosi Tigerwolf. La sponda è alta, e vieni subito visto dal capo dei Giak, che ordina a cinque dei suoi di colpirti con gli archi. Sei sotto una pioggia di frecce nere.",
+      "choices": [
+        { "text": "Se decidi di allontanarti in fretta lungo la corrente, vai al 174.", "target": "174" },
+        { "text": "Se decidi di ripararti sotto gli alberi della sponda opposta, vai al 116.", "target": "116" }
+      ]
+    },
+    "42": {
+      "testo": "Cammini per il sentiero per circa un'ora, finché giungi a un quadrivio.",
+      "choices": [
+        { "text": "Se vuoi continuare verso est, vai all'86.", "target": "86" },
+        { "text": "Se preferisci andare a nord, vai al 238.", "target": "238" },
+        { "text": "Se decidi di tentare verso sud, vai al 157.", "target": "157" },
+        { "text": "Se scegli l'ovest, vai al 147.", "target": "147" }
+      ]
+    },
+    "43": {
+      "testo": "Da dietro la roccia compare un enorme orso nero. Si avvicina lentamente, con la bocca aperta e il muso contratto per la rabbia e il dolore. Vedi che è gravemente ferito e sta sanguinando.",
+      "choices": [
+        { "text": "Vai al 195.", "target": "195" }
+      ]
+    },
+    "44": {
+      "testo": "Se vuoi seguirlo verso nord, vai al 248. Se vuoi seguirlo verso est, vai al 300.",
+      "choices": [
+        { "text": "Vai al 248.", "target": "248" },
+        { "text": "Vai al 300.", "target": "300" }
+      ]
+    },
+    "45": {
+      "testo": "Il capo si avvicina e ti dice: 'Non ti chiediamo molto, signore: o la borsa o la vita'.",
+      "choices": [
+        { "text": "Se vuoi combattere, vai al 180.", "target": "180" },
+        { "text": "Se vuoi fuggire, vai al 22.", "target": "22" }
+      ]
+    },
+    "46": {
+      "testo": "Hai percorso poco più di tre chilometri quando gli alberi si fanno più radi. Vedi una baracca di legno sulla riva di un lago. Un uomo con un mantello si avvicina e si offre di traghettarti insieme al cavallo oltre il lago, per due Corone d'oro.",
+      "choices": [
+        { "text": "Se accetti l'offerta, vai al 246.", "target": "246" },
+        { "text": "Se rifiuti e tenti di fare il giro del lago, vai al 90.", "target": "90" },
+        { "text": "Se possiedi l'Arte del Sesto Senso, vai al 296.", "target": "296", "requisito": "Sesto Senso" }
+      ]
+    },
+    "47": {
+      "testo": "Sudato e senza fiato ti trascini verso la sommità della collina. Improvvisamente vedi l'ombra di una grande creatura alata proiettarsi sul fianco della collina. Guardi in su e vedi un Kraan che volteggia sulla vetta. Dietro di te i Giak guadagnano terreno.",
+      "choices": [
+        { "text": "Vuoi fermarti a combattere i Giak approfittando della posizione sopraelevata? Allora vai al 136.", "target": "136" },
+        { "text": "Oppure vuoi stringere i denti e arrivare in cima? Vai al 322.", "target": "322" }
+      ]
+    },
+    "48": {
+      "testo": "Il tuo Sesto Senso ti dice che in quei soldati c'è qualcosa che non va. Ti sembra che abbiano un'aria sinistra. Sono al servizio dei Signori delle Tenebre. Devi scappare prima di essere individuato.",
+      "choices": [
+        { "text": "Vai al 243.", "target": "243" }
+      ]
+    },
+    "49": {
+      "testo": "Appena cominci a leggere l'iscrizione vedi un'ombra che si avvicina da dietro il paravento.",
+      "dice": { "0-4": "339", "5-9": "60" }
+    },
+    "50": {
+      "testo": "In lontananza si sente il rumore di una battaglia.",
+      "choices": [
+        { "text": "Se vuoi proseguire in quella direzione, vai al 97.", "target": "97" },
+        { "text": "Se vuoi evitare la battaglia, cambia direzione e vai al 243.", "target": "243" }
+      ]
+    },
+    "51": {
+      "testo": "Ti arrampichi su per la sponda boscosa del fiume e vedi le palizzate delle fortificazioni che si estendono fino all'orizzonte. Una battaglia infuria a qualche chilometro di distanza, e la palizzata è crollata in diversi punti sotto l'attacco dei Signori delle Tenebre. La maggior parte delle fortificazioni è sguarnita, perché i soldati sono stati mandati di rinforzo nel vivo della battaglia. C'è un cancello nella palizzata.",
+      "choices": [
+        { "text": "Se vuoi avvicinarti vai al 288.", "target": "288" },
+        { "text": "Se preferisci arrampicarti, vai al 221.", "target": "221" }
+      ]
+    },
+    "52": {
+      "testo": "Adesso che sei più vicino, ti rendi conto che non si tratta di voci umane. Si tratta piuttosto di grugniti e squittii.",
+      "choices": [
+        { "text": "Se hai l'Arte dell'Affinità animale, vai al 225.", "target": "225", "requisito": "Affinità Animale" },
+        { "text": "Altrimenti devi oltrepassare il tronco e affrontare ciò che ti aspetta dall'altra parte. Vai al 250.", "target": "250" }
+      ]
+    },
+    "53": {
+      "testo": "Un dolore lancinante attanaglia la tua gamba destra, storta e schiacciata sotto il peso del tuo corpo, mentre rotoli giù, e finisci in una fossa ai piedi della collina. Il colpo è tale che ti manca il respiro, e perdi conoscenza. Vieni svegliato dal dolore acuto di qualcosa che ti preme contro il petto. È la punta di una lancia Giak. La prima cosa che vedi è il ghigno sinistro di quello che la impugna mentre ti blocca a terra il braccio sinistro. In balia del crudele Giak, l'ultima cosa che vedi prima che la tua luce si spenga per sempre è la lama affilata della lancia che scende sulla tua gola.",
+      "gameOver": true
+    },
+    "54": {
+      "testo": "Sembra che il cielo non abbia sentito la tua preghiera. Una lancia sibila vicino alla tua testa e si pianta nel collo del cavallo. Con un nitrito straziante la bestia cade in avanti e finite entrambi a rotolare sulla strada. Tramortito e bloccato sotto il peso del tuo cavallo morto, l'ultima cosa che vedi sono le punte acuminate delle lance dei Giak.",
+      "gameOver": true
+    },
+    "55": {
+      "testo": "Mentre il Giak si slancia, ti getti in avanti e lo colpisci con la tua arma, sbattendolo via dalla schiena del giovane mago. Gli vai addosso e colpisci di nuovo. Grazie alla sorpresa del tuo attacco puoi aggiungere 4 punti alla tua Combattività finché dura il combattimento, ma alla fine devi toglierli di nuovo.",
+      "combat": {
+        "name": "Giak",
+        "combattività": 9,
+        "resistenza": 9,
+        "modificatori": { "combattività": 4, "temporaneo": true },
+        "onWin": "325"
+      }
+    },
+    "56": {
+      "testo": "Senti l'urlo di una grossa bestia alata sopra gli alberi. È un Kraan, uno dei micidiali mostri dei Signori delle Tenebre. Rapidamente ti nascondi tra le fitte foglie di felce, aspettando che le orribili grida si allontanino.",
+      "choices": [
+        { "text": "Adesso vai al 222.", "target": "222" }
+      ]
+    },
+    "57": {
+      "testo": "La capanna ha solo una stanza. C'è un tavolo di legno con due panche, un grande letto di paglia, diverse bottiglie di liquidi colorati e un tappeto ricamato in mezzo al pavimento.",
+      "choices": [
+        { "text": "Se vuoi saperne di più sulle bottiglie, vai al 164.", "target": "164" },
+        { "text": "Se decidi di sollevare il tappeto, vai al 109.", "target": "109" },
+        { "text": "Se invece vuoi andare ad esplorare la stalla, vai al 308.", "target": "308" }
+      ]
+    },
+    "58": {
+      "testo": "Raccogliendo le forze, cominci a correre giù per la cresta a passo regolare. A ovest l'esercito dei Signori delle Tenebre sembra un mare d'inchiostro che si espande tra le montagne e invade la pianura. Hai corso per venti minuti quando intravedi un branco di Tigerwolf sul fianco di un'altura alla tua destra.",
+      "choices": [
+        { "text": "Se decidi di acquattarti tra le rocce lungo la via per aspettare che passino, vai al 286.", "target": "286" },
+        { "text": "Se decidi di continuare a correre, ma tenendo pronta l'Arma in caso di attacco, vai al 160.", "target": "160" }
+      ]
+    },
+    "59": {
+      "testo": "Scrutando nel buio, vedi che dei rozzi scalini sono stati scavati nella terra, e che l'apertura della grotta è in realtà l'entrata di una galleria. Scendendo cautamente la scala scivolosa, noti una piccola scatola d'argento su una mensola in fondo alla discesa.",
+      "choices": [
+        { "text": "Se vuoi aprire la scatola, vai al 124.", "target": "124" },
+        { "text": "Se vuoi tornare all'aria aperta e continuare il viaggio, vai al 106.", "target": "106" },
+        { "text": "Se vuoi esplorare meglio la galleria, vai al 211.", "target": "211" }
+      ]
+    },
+    "60": {
+      "testo": "L'ultima cosa che ricordi prima che le tenebre ti inghiottano è il lampo di un lungo coltello ricurvo, anche tu sei una vittima dell'erborista e di suo figlio l'assassino che ti ha appena tagliato la gola.",
+      "gameOver": true
+    },
+    "61": {
+      "testo": "Finalmente puoi raggiungere la palizzata che circonda la città. Correndo verso un posto di guardia senti le grida concitate delle sentinelle che ti incoraggiano. Grazie al cielo ti hanno riconosciuto, anche se sei conciato in modo da sembrare un individuo sospetto. Il tuo mantello è lacero e sbrindellato, la faccia graffiata e coperta di sangue, e la polvere del cimitero ti copre dalla testa ai piedi. Passando a guado un ruscello ti trascini verso la porta. Solo ora ti rendi pienamente conto della terribile esperienza fatta al cimitero. L'ultima cosa che ricordi prima che lo sfinimento ti faccia perdere i sensi sono le braccia protese dei due soldati che ti vengono incontro per aiutarti.",
+      "choices": [
+        { "text": "Vai al 268.", "target": "268" }
+      ]
+    },
+    "62": {
+      "testo": "I 'soldati' giacciono morti ai tuoi piedi. Erano banditi che rapinavano i profughi di Toran, e razziavano le case e le fattorie abbandonate della zona. Frugandoli trovi 28 Corone d'oro e due Zaini con dentro abbastanza cibo per due Pasti. Erano armati con una balestra e tre Spade. La balestra è rimasta danneggiata nel combattimento, ma le Spade sono intatte e, se vuoi, puoi tenerne una. Sistemi il tuo equipaggiamento, guardi verso ovest che non ci siano pericoli e continui a correre verso le fortificazioni della capitale.",
+      "onEnter": { "addCorone": 28, "addItems": ["Pasto", "Pasto", "Spada"] },
+      "choices": [
+        { "text": "Vai al 288.", "target": "288" }
+      ]
+    },
+    "63": {
+      "testo": "Il vecchio pazzo ti sta gridando contro. Dice che la guerra è colpa tua, e accusa i Ramas di essere agenti dei Signori delle Tenebre. Non vuole sentire ragioni: devi combattere con lui.",
+      "combat": {
+        "name": "Pazzo",
+        "combattività": 11,
+        "resistenza": 10,
+        "onWin": "269"
+      }
+    },
+    "64": {
+      "testo": "Ti svegliano le grida di un Kraan che vola in cerchio sopra il carrozzone. È mattina presto, e il cielo è chiaro e sereno. Vedi un branco di Tigerwolf a neanche cinquecento metri più avanti sulla strada: si preparano all'attacco. Devi agire subito.",
+      "choices": [
+        { "text": "Se decidi di raccogliere il tuo equipaggiamento e correre a ripararti sotto gli alberi, vai al 188.", "target": "188" },
+        { "text": "Se decidi di sciogliere un cavallo e tentare di forzare il blocco dei Tigerwolf, vai al 16.", "target": "16" }
+      ]
+    },
+    "65": {
+      "testo": "I tuoi sensi urlano che questo è un posto maledetto. Allontanati più presto che puoi.",
+      "choices": [
+        { "text": "Vai al 104.", "target": "104" }
+      ]
+    },
+    "66": {
+      "testo": "Sorpreso ti giri, e vedi un massiccio sergente con due soldati che corrono verso di te con le spade sguainate come per colpire. Ti prepari a difenderti, perché hanno l'aria di voler prima attaccare e poi chiedere 'chi va là'; ma improvvisamente il sergente ordina ai suoi uomini di fermarsi. Ha riconosciuto il tuo mantello. Rinfoderano le spade e si scusano ripetutamente dell'equivoco. Il sergente ordina a uno dei soldati di chiamare il capoguardia e ti accompagna alle porte della Grande Sala. Vieni accolto da un cavaliere alto e bello che ascolta attentamente la tua storia. Quando hai finito il resoconto del tuo faticoso viaggio verso la capitale, vedi una lacrima negli occhi di quel valoroso mentre ti invita a seguirlo. Cammini attraverso le splendide sale e i corridoi del Palazzo reale, la cui ricchezza e magnificenza destano meraviglia a guardarle. Alla fine arrivate davanti a una grande porta intagliata, guardata da due soldati con le armature d'argento. Stai per incontrare il Re.",
+      "choices": [
+        { "text": "Vai al 350.", "target": "350" }
+      ]
+    },
+    "67": {
+      "testo": "La tua Arte dell'Orientamento ti rivela delle impronte di animale recenti sul sentiero verso sud. Sono orme di un orso nero, un animale noto per la sua ferocia. Decidi di andare verso est, per evitare cattivi incontri.",
+      "choices": [
+        { "text": "Vai al 140.", "target": "140" }
+      ]
+    },
+    "68": {
+      "testo": "Dopo una breve camminata arrivi ad un incrocio, dove un sentiero in direzione est-ovest ti attraversa la strada.",
+      "choices": [
+        { "text": "Se vuoi andare a ovest, vai al 130.", "target": "130" },
+        { "text": "Se vuoi andare a est, vai al 15.", "target": "15" },
+        { "text": "Se vuoi andare a sud, vai al 157.", "target": "157" },
+        { "text": "Se vuoi usare l'Arte del Sesto Senso, vai all'8.", "target": "8", "requisito": "Sesto Senso" }
+      ]
+    },
+    "69": {
+      "testo": "Sei vicino a un villaggio amico. Evita i cespugli di Dente del sonno e vai al 272.",
+      "choices": [
+        { "text": "Vai al 272.", "target": "272" }
+      ]
+    },
+    "70": {
+      "testo": "Sei arrivato a un ponticello. Un sentiero segue la corrente verso est. Un sentiero molto più stretto sparisce nel fitto della foresta verso sud.",
+      "choices": [
+        { "text": "Se vuoi andare a est, vai al 28.", "target": "28" },
+        { "text": "Se vuoi andare a sud, vai al 157.", "target": "157" },
+        { "text": "Se vuoi usare l'Arte del Sesto Senso, vai all'8.", "target": "8", "requisito": "Sesto Senso" }
+      ]
+    },
+    "71": {
+      "testo": "Sei rimasto senza fiato ma non sei ferito. Hai fatto una caduta di cinque metri, precipitando in una tomba sotterranea. Le pareti sono lisce e non riesci ad arrampicarti. Una galleria conduce a est fuori della tomba, mentre davanti a te c'è il sarcofago di qualche nobile dei tempi passati.",
+      "choices": [
+        { "text": "Se vuoi aprire il sarcofago per vedere se contiene un tesoro, vai al 242.", "target": "242" },
+        { "text": "Se vuoi uscire attraverso la galleria, vai al 104.", "target": "104" }
+      ]
+    },
+    "72": {
+      "testo": "Sei stato individuato. I Giak ti attaccano.",
+      "choices": [
+        { "text": "Vai al 138.", "target": "138" }
+      ]
+    },
+    "73": {
+      "testo": "Se vuoi usare l'Arte del Mimetismo e aspettare che si allontanino, vai al 114.",
+      "choices": [
+        { "text": "Vai al 114.", "target": "114", "requisito": "Mimetismo" }
+      ]
+    },
+    "74": {
+      "testo": "Il Kraan con i suoi cavalieri atterra sul sentiero a tre metri da dove sei nascosto. I Giak scendono dalle groppe dei Kraan e vengono verso di te con le lance alzate per colpire. Sei stato individuato.",
+      "choices": [
+        { "text": "Se decidi di combattere vai al 138.", "target": "138" },
+        { "text": "Se decidi di fuggire immediatamente nella foresta, vai al 281.", "target": "281" }
+      ]
+    },
+    "75": {
+      "testo": "Guardando attentamente vedi tre uomini vestiti di verde che a cavallo galoppano lungo la riva. Sono Rangers, il reggimento del Re che pattuglia i confini occidentali. Uno di loro è ferito e si appoggia sul collo del cavallo.",
+      "choices": [
+        { "text": "Se vuoi usare l'Arte del Sesto Senso, vai al 65.", "target": "65", "requisito": "Sesto Senso" },
+        { "text": "Vai al 41.", "target": "41" }
+      ]
+    },
+    "76": {
+      "testo": "Ti giri e ti trovi davanti il ghigno di un Giak e le zanne affilate della sua cavalcatura. Devi combattere come se fosse un solo nemico.",
+      "combat": {
+        "name": "Giak + Tigerwolf",
+        "combattività": 15,
+        "resistenza": 24,
+        "onWin": "265"
+      }
+    },
+    "77": {
+      "testo": "I Giak delle montagne non sono abituati a rincorrere le loro prede nelle foreste e presto li lasci indietro, finché i loro grugniti e le loro imprecazioni non si spengono completamente. Quando sei sicuro che hanno rinunciato all'inseguimento, ti fermi un momento per riprendere fiato e controllare il tuo equipaggiamento. Con ancora davanti agli occhi l'immagine del monastero in rovina, raccogli le tue povere cose e ti incammini.",
+      "choices": [
+        { "text": "Vai al 19.", "target": "19" }
+      ]
+    },
+    "78": {
+      "testo": "Mentre il carrozzone ti sfreccia davanti, ti afferri alla sponda posteriore e riesci a saltar su. Sei appeso alla scaletta che serve per entrare dalla porta posteriore. Improvvisamente questa si apre e ti trovi davanti alla faccia adirata di una guardia del corpo.",
+      "choices": [
+        { "text": "Se decidi di dirgli che sei un Ramas con un messaggio urgente per il Re, vai al 132.", "target": "132" },
+        { "text": "Se decidi di offrirgli delle Corone d'oro per farti portare alla capitale, vai al 12.", "target": "12" },
+        { "text": "Se decidi di assalirlo con la tua Arma, vai al 220.", "target": "220" }
+      ]
+    },
+    "79": {
+      "testo": "Arrivi a un ponticello che attraversa un torrente. Dall'altra parte il sentiero gira verso sud. Attraversi il ponticello e segui il sentiero.",
+      "choices": [
+        { "text": "Vai al 204.", "target": "204" }
+      ]
+    },
+    "80": {
+      "testo": "Cadi all'indietro attraverso la porta, premendo le mani sul petto bruciato. Dense volute di fumo escono dalla bottiglia e devi fuggire prima che l'erborista, o quell'assassino di suo figlio riescano a prenderti. Riesci a tornare sulla strada principale e ti confondi tra la folla.",
+      "choices": [
+        { "text": "Vai al 7.", "target": "7" }
+      ]
+    },
+    "81": {
+      "testo": "Dopo quasi un'ora i Kraan con i loro crudeli cavalieri si allontanano verso ovest. Mentre i fuggiaschi sconvolti cominciano a uscire dal bosco, senti in lontananza un rumore di cavalli che si avvicinano. Resti nascosto aspettando che i cavalieri arrivino. È la cavalleria della Guardia del Re con le divise bianche dell'esercito di Sua Maestà.",
+      "choices": [
+        { "text": "Se vuoi chiamarli, vai al 183.", "target": "183" },
+        { "text": "Se vuoi proseguire verso sud costeggiando la foresta, vai al 200.", "target": "200" }
+      ]
+    },
+    "82": {
+      "testo": "Il gigante Gurgaz giace morto ai tuoi piedi. I suoi diabolici seguaci ti sibilano contro, e poi si allontanano dal ponte. I soldati del principe formano con gli scudi una barriera intorno a te e al loro capo che sta morendo. Una pioggia di frecce nere ti sfiorano la testa. Il principe morente ti guarda negli occhi e dice 'Nobile Ramas, porta questo messaggio a mio padre. Il nemico è troppo forte e noi non possiamo fermarlo. Il Re deve cercare aiuto a Durenor, o tutto è perduto. Prendi il mio cavallo e corri alla capitale. Che il favore degli dei cavalchi al tuo fianco'. Saluti mestamente il principe, salti sul suo cavallo bianco e ti dirigi a sud lungo il sentiero nella foresta. La battaglia ancora infuria dietro di te mentre gli uomini del principe respingono un altro assalto sul ponte.",
+      "choices": [
+        { "text": "Vai al 235.", "target": "235" }
+      ]
+    },
+    "83": {
+      "testo": "Hai corso per due chilometri quando tre soldati compaiono da sotto un ponticello. Ti ordinano di fermarti e di lasciar cadere le armi e l'equipaggiamento. Sono macchiati di sangue, sporchi e malandati. Il loro capo porta la tunica dei soldati della guarnigione di Toran.",
+      "choices": [
+        { "text": "Se vuoi obbedire, vai al 205.", "target": "205" },
+        { "text": "Se vuoi prepararti al combattimento, vai al 180.", "target": "180" },
+        { "text": "Se vuoi sapere cosa vogliono, vai al 232.", "target": "232" },
+        { "text": "Se possiedi l'Arte del Sesto Senso, vai al 45.", "target": "45", "requisito": "Sesto Senso" }
+      ]
+    },
+    "84": {
+      "testo": "Appena senti l'aria muoversi alle tue spalle salti giù da cavallo e rotoli in una fossa ai lati della strada. Sei incolume: salti in piedi e corri al riparo degli alberi. Ti mancano ancora trenta metri quando vedi il Kraan che si prepara a scendere di nuovo in picchiata.",
+      "choices": [
+        { "text": "Vai al 188.", "target": "188" }
+      ]
+    },
+    "85": {
+      "testo": "Il sentiero è largo, e conduce diritto in un folto sottobosco. Gli alberi sono molto alti e regna una quiete innaturale. Cammini per un paio di chilometri quando improvvisamente senti il battito di un paio di enormi ali proprio sopra di te. Guardando in su resti sconvolto al vedere la sagoma nera di un Kraan che si lancia all'attacco.",
+      "choices": [
+        { "text": "Se estrai la tua Arma e ti prepari a combattere, vai al 229.", "target": "229" },
+        { "text": "Se eviti l'attacco fuggendo nella foresta verso sud, vai al 99.", "target": "99" }
+      ]
+    },
+    "86": {
+      "testo": "Presto incontri un altro crocevia.",
+      "choices": [
+        { "text": "Se vuoi andare a est, vai al 6.", "target": "6" },
+        { "text": "Se vuoi andare a nord, vai al 35.", "target": "35" },
+        { "text": "Se preferisci il sud, vai al 167.", "target": "167" },
+        { "text": "Se vuoi andare a ovest, vai al 42.", "target": "42" }
+      ]
+    },
+    "87": {
+      "testo": "Concentrando i tuoi poteri sulla serratura tenti di visualizzare il meccanismo interno. Pian piano l'immagine si concretizza sullo schermo della tua mente. È vecchia e arrugginita ma funziona ancora. Stai per perdere la concentrazione quando un leggero scatto ti dice che il tuo sforzo non è stato vano.",
+      "choices": [
+        { "text": "Vai al 151.", "target": "151" }
+      ]
+    },
+    "88": {
+      "testo": "Cautamente ti sporgi da dietro la roccia e vedi un soldato steso per terra. Accanto a lui c'è una lancia e uno scudo. Sullo scudo è dipinto un bianco cavallo alato, l'emblema del principe di Sommerlund. Il soldato è quasi privo di conoscenza, con la divisa lacera, e vedi che ha una profonda ferita sul braccio sinistro. Quando ti avvicini apre gli occhi: 'Aiutami. Signore - implora - non sento più il braccio'.",
+      "choices": [
+        { "text": "Se possiedi e vuoi usare l'Arte della Guarigione su quest'uomo, vai al 216.", "target": "216", "requisito": "Guarigione" },
+        { "text": "Altrimenti vai al 31.", "target": "31" }
+      ]
+    },
+    "89": {
+      "testo": "Sollevando nuvole di polvere tra le piante che franano, scendi il ripido fianco della collina. Il Kraan vola in cerchio sopra di te, come per segnalare ai Giak la tua posizione.",
+      "dice": { "0-1": "53", "2-4": "274", "5-9": "316" }
+    },
+    "90": {
+      "testo": "Rifiuti l'offerta del traghettatore e tenti di fare il giro del lago. Ti addentri nella foresta che costeggia la riva, ma dopo poco ti accorgi che il terreno è paludoso e pieno di insidie. Dopo un'ora di cammino faticoso, riesci a trovare un sentiero che ti riporta sulla strada principale.",
+      "choices": [
+        { "text": "Vai al 246.", "target": "246" }
+      ]
+    },
+    "91": {
+      "testo": "Cade la notte e subito ti avvolge una totale oscurità. Non avrebbe senso procedere perché perderesti sicuramente la strada. Leghi il cavallo ad un albero, ti stringi addosso il verde mantello Ramas e cadi in un sonno inquieto.",
+      "choices": [
+        { "text": "Vai al 18.", "target": "18" }
+      ]
+    },
+    "92": {
+      "testo": "Nella piccola bottega c'è buio, e odore di chiuso. Libri e bottiglie di ogni forma e colore riempiono gli scaffali. Mentre chiudi la porta un cagnolino nero ti abbaia. Un uomo calvo compare da dietro un paravento e ti porge il benvenuto. Gentilmente ti chiede lo scopo della tua visita e ti offre di scegliere tra la merce esposta.",
+      "choices": [
+        { "text": "Se vuoi guardare la sua merce, vai al 152.", "target": "152" },
+        { "text": "Se preferisci rifiutare, e tornare sulla strada, vai al 7.", "target": "7" },
+        { "text": "Se possiedi l'Arte del Sesto Senso, vai al 198.", "target": "198", "requisito": "Sesto Senso" }
+      ]
+    },
+    "93": {
+      "testo": "Ti getti al riparo appena in tempo, perché una pioggia di frecce lanciate da dentro il bosco cade proprio sul punto dove stavi un attimo prima. Avvolgendoti nel mantello per confonderti tra le felci, scappi attraverso la foresta allontanandoti più in fretta possibile dai misteriosi assalitori. L'intera zona è infestata di Giak, e devi andartene subito. Corri ininterrottamente per più di un'ora, finché capiti su un sentiero che va verso est. Lo segui, stando attento a scoprire tracce di eventuali nemici.",
+      "choices": [
+        { "text": "Vai al 13.", "target": "13" }
+      ]
+    },
+    "94": {
+      "testo": "L'erborista, vedendo che hai ucciso suo figlio, si gira e scappa dalla porta posteriore. Trovi 12 Corone d'oro nella borsa dell'assassino, e altre 4 in una scatola di legno sotto il banco. Esaminando attentamente le pozioni e la bacchetta magica vedi subito che si tratta di un imbroglio, e che l'erborista non è altro che un ciarlatano. Scuotendo la testa torni sulla strada.",
+      "onEnter": { "addCorone": 16 },
+      "choices": [
+        { "text": "Vai al 7.", "target": "7" }
+      ]
+    },
+    "95": {
+      "testo": "Ti giri e corri verso la scala, proprio mentre un enorme masso si schianta a terra dietro di te. La stanza in cui ti trovavi è ora bloccata. Mentre fuggi verso la luce, intravvedi dietro di te la figura curva di un sacerdote che alza la sua lunga asta di legno. Un attimo dopo un fulmine cade poco lontano da te. Continui a correre sempre più veloce giù per la collina, imprecando per il ritardo ma ringraziando il tuo Sesto Senso.",
+      "choices": [
+        { "text": "Vai al 106.", "target": "106" }
+      ]
+    },
+    "96": {
+      "testo": "Vai al 7.",
+      "choices": [
+        { "text": "Vai al 7.", "target": "7" }
+      ]
+    },
+    "97": {
+      "testo": "Davanti a te vedi una violenta battaglia che infuria al di là di un ponte in pietra. Il rumore delle armi e le grida di uomini e animali risuona per tutta la foresta. Al centro del combattimento vedi il principe Pelatar, il figlio del Re. Sta combattendo con un gigantesco Gurgaz che brandisce una scure enorme. Ad un tratto il principe cade ferito, con una freccia nel fianco.",
+      "choices": [
+        { "text": "Se vuoi difendere il principe caduto, vai al 255.", "target": "255" },
+        { "text": "Se vuoi scappare nella foresta, vai al 306.", "target": "306" }
+      ]
+    },
+    "98": {
+      "testo": "Sembra che le guardie credano alla tua storia e si inchinano con rispetto davanti al tuo titolo di Ramas. Uno di loro tira una corda nascosta e le enormi porte cominciano ad aprirsi. Entri, e le porte si chiudono dietro di te.",
+      "choices": [
+        { "text": "Vai al 139.", "target": "139" }
+      ]
+    },
+    "99": {
+      "testo": "Ti tuffi nel sottobosco proprio mentre il mostro ti passa a pochi centimetri dalla testa. Ti volti rapidamente e vedi il Kraan che si prepara a un'altra picchiata. Ti rimetti in piedi e corri nel folto della foresta.",
+      "choices": [
+        { "text": "Vai al 222.", "target": "222" }
+      ]
+    },
+    "100": {
+      "testo": "Il gelido corridoio curva improvvisamente verso est. Vedi un bagliore verdastro che illumina in lontananza la galleria. Avanzando con estrema cautela vedi che il corridoio si allarga in un'ampia stanza. La strana luce sembra provenire da un'urna collocata in cima allo schienale di un trono di granito. Su un basamento di fronte al trono c'è una statua che rappresenta un serpente alato, curvo a forma di esse.",
+      "choices": [
+        { "text": "Se vuoi sederti sul trono, vai al 161.", "target": "161" },
+        { "text": "Se vuoi esaminare la statua, vai al 133.", "target": "133" },
+        { "text": "Se vuoi cercare un'uscita, vai al 257.", "target": "257" }
+      ]
+    },
+    "101": {
+      "testo": "Il rumore della battaglia si affievolisce, ma il silenzio è presto rotto da una voce dentro di te che ti accusa di essere un codardo e di aver abbandonato nel pericolo un altro essere umano. Tenti di liberarti dall'insistente voce della coscienza dicendoti che la tua missione è molto più importante, e che non solo la vita del giovane mago, ma la vita di tutti i tuoi compatrioti è in pericolo se non raggiungi vivo la capitale. Improvvisamente la vista di una pattuglia di Giak ti costringe a nasconderti. Ma è troppo tardi: ti hanno individuato e devi correr via velocemente.",
+      "choices": [
+        { "text": "Vai al 281.", "target": "281" }
+      ]
+    },
+    "102": {
+      "testo": "Scendendo tra le rocce verso il Cimitero degli Antichi, ti accorgi che una strana foschia avvolge questo luogo sinistro, offuscando la luce del sole e dando al Cimitero un'aria di mestizia. Un gelido soffio ti dà il benvenuto. Con un senso di inquieto timore ti inoltri nella cupa necropoli.",
+      "choices": [
+        { "text": "Vai al 284.", "target": "284" }
+      ]
+    },
+    "103": {
+      "testo": "Il sentiero è invaso dalla vegetazione, e sbocca su un altro sentiero che porta a est.",
+      "choices": [
+        { "text": "Se vuoi seguire questo nuovo sentiero, vai al 13.", "target": "13" },
+        { "text": "Se preferisci continuare verso nord-est, vai al 287.", "target": "287" }
+      ]
+    },
+    "104": {
+      "testo": "Le pareti sono umide e scivolose. L'aria stagnante ti soffoca e le ragnatele ti sfiorano il viso. Senti una morsa che ti afferra lo stomaco, mentre la galleria diventa sempre più buia. Arrivi a un incrocio dove la galleria sbocca su un corridoio che porta da nord a sud.",
+      "choices": [
+        { "text": "Se vuoi andare a nord, vai al 26.", "target": "26" },
+        { "text": "Se vuoi andare a sud, vai al 100.", "target": "100" }
+      ]
+    },
+    "105": {
+      "testo": "In lontananza, appollaiato sul ramo di una vecchia quercia, c'è un corvo nero.",
+      "choices": [
+        { "text": "Se hai l'Arte dell'Affinità animale, puoi chiamare questo uccello andando al 298.", "target": "298", "requisito": "Affinità Animale" },
+        { "text": "Altrimenti vai al 335.", "target": "335" }
+      ]
+    },
+    "106": {
+      "testo": "Arrivi sulla sponda di un gelido torrente. L'acqua spumeggiante saltella tra le rocce muschiose e si dirige a est.",
+      "choices": [
+        { "text": "Se vuoi seguire la corrente, vai al 263.", "target": "263" },
+        { "text": "Se preferisci dirigerti verso la sorgente, vai al 334.", "target": "334" }
+      ]
+    },
+    "107": {
+      "testo": "Attraversando di corsa la stanza, colpisci con forza i teschi mandandoli in mille pezzi. Ti accorgi che dentro ogni teschio c'è una sorta di materia grigiastra che ribolle e sembra muoversi e cambiar forma, facendo spuntare ali di pipistrello e ventose. In preda all'orrore scappi verso il corridoio ed esci proprio in tempo, prima che una pesante inferriata chiuda definitivamente la stanza.",
+      "choices": [
+        { "text": "Vai al 23.", "target": "23" }
+      ]
+    },
+    "108": {
+      "testo": "Con un salto mortale ti lanci verso il tetto opposto. Tutto sembra accadere al rallentatore. Vedi la folla che si muove nelle strade, e alla tua destra, sotto un tetto, un nido di passeri. Senti le grida spaventate della gente quando atterri con uno schianto dall'altra parte. È l'ultimo suono che sentirai. Le tegole si frantumano e crollano e tu precipiti per tutti e quattro i piani della locanda 'All'Orso Grigio' rompendoti la spina dorsale.",
+      "gameOver": true
+    },
+    "109": {
+      "testo": "Sotto il tappeto c'è solo polvere!",
+      "choices": [
+        { "text": "Se vuoi saperne di più sulle bottiglie, vai al 164.", "target": "164" },
+        { "text": "Se invece preferisci esaminare la stalla, vai al 308.", "target": "308" }
+      ]
+    },
+    "110": {
+      "testo": "Rapidamente prendi la mira e lanci la pietra contro la testa del Giak con tutta la tua forza, ma con terrore vedi che lui si abbassa e non viene colpito. Devi agire immediatamente per salvare il mago.",
+      "choices": [
+        { "text": "Vai al 55.", "target": "55" }
+      ]
+    },
+    "111": {
+      "testo": "Pochi minuti dopo aver lasciato l'incrocio vedi in distanza una piccola capanna di legno con una stalla. Arrivando dai un'occhiata attraverso una finestra laterale. La capanna sembra deserta.",
+      "choices": [
+        { "text": "Se vuoi entrare, vai al 57.", "target": "57" },
+        { "text": "Se vuoi esaminare la stalla, vai al 308.", "target": "308" }
+      ]
+    },
+    "112": {
+      "testo": "Improvvisamente l'enorme pietra dietro la quale ti nascondi viene spostata di lato, e ti trovi davanti alla faccia ghignante di due Giak pronti ad ucciderti. L'imboccatura della grotta è molto stretta, e hai la possibilità di combattere i Giak uno alla volta.",
+      "combat": {
+        "name": "Giak 1",
+        "combattività": 13,
+        "resistenza": 10,
+        "nextEnemy": { "name": "Giak 2", "combattività": 12, "resistenza": 10 },
+        "onWin": "33_248"
+      }
+    },
+    "113": {
+      "testo": "Hai camminato per più di mezz'ora quando vedi dei fiori di un color rosso vivo che crescono su una balza muscosa. Sono fiori di Vigorilla, una pianta rara e molto bella, pregiata per le sue proprietà medicinali. Ti inginocchi e raccogli una manciata di piantine per metterle nello Zaino. Puoi mangiare quest'erba per recuperare i punti di resistenza persi. Ogni volta che ne mangi ti dà 3 punti di Resistenza, e ne hai abbastanza per due Pasti. Chiudi lo Zaino e continui il viaggio.",
+      "onEnter": { "addItems": ["Erba Vigorilla", "Erba Vigorilla"] },
+      "choices": [
+        { "text": "Se vuoi dirigerti verso nord-est, vai al 347.", "target": "347" },
+        { "text": "Se vuoi andare a est, vai al 295.", "target": "295" }
+      ]
+    },
+    "114": {
+      "testo": "Fai stendere a terra il cavallo, ti metti vicino a lui e ti nascondi con rami e foglie secche. Senti le ali del Kraan mentre passa sopra gli alberi, ritorna, e volteggia sopra di voi; ma dopo un po' si allontana oltre il lago. Decidi di andartene temendo che possa tornare, e non da solo.",
+      "choices": [
+        { "text": "Vai al 239.", "target": "239" }
+      ]
+    },
+    "115": {
+      "testo": "Ti trascini fino alla prima casupola e cadi a terra esausto. Senti un buon odore di arrosto. C'è un calderone appeso sopra un focolare che si va spegnendo, e una grande tavola di quercia già apparecchiata. Chi vive qui dev'essere andato via di gran fretta, e da poco tempo. C'è una brocca con dell'acqua, e pane fresco sulla tavola.",
+      "choices": [
+        { "text": "Se decidi di fare un pasto in velocità, vai al 150.", "target": "150" },
+        { "text": "Se preferisci esplorare la casa, vai al 177.", "target": "177" },
+        { "text": "Se vuoi andartene subito e continuare il viaggio, vai all'83.", "target": "83" }
+      ]
+    },
+    "116": {
+      "testo": "Mentre esci dall'acqua fangosa, sei bersagliato da una pioggia di frecce nere. Rapidamente ti metti al riparo degli alberi e aspetti che i Giak si allontanino dalla riva opposta, prima di continuare a piedi verso la capitale.",
+      "choices": [
+        { "text": "Vai al 321.", "target": "321" }
+      ]
+    },
+    "117": {
+      "testo": "L'uomo è gravemente ferito e sta per morire. Se hai l'Arte della Guarigione puoi alleviare il dolore delle sue ferite, ma le sue condizioni sono così gravi che le tue Arti non bastano. Presto perde conoscenza: cerchi di sistemarlo alla meglio sotto una enorme quercia, poi lo lasci e ti inoltri nella foresta verso nord-est.",
+      "choices": [
+        { "text": "Vai al 330.", "target": "330" }
+      ]
+    },
+    "118": {
+      "testo": "Sproni il cavallo al galoppo e proprio davanti a te vedi profilarsi in lontananza le alte mura e le torri di Holmgard splendenti nel sole mattutino. Arrivi sulla grande strada che collega la capitale al porto settentrionale di Toran. Ti dirigi verso Holmgard scrutando sempre il cielo per non farti sorprendere dai Kraan.",
+      "choices": [
+        { "text": "Vai al 224.", "target": "224" }
+      ]
+    },
+    "119": {
+      "testo": "Il Dente del sonno ti lacera il mantello, e le sue spine ti penetrano nelle braccia e nelle gambe mentre cerchi di farti strada tra i cespugli. Dopo un quarto d'ora riesci a uscire dai cespugli e barcollando vai verso gli alberi. Togli 2 punti di Resistenza dal tuo punteggio per le ferite che hai riportato. La testa ti gira e le palpebre ti sembrano di piombo e improvvisamente ti trovi sul bordo di una scarpata ripida e molto pericolosa.",
+      "onEnter": { "damage": 2 },
+      "choices": [
+        { "text": "Se vuoi lasciarti scivolare giù facendo molta attenzione, vai al 226.", "target": "226" },
+        { "text": "Se non te la senti di rischiare una discesa in questo stato di sonnolenza, puoi costeggiare la scarpata, andando al 38.", "target": "38" }
+      ]
+    },
+    "120": {
+      "testo": "Dietro di te senti i Giak assetati di sangue che stanno uccidendo i cavalli della carrozza. Lanci un'occhiata dietro le spalle e vedi un Kraan che si alza in volo. Attaccherà te o è interessato a qualcos'altro? L'ombra nera si fa sempre più grande intorno a te, e capisci che sei tu la vittima destinata. Il Kraan ti attacca in picchiata!",
+      "choices": [
+        { "text": "Se aspetti che ti sia addosso per saltare giù da cavallo vai all'84.", "target": "84" },
+        { "text": "Se cerchi di metterti velocemente al riparo sotto gli alberi, vai al 171.", "target": "171" },
+        { "text": "Se abbassi la testa pregando il cielo di proteggerti, e continui a galoppare, vai al 54.", "target": "54" }
+      ]
+    },
+    "121": {
+      "testo": "Dopo aver camminato pochi minuti vedi una figura misteriosa, vestita di rosso, in piedi al centro del sentiero. Ti volta le spalle, e ha la testa coperta dal cappuccio del mantello. Sul suo braccio teso c'è il corvo nero che hai visto prima.",
+      "choices": [
+        { "text": "Se vuoi chiamare lo sconosciuto, vai al 342.", "target": "342" },
+        { "text": "Se vuoi avvicinarti a lui con cautela, vai al 309.", "target": "309" },
+        { "text": "Se preferisci estrarre la tua Arma e attaccarlo, vai al 283.", "target": "283" }
+      ]
+    },
+    "122": {
+      "testo": "Appena sente di essere in comunicazione con te, il cavallo si calma. Vai verso il magnifico animale e gli accarezzi la testa per rassicurarlo. Senti che è agitato e impaurito. Dopo un po' riesci a montarlo, e lo porti sul sentiero che va a sud.",
+      "choices": [
+        { "text": "Vai al 206.", "target": "206" }
+      ]
+    },
+    "123": {
+      "testo": "Mentre il mostro muore il suo corpo si scioglie in un liquido verdastro e ripugnante. L'erba e le piante toccate da questo liquido fumigante appassiscono e muoiono. Vedi una grande pietra preziosa accanto al corpo che si sta decomponendo. Più avanti sul sentiero c'è una folta pattuglia di Giak che corrono verso di te.",
+      "choices": [
+        { "text": "Se vuoi prendere la Gemma, vai al 304.", "target": "304" },
+        { "text": "Se preferisci lasciarla e scappare, vai al 2.", "target": "2" }
+      ]
+    },
+    "124": {
+      "testo": "Nella scatola trovi 15 Corone d'oro e una Chiave d'Argento. Se vuoi tenere la Chiave, ricordati di segnarla sul tuo Registro di Guerra.",
+      "onEnter": { "addCorone": 15, "addItems": ["Chiave d'Argento"] },
+      "choices": [
+        { "text": "Andando al 211 puoi continuare ad esplorare la galleria.", "target": "211" },
+        { "text": "Invece andando al 106 puoi lasciare tutto e scendere dalla collina.", "target": "106" }
+      ]
+    },
+    "125": {
+      "testo": "Il sentiero sbocca in un'ampia radura. La presenza di strane impronte ti dice che qui sono scesi dei Kraan. Dal numero delle impronte e dalla loro presenza su un ampio tratto di terreno capisci che almeno cinque di quei mostri sono passati di qui nelle ultime dodici ore. Vedi due uscite dall'altra parte della radura: una porta a ovest, l'altra a sud.",
+      "choices": [
+        { "text": "Se vuoi andare a sud, vai al 27.", "target": "27" },
+        { "text": "Se vuoi andare a ovest, vai al 214.", "target": "214" },
+        { "text": "Se possiedi l'Arte dell'Orientamento, vai al 301.", "target": "301", "requisito": "Orientamento" }
+      ]
+    },
+    "126": {
+      "testo": "Penetri sempre più profondamente nella foresta. Dentro di te ringrazi il principe per quel magnifico cavallo, che procede sicuro nonostante il terreno accidentato. Presto i Tigerwolf restano indietro, e puoi fare una sosta. È calata rapidamente la notte, ed è quasi buio.",
+      "choices": [
+        { "text": "Se vuoi andare avanti, vai al 46.", "target": "46" },
+        { "text": "Se vuoi prendere a sinistra, nella stessa direzione del sentiero che prima sei stato costretto ad abbandonare, vai al 143.", "target": "143" }
+      ]
+    },
+    "127": {
+      "testo": "Dopo un'ora di marcia i Drakkar si fermano improvvisamente all'apparire sul sentiero di una enorme creatura grigia e coperta di scaglie. Appena il mostro si avvicina senti il suo fiato pestilenziale sulla tua faccia. Con un tremendo ruggito ti afferra la testa con le sue potenti zampe. L'ultima cosa che senti è il secco rumore della tua spina dorsale spezzata.",
+      "gameOver": true
+    },
+    "128": {
+      "testo": "Sbirciando attraverso il fitto fogliame una scena terrificante ti si presenta alla vista. In una piccola radura tre Giak hanno legato un uomo ad un palo e stanno dando fuoco a una catasta di legna secca ai suoi piedi. Dalla tunica lo riconosci per un Ranger, uno dei soldati del Re che pattugliano la parte occidentale del regno, vicino alle montagne di Dumcrag. È stato picchiato violentemente ed è quasi privo di conoscenza.",
+      "choices": [
+        { "text": "Se hai l'Arte della Caccia, vai al 297.", "target": "297", "requisito": "Caccia" },
+        { "text": "Altrimenti devi attaccare i Giak adesso, se vuoi salvare la vita del Ranger. Vai al 336.", "target": "336" }
+      ]
+    },
+    "129": {
+      "testo": "Raggiungi le porte della capitale, fissando con ammirazione le alte mura della città. Queste si ergono per più di sessanta metri, e resistono da secoli agli attacchi del tempo e dei Signori delle Tenebre. Insieme con l'ufficiale percorri la galleria che corre sotto le mura, e dopo un centinaio di metri giungi alla torre di guardia principale. Una grande folla di soldati e di cittadini si muove in ogni direzione.",
+      "choices": [
+        { "text": "Se vuoi continuare a seguire l'ufficiale, vai al 3.", "target": "3" },
+        { "text": "Se invece pensi che ti conviene cercare di arrivare da solo alla rocca, dove si trova il palazzo del Re, vai al 144.", "target": "144" }
+      ]
+    },
+    "130": {
+      "testo": "Arrivi presto a una piccola radura. Nel centro c'è una panca ricavata da un albero caduto. Hai fame e devi fermarti a fare un Pasto altrimenti perdi 3 punti di Resistenza. Quando hai finito, se decidi di partire verso sud, vai al 28. Se preferisci il sentiero che porta a est, vai al 201.",
+      "onEnter": { "consumePasto": true, "penaltySeNoPasto": -3 },
+      "choices": [
+        { "text": "Vai al 28.", "target": "28" },
+        { "text": "Vai al 201.", "target": "201" }
+      ]
+    },
+    "131": {
+      "testo": "Hai percorso circa cinquecento metri quando senti delle grida e un rumore come di tuono. Avvicinandoti riconosci il luogo: sono le rovine di Tamargo, un antico tempio nella foresta. Una pattuglia di Giak, una trentina in tutto, stanno attaccando le rovine da ogni parte. Molti altri sono già morti e giacciono tra le colonne abbattute, ma i superstiti continuano ad attaccare un invisibile avversario. Improvvisamente un lampo azzurro investe la prima linea dei Giak, facendoli cadere da ogni parte. Uno di loro, più alto degli altri e vestito da capo a piedi di maglia d'acciaio, impreca contro i suoi compagni e li spinge avanti a frustate. Con l'Arma in pugno arrivi al margine della radura, nascosto dal fitto fogliame, e cerchi di capire chi sono i difensori. Con grande meraviglia vedi che le rovine sono difese da un giovane della tua età. Riconosci la tunica azzurra, ricamata di stelle: è un giovane apprendista della corporazione dei maghi di Toran. Cinque Giak si fanno avanti con le lance alzate e pronte a colpire, mentre il giovane si ritira in fretta più dentro le rovine. Improvvisamente si gira e alza la mano sinistra: ed ecco che dalle sue dita esce un lampo di luce azzurra a colpire i Giak. Vicino a dove sei nascosto vedi un Giak sgattaiolare verso le rovine e arrampicarsi su una delle colonne. Stringe tra i denti un lungo pugnale ricurvo e sta per assalire alle spalle il giovane mago.",
+      "choices": [
+        { "text": "Se vuoi mettere in guardia il mago con un grido, vai al 241.", "target": "241" },
+        { "text": "Se vuoi scattare in avanti e lanciarti sul Giak, vai al 55.", "target": "55" },
+        { "text": "Se vuoi raccogliere un pezzo di pietra e cercar di colpire il Giak, vai al 302.", "target": "302" },
+        { "text": "Se preferisci lasciare il luogo della battaglia, vai al 101.", "target": "101" }
+      ]
+    },
+    "132": {
+      "testo": "La guardia del corpo ti guarda con grande sospetto e ti sbatte la porta in faccia. Senti delle voci dentro il carrozzone; improvvisamente la porta si apre e vedi la faccia di un ricco mercante. Riconosce il tuo mantello Ramas e si scusa per il comportamento del suo servo. Dice che sono stati attaccati più volte da quando hanno lasciato Toran: dai Kraan, dai banditi e dai ladri. Pensavano che anche tu fossi un bandito. Il carrozzone è pieno di seta e di spezie. Il mercante ti offre del cibo, che tu accetti con gratitudine. Dopo un ottimo Pasto il peso delle fatiche sostenute prende il sopravvento e cadi in un sonno profondo.",
+      "choices": [
+        { "text": "Vai al 64.", "target": "64" }
+      ]
+    },
+    "133": {
+      "testo": "Mentre ti avvicini alla statua vedi che sulla sua superficie si aprono delle crepe. Improvvisamente la statua si apre e un vero Serpente Alato, libero dal suo mantello di pietra, si lancia contro di te. Devi combattere.",
+      "combat": {
+        "name": "Serpente Alato",
+        "combattività": 16,
+        "resistenza": 18,
+        "note": "Questo mostro non è sensibile allo Psicolaser.",
+        "onWin": "266"
+      }
+    },
+    "134": {
+      "testo": "Usando le tue Arti scopri tracce di Giak intorno al perimetro della radura. Le impronte sono fresche: questi seguaci dei Signori delle Tenebre erano qui meno di due ore fa. Sai che devi stare in guardia;",
+      "choices": [
+        { "text": "se decidi di esaminare le capanne vai al 305.", "target": "305" },
+        { "text": "Se vuoi evitare la radura, vai al 40.", "target": "40" }
+      ]
+    },
+    "135": {
+      "testo": "Sporgendoti un po' dalla ripida sponda puoi vedere che la corrente ha depositato sulla riva, insieme a rami secchi e altri detriti, un grosso tronco d'albero e una piccola canoa.",
+      "choices": [
+        { "text": "Se vuoi adoperare il tronco per scendere la corrente, vai al 223.", "target": "223" },
+        { "text": "Se vuoi usare la canoa, vai al 4.", "target": "4" }
+      ]
+    },
+    "136": {
+      "testo": "I Giak si avvicinano e si accovacciano come per spiccare un balzo. Vedi le punte seghettate delle loro lance e li senti parlare nel loro strano linguaggio gutturale. Il più grande dei due grida: 'Orgadak taag' Nogjat aga tok!' E si lancia all'attacco. Devi combattere i Giak uno alla volta. Aggiungi 1 punto alla tua Combattività, in quanto sei avvantaggiato dalla posizione sopraelevata.",
+      "combat": {
+        "name": "Giak 1",
+        "combattività": 13,
+        "resistenza": 10,
+        "modificatori": { "combattività": 1 },
+        "nextEnemy": { "name": "Giak 2", "combattività": 12, "resistenza": 10 },
+        "onWin": "313"
+      }
+    },
+    "137": {
+      "testo": "Mentre l'ultima di quelle orrende creature muore, si spegne anche la luce verdastra. Vedi che in ognuno dei teschi frantumati si cela una Gemma. Prendi queste 20 Gemme prima che l'oscurità avvolga la stanza. Ricordati di segnarle sul tuo Registro di Guerra.",
+      "onEnter": { "addItems": ["20 Gemme"] },
+      "choices": [
+        { "text": "Vai al 23.", "target": "23" }
+      ]
+    },
+    "138": {
+      "testo": "Impugni la tua arma e muovi incontro al nemico. Ci sono due Giak delle Montagne, e devi combatterli uno alla volta.",
+      "combat": {
+        "name": "Giak 1",
+        "combattività": 13,
+        "resistenza": 10,
+        "nextEnemy": { "name": "Giak 2", "combattività": 12, "resistenza": 10 },
+        "onWin": "291"
+      }
+    },
+    "139": {
+      "testo": "Nel cortile interno ferve una grande attività. Le guide della cavalleria aspettano, accanto ai loro cavalli scalpitanti, gli ordini dei comandanti riuniti nella Grande Sala. Poi li portano velocemente alle truppe delle fortificazioni esterne. Alcuni partono, altri ritornano, molti sono esausti o feriti. Hai fatto solo pochi passi attraverso il cortile quando senti una voce che echeggia: 'Fermate quell'uomo!'",
+      "choices": [
+        { "text": "Vai al 66.", "target": "66" }
+      ]
+    },
+    "140": {
+      "testo": "Sei in una radura dove alcuni alberi sono stati abbattuti per costruire una traballante torretta di osservazione. Dalla torre partono tre sentieri in direzioni diverse.",
+      "choices": [
+        { "text": "Se vai a sud, vai al 14.", "target": "14" },
+        { "text": "Se vai a est, vai al 252.", "target": "252" },
+        { "text": "Se vai a sud-ovest, vai al 215.", "target": "215" },
+        { "text": "Se decidi di arrampicarti sulla torretta, vai al 36.", "target": "36" }
+      ]
+    },
+    "141": {
+      "testo": "Il tuo Sesto Senso ti avverte che alcuni degli esseri che hanno attaccato il monastero stanno rastrellando i due sentieri alla ricerca di eventuali sopravvissuti, ma tu puoi evitare entrambi i sentieri se ti inoltri nel sottobosco.",
+      "choices": [
+        { "text": "Se vuoi andare a sud, vai al 56.", "target": "56" },
+        { "text": "Se vuoi avanzare tra i cespugli verso nord-ovest, vai al 333.", "target": "333" }
+      ]
+    },
+    "142": {
+      "testo": "Vedi le alte e bianche mura di Holmgard e i campanili aguzzi, e sugli spalti gli stendardi ondeggianti nella fresca brezza del mattino. Verso Est il fiume Eledil segue il suo corso dalla catena dei monti Dumcrag al golfo di Holm. Ma ai piedi delle montagne vedi uno sterminato esercito nero che avanza implacabile verso la città. Alla tua destra vedi la grande strada che attraversa la pianura che porta a Holmgard. Potresti raggiungere le prime fortificazioni in un'ora, ma così allo scoperto saresti facile preda degli attacchi dei Kraan. Ma davanti a te scorrono le acque lente e fangose di un largo fiume che sbocca nell'Eledil; tenendoti al riparo delle sponde potresti raggiungere la capitale a nuoto. Oppure alla tua sinistra c'è il Cimitero degli Antichi. Queste tombe e questi monumenti in rovina, che ricordano un'età ormai lontana, ti offrirebbero un buon riparo nell'avvicinarti alla città, ma si tratta di una zona tabù. Innumerevoli fantasmi senza nome giacciono lì in un sonno inquieto, pronti ad impadronirsi dell'incauto viandante che oltrepassa i sacri confini.",
+      "choices": [
+        { "text": "Se vuoi tentare la strada principale, vai al 58.", "target": "58" },
+        { "text": "Se ti sembra meglio cercar di raggiungere la capitale lungo il fiume, vai al 135.", "target": "135" },
+        { "text": "Se hai abbastanza animo da affrontare i pericoli sconosciuti del Cimitero degli Antichi, vai al 102.", "target": "102" }
+      ]
+    },
+    "143": {
+      "testo": "Uscendo dal bosco ti ritrovi su una grande strada. È la strada che collega il porto settentrionale di Toran alla capitale. Spronando il cavallo calcoli di essere a Holmgard verso il mattino.",
+      "choices": [
+        { "text": "Vai al 149.", "target": "149" }
+      ]
+    },
+    "144": {
+      "testo": "A stento riesci a farti strada nella calca che riempie la strada verso la rocca. Gli abitanti corrono di qua e di là in preda al panico udendo le grida dei Kraan che volteggiano sulle loro teste. Nella confusione ti viene rubato un Oggetto dallo Zaino. Se non hai più lo Zaino, devi perdere un'Arma. Segna la perdita sul Registro di Guerra. Un carro trascinato da un cavallo senza guida passa a tutta velocità e ti scaraventa contro un portone. Sei intontito e perdi 2 punti di Resistenza! Mentre ti stai rialzando la porta si apre di colpo e un vecchio decrepito ti attacca con un coltellaccio. È completamente pazzo e devi difenderti o cercare di sottrarti.",
+      "onEnter": { "damage": 2, "randomLoseItem": true },
+      "choices": [
+        { "text": "Se decidi di combattere, vai al 63.", "target": "63" },
+        { "text": "Se preferisci evitarlo, vai al 217.", "target": "217" }
+      ]
+    },
+    "145": {
+      "testo": "Ti senti come se fossi stato investito da un carro, Cadendo in avanti l'ultima cosa che ricordi prima che il buio ti avvolga è la sabbia del sentiero che ti entra in bocca e il terribile dolore alla schiena.",
+      "gameOver": true
+    },
+    "146": {
+      "testo": "Hai cavalcato per un paio di chilometri quando vieni sbalzato da cavallo a causa di una freccia, che fortunatamente ti ferisce solo di striscio alla fronte. Perdi 2 punti di Resistenza. Mentre ti rimetti in piedi vedi dei Drakkar uscire dal bosco da entrambi i lati della strada. È un'imboscata: devi metterti in salvo il più presto possibile entrando nella foresta.",
+      "onEnter": { "damage": 2 },
+      "choices": [
+        { "text": "Vai al 154.", "target": "154" }
+      ]
+    },
+    "147": {
+      "testo": "Dopo qualche minuto di cammino trovi una capanna coperta di muschio un po' discosta dal sentiero. Sei affamato e devi fare un Pasto, oppure perdi 3 punti di Resistenza. Mentre mangi vedi che il sentiero piega verso est.",
+      "onEnter": { "consumePasto": true, "penaltySeNoPasto": -3 },
+      "choices": [
+        { "text": "Se vuoi seguirlo, vai al 42.", "target": "42" },
+        { "text": "Se vuoi tornare sui tuoi passi, vai al 28.", "target": "28" }
+      ]
+    },
+    "148": {
+      "testo": "Apri la porta con un calcio e ti lanci dentro la fattoria. In alto vola un Kraan che emette grida di vittoria mentre stringe una vittima tra gli artigli. Non c'è nessuno in casa, ma appoggiato al focolare c'è un Martello da guerra: se vuoi puoi prenderlo.",
+      "onEnter": { "addItems": ["Martello da guerra"] },
+      "choices": [
+        { "text": "Se vuoi restare nella fattoria, vai all'81.", "target": "81" },
+        { "text": "Se pensi di sentirti più sicuro nella foresta, vai al 320.", "target": "320" },
+        { "text": "Se vuoi esaminare più attentamente la stanza, vai al 199.", "target": "199" }
+      ]
+    },
+    "149": {
+      "testo": "Cavalcando lungo la strada principale, ti accorgi che la notte si avvicina. Presto sarà completamente buio e sarà impossibile vedere i pericoli che ti possono minacciare. Decidi di nasconderti nel bosco e di dormire fino al mattino. Quando sei sicuro che nessuno ti vede, ti avvolgi nel tuo caldo mantello verde e sprofondi in un sonno agitato.",
+      "choices": [
+        { "text": "Vai al 256.", "target": "256" }
+      ]
+    },
+    "150": {
+      "testo": "Anche se un po' troppo cotto, il cibo ha un buon sapore e l'acqua fresca ti disseta. Passi quasi mezz'ora riposandoti dentro la casa prima di renderti conto di quanto tempo hai perso. Prepara il tuo equipaggiamento e vai all'83.",
+      "choices": [
+        { "text": "Vai all'83.", "target": "83" }
+      ]
+    },
+    "151": {
+      "testo": "Se ti concentri sulla serratura puoi muovere il meccanismo e aprirlo. Dopo puoi far lievitare lo spillo liberandolo dalla sua sede, evitando così il rischio di restar vittima di eventuali trappole.",
+      "choices": [
+        { "text": "Se vuoi usare la tua Arte della Telecinesi per aprire questa porta, vai all'87.", "target": "87", "requisito": "Telecinesi" }
+      ]
+    },
+    "152": {
+      "testo": "L'erborista ti offre una scelta di speciali pozioni. Alcune ti rendono più forte; altre ti fanno diventare invisibile; altre ti danno l'agilità di un gatto; altre ancora possono darti una consistenza vaporosa. L'uomo estrae da un cassetto una splendida bacchetta magica. Dice che è un'arma potentissima contro tutti gli esseri diabolici, e che ti renderà invulnerabile in battaglia. Con un dito ti mostra le misteriose iscrizioni che ornano la bacchetta.",
+      "choices": [
+        { "text": "Se vuoi chinarti sul banco per leggere le iscrizioni, vai al 49.", "target": "49" },
+        { "text": "Se ti interessano di più le pozioni, vai al 231.", "target": "231" }
+      ]
+    },
+    "153": {
+      "testo": "Vedi le alte e bianche mura di Holmgard e i campanili aguzzi, e sugli spalti gli stendardi ondeggianti nella fresca brezza del mattino. Verso Est il fiume Eledil segue il suo corso dalla catena dei monti Dumcrag al golfo di Holm. Ma ai piedi delle montagne vedi uno sterminato esercito nero che avanza implacabile verso la città. Alla tua destra vedi la grande strada che attraversa la pianura porta a Holmgard. Potresti raggiungere le prime fortificazioni in un'ora, ma così allo scoperto saresti facile preda degli attacchi dei Kraan. Ma davanti a te scorrono le acque lente e fangose di un largo fiume che sbocca nell'Eledit tenendoti al riparo delle sponde potresti raggiungere la capitale a nuoto. Oppure alla tua sinistra c'è il Cimitero degli Antichi. Queste tombe e questi monumenti in rovina, che ricordano un'età ormai lontana, ti offrirebbero un buon riparo nell'avvicinarti alla città, ma si tratta di una zona tabù. Innumerevoli fantasmi senza nome giacciono lì in un sonno inquieto, pronti ad impadronirsi dell'incauto viandante che oltrepassa i sacri confini.",
+      "choices": [
+        { "text": "Se vuoi tentare sulla strada principale, vai al 202.", "target": "202" },
+        { "text": "Se ti sembra meglio cercare di raggiungere la capitale lungo il fiume, vai al 135.", "target": "135" },
+        { "text": "Se hai abbastanza animo da affrontare i pericoli sconosciuti del Cimitero degli Antichi, vai al 329.", "target": "329" }
+      ]
+    },
+    "154": {
+      "testo": "Sei stordito a causa della ferita e barcollando come un cieco cammini attraverso gli alberi. Improvvisamente cadi in avanti come se il terreno ti fosse stato tolto da sotto i piedi. Sei caduto dentro una trappola. Guardando in su puoi vedere quattro Drakkar che tendono i loro archi contro di te, mentre sui loro ceffi si dipinge un ghigno di soddisfazione. Mentre tutto si oscura, l'ultima cosa che senti sono le quattro frecce nere che si piantano nel tuo petto.",
+      "gameOver": true
+    },
+    "155": {
+      "testo": "Quando ti avvicini il gruppo smette di parlare. Dalla loro espressione vedi che hanno riconosciuto il tuo verde mantello Ramas. Lentamente uno di loro tende la mano in segno di amicizia e dice: 'Signore, circolava voce che i Ramas fossero stati sterminati, grazie al cielo non è così. Temevamo che tutto fosse perduto'. Non dici niente della distruzione del monastero, perché questi sono profughi di Toran che hanno perso tutto quello che possedevano. L'unica speranza che gli resta è che i Ramas portino un esercito alla vittoria. Apprendi che il porto settentrionale è stato attaccato sia dal cielo che dal mare, e che le forze dei Signori delle Tenebre erano di molto superiori alla coraggiosa guarnigione del Re. Li rassicuri che Sommerlund non cadrà e gli auguri buona fortuna per il viaggio.",
+      "choices": [
+        { "text": "Vai al 70.", "target": "70" }
+      ]
+    },
+    "156": {
+      "testo": "Nere frecce si piantano nel fango che ti circonda. Molti Giak sono comparsi sulla sponda, e cercano di colpirti.",
+      "choices": [
+        { "text": "Vai al 190.", "target": "190" }
+      ]
+    },
+    "157": {
+      "testo": "Dopo un chilometro vedi due gambe che spuntano da dietro un masso.",
+      "choices": [
+        { "text": "Se vuoi dare un'occhiata da vicino, vai all'88.", "target": "88" },
+        { "text": "Se vuoi evitare l'incontro ed entrare nella foresta, vai al 264.", "target": "264" },
+        { "text": "Se possiedi l'arte del Sesto Senso, vai al 178.", "target": "178", "requisito": "Sesto Senso" }
+      ]
+    },
+    "158": {
+      "testo": "Come raggiungi la porta senti lo schianto di un masso caduto dalla volta. Ti giri e vedi che l'uscita è bloccata. Se hai una Chiave d'Argento puoi tentare di aprire la porta andando al 173. Altrimenti vai al 259.",
+      "choices": [
+        { "text": "Se hai una Chiave d'Argento, vai al 173.", "target": "173", "requisito": "Chiave d'Argento" },
+        { "text": "Altrimenti vai al 259.", "target": "259" }
+      ]
+    },
+    "159": {
+      "testo": "Offri al mercante qualcosa di grande valore che hai nello Zaino. L'uomo accetta e ti permette di salire sul carrozzone. Dopo un lungo viaggio raggiungi la capitale.",
+      "choices": [
+        { "text": "Vai al 247.", "target": "247" }
+      ]
+    },
+    "160": {
+      "testo": "Continui a correre tenendo pronta l'Arma. I Tigerwolf ti vedono e si lanciano all'inseguimento. Devi combatterli.",
+      "choices": [
+        { "text": "Vai al 10.", "target": "10" }
+      ]
+    },
+    "161": {
+      "testo": "Ti siedi sul trono di granito. Un brivido ti percorre la schiena mentre l'urna sopra la tua testa inizia a brillare di una luce verdastra. Improvvisamente senti una presenza maligna che cerca di impossessarsi della tua mente.",
+      "choices": [
+        { "text": "Vai al 133.", "target": "133" }
+      ]
+    },
+    "162": {
+      "testo": "Mentre ti avvicini agli uomini provi a chiamarli. Ma appena si voltano sei preso da un brivido e il cuore ti balza in gola: sono Drakkar travestiti. Si lanciano su di te e in un attimo ti trovi a terra, legato e trascinato dietro a loro sul sentiero. Ti prendono Zaino e Armi ma non ti perquisiscono, e così non trovano le Corone d'oro. Sghignazzando pregustano le torture che intendono infliggerti.",
+      "choices": [
+        { "text": "Se hai l'Arte della Telecinesi, vai al 258.", "target": "258", "requisito": "Telecinesi" },
+        { "text": "Altrimenti vai al 127.", "target": "127" }
+      ]
+    },
+    "163": {
+      "testo": "Dopo quasi mezz'ora senti che la corrente diventa più forte. Davanti a te vedi un vortice, dove il fiume compie un'ampia curva. Per non annegare raggiungi la riva destra e continui a piedi, con tutto il tuo equipaggiamento.",
+      "choices": [
+        { "text": "Vai al 321.", "target": "321" }
+      ]
+    },
+    "164": {
+      "testo": "Aprendo cautamente le bottiglie sigillate, ne annusi il contenuto: sembrano diversi tipi di vino. Poi vedi una bottiglia più piccola nascosta dietro le altre. Togliendo il tappo riconosci l'odore di Alether, una Pozione fortificante di color arancio. Puoi prenderla e usarla prima di combattere. Aumenterà la tua Combattività di 2 punti finché dura il combattimento. Ricordati di segnarla sul tuo Registro di Guerra e di cancellarla dopo averla bevuta. Ora vuoi vedere la stalla.",
+      "onEnter": { "addItems": ["Pozione Alether"] },
+      "choices": [
+        { "text": "Vai al 308.", "target": "308" }
+      ]
+    },
+    "165": {
+      "testo": "Ti svegli febbricitante. Strane immagini danzano davanti ai tuoi occhi, e poi svaniscono. I dolori alla schiena sono violenti e invochi qualcuno che possa alleviare le tue sofferenze. Una benda fresca e umida si appoggia sulla tua fronte e poi vedi il volto preoccupato di una giovane donna; un vecchio le sussurra qualcosa all'orecchio e scompare. La ragazza si siede accanto a te e ti rassicura con parole gentili, ma di nuovo gli occhi ti si offuscano e le tenebre ti avvolgono.",
+      "choices": [
+        { "text": "Vai al 212.", "target": "212" }
+      ]
+    },
+    "166": {
+      "testo": "Sei in presenza di una grande forza malefica. Una potenza al di là dei confini del tempo sta sondando la tua mente, e devi difenderti. La lotta è incominciata ed è in gioco la tua salute mentale. È un'esperienza lunga e tormentata, durante la quale vedi un turbine di apparizioni fantastiche terribili che ti tentano e ti ripugnano. Alla fine perdi 4 punti di Resistenza ma riesci a trascinarti verso la galleria.",
+      "onEnter": { "damage": 4 },
+      "choices": [
+        { "text": "Vai al 104.", "target": "104" }
+      ]
+    },
+    "167": {
+      "testo": "Dopo un chilometro vedi due gambe che spuntano da dietro un masso.",
+      "choices": [
+        { "text": "Se vuoi dare un'occhiata da vicino, vai all'88.", "target": "88" },
+        { "text": "Se vuoi evitare l'incontro ed entrare nella foresta, vai al 264.", "target": "264" },
+        { "text": "Se possiedi l'arte del Sesto Senso, vai al 178.", "target": "178", "requisito": "Sesto Senso" }
+      ]
+    },
+    "168": {
+      "testo": "Ti arrampichi sul tetto del carrozzone e ti sistemi tra le casse e i bauli. Presto la notte scenderà sulla strada. Un vento gelido soffia da ovest e ti avvolgi strettamente nel mantello per ripararti un po'. Da sotto ti arrivano le voci dei viaggiatori e un odorino di carne speziata da far venire l'acquolina in bocca. Ti accorgi di avere fame e devi fare un Pasto altrimenti perdi 3 punti di Resistenza. La stanchezza prende il sopravvento e sprofondi in un sonno agitato.",
+      "onEnter": { "consumePasto": true, "penaltySeNoPasto": -3 },
+      "choices": [
+        { "text": "Vai al 64.", "target": "64" }
+      ]
+    },
+    "169": {
+      "testo": "Mentre passi, i teschi si girano lentamente, come per guardarti. Sei a metà della stanza quando senti un rumore di ossa frantumate. Improvvisamente vedi delle forme orripilanti svilupparsi dentro i teschi aprendo delle piccole ali. Venti viscide creature alate ti assalgono e devi combatterle come un solo nemico.",
+      "combat": {
+        "name": "Creature della Cripta",
+        "combattività": 16,
+        "resistenza": 16,
+        "onWin": "137",
+        "onFlee": "23"
+      }
+    },
+    "170": {
+      "testo": "La galleria è buia e l'aria è molto più fredda che all'esterno. Avanzi lentamente con una mano sulla parete per non perdere l'equilibrio, quando senti un odore fetido, come di carne putrefatta. Se nello Zaino hai una Torcia e un Acciarino puoi fare un po' di luce per guardarti intorno. Improvvisamente qualcosa di pesante cade dalla volta del tunnel sulle tue spalle, facendoti cadere in ginocchio. È un Ragno-talpa e devi combatterlo perché tenta di strangolarti con i lunghi tentacoli viscidi.",
+      "combat": {
+        "name": "Ragno-talpa",
+        "combattività": 17,
+        "resistenza": 7,
+        "modificatori": { "combattività": -3, "annullaSe": ["Torcia", "Acciarino"] },
+        "note": "Il Ragno-talpa è insensibile allo Psicolaser e alla Affinità animale.",
+        "onWin": "319"
+      }
+    },
+    "171": {
+      "testo": "Sei quasi ai margini del bosco quando il cavallo si impenna con un nitrito di dolore. Il Kraan ha affondato gli artigli nelle carni dell'animale e cerca di rovesciarti con le sue ali. Il Giak che lo monta sghignazza mentre cerca di colpirti con la lancia. Salti a terra e ti butti tra gli alberi, lasciando il cavallo in balia del Kraan.",
+      "choices": [
+        { "text": "Vai al 303.", "target": "303" }
+      ]
+    },
+    "172": {
+      "testo": "Cade la notte e sei presto avvolto dall'oscurità. Sarebbe inutile continuare perché ti perderesti. Leghi il cavallo a un albero, ti avvolgi nel mantello e ti addormenti. Sei svegliato da un rumore di soldati in lontananza. Di là dal lago vedi le scure sagome dei Drakkar e un branco di Tigerwolf. Un Kraan compare sopra gli alberi e scende sul tetto della capanna. Lo cavalca un essere vestito di rosso. Il Kraan si alza in volo e attraverso il lago si dirige verso il luogo dove sei nascosto.",
+      "choices": [
+        { "text": "Se vuoi inoltrarti nella foresta per sfuggire al Kraan, vai al 239.", "target": "239" },
+        { "text": "Se vuoi usare l'Arte del Mimetismo per nasconderti insieme al cavallo, vai al 114.", "target": "114", "requisito": "Mimetismo" },
+        { "text": "Se vuoi prepararti a combattere, vai al 29.", "target": "29" }
+      ]
+    },
+    "173": {
+      "testo": "Come raggiungi la porta senti lo schianto di un masso caduto dalla volta. Ti giri e vedi che l'uscita è bloccata. Se hai una Chiave d'Argento puoi tentare di aprire la porta andando al 158. Altrimenti vai al 259.",
+      "choices": [
+        { "text": "Se hai una Chiave d'Argento, vai al 158.", "target": "158", "requisito": "Chiave d'Argento" },
+        { "text": "Altrimenti vai al 259.", "target": "259" }
+      ]
+    },
+    "174": {
+      "testo": "Dopo un'ora ti accorgi che la corrente si fa più veloce, e che poco più avanti, dove il fiume fa una svolta, c'è un vortice. Se ci finisci dentro hai poche possibilità di sfuggire alla morte. Ti tuffi nell'acqua fangosa, ma nuotando verso la riva perdi lo Zaino e le Armi. Senza più equipaggiamento raggiungi la sponda boscosa.",
+      "onEnter": { "loseAllItems": true, "loseAllWeapons": true },
+      "choices": [
+        { "text": "Vai al 190.", "target": "190" }
+      ]
+    },
+    "175": {
+      "testo": "Agiti le braccia verso i cavalieri che si avvicinano, hai riconosciuto i Rangers del Re, duri uomini della foresta che pattugliano i confini occidentali del regno. La tua gioia però svanisce quando ti accorgi che stanno fuggendo da un branco di Tigerwolf con in groppa i crudeli Giak. I Rangers sono tempestati di frecce nere, e i feroci Tigerwolf si fanno sempre più vicini.",
+      "choices": [
+        { "text": "Se vuoi metterti al riparo, vai al 41.", "target": "41" },
+        { "text": "Se vuoi andare sull'altra riva, vai al 116.", "target": "116" },
+        { "text": "Se possiedi l'Arte del Mimetismo, vai al 182.", "target": "182", "requisito": "Mimetismo" }
+      ]
+    },
+    "176": {
+      "testo": "Ti nascondi dietro un fitto cespuglio in modo che il Tigerwolf e il suo cavaliere non vedano il tuo cavallo bianco. Il trucco funziona: l'animale passa e si allontana lungo il sentiero da dove sei venuto.",
+      "choices": [
+        { "text": "Se vuoi attaccare gli altri Tigerwolf e i loro cavalieri, vai al 253.", "target": "253" },
+        { "text": "Se vuoi entrare nella foresta, vai al 126.", "target": "126" }
+      ]
+    },
+    "177": {
+      "testo": "Guardi in tutti gli armadi ma non trovi niente di utile o di prezioso. Decidi che hai già perso abbastanza tempo e che devi rimetterti in viaggio.",
+      "choices": [
+        { "text": "Vai all'83.", "target": "83" }
+      ]
+    },
+    "178": {
+      "testo": "Riconosci gli stivali dei soldati del Re. Intuisci che l'uomo è ferito e ha bisogno di aiuto.",
+      "choices": [
+        { "text": "Se vuoi aiutarlo, vai all'88.", "target": "88" },
+        { "text": "Se preferisci lasciarlo lì, vai al 264.", "target": "264" },
+        { "text": "Se vuoi attaccare gli altri Tigerwolf e i loro cavalieri, vai al 253.", "target": "253" }
+      ]
+    },
+    "179": {
+      "testo": "Sei stato individuato dalle guardie e sei sotto il tiro delle loro balestre.",
+      "choices": [
+        { "text": "Se vuoi andare verso di loro a braccia alzate, vai al 318.", "target": "318" },
+        { "text": "Se vuoi fuggire tra gli alberi, vai al 51.", "target": "51" }
+      ]
+    },
+    "180": {
+      "testo": "Hai appena alzato l'Arma che quelli ti attaccano. Se decidi di combattere, devi affrontarli uno alla volta.",
+      "combat": {
+        "name": "Capo",
+        "combattività": 15,
+        "resistenza": 22,
+        "nextEnemy": [
+          { "name": "Soldato 1", "combattività": 13, "resistenza": 20 },
+          { "name": "Soldato 2", "combattività": 12, "resistenza": 20 }
+        ],
+        "onWin": "62"
+      }
+    },
+    "181": {
+      "testo": "Ti abbassi istintivamente per evitare di essere colpito. Il bandito tira, e senti la freccia che ti sfiora il braccio sinistro strappandoti la manica della tunica. Ringrazi la tua buona stella e corri avanti. Gli altri banditi non hanno balestre e rinunciano presto alla caccia. Ormai li hai distanziati: hai perso Armi ed Equipaggiamento, ma hai salvato la vita. Ti fermi il tempo necessario per bendare il braccio ferito e continui la strada verso le difese della capitale.",
+      "onEnter": { "loseAllItems": true, "loseAllWeapons": true },
+      "choices": [
+        { "text": "Vai al 288.", "target": "288" }
+      ]
+    },
+    "182": {
+      "testo": "Tre Rangers galoppano lungo la riva, tallonati dai Giak in groppa ai feroci Tigerwolf. Ma la tua Arte del Mimetismo ti ha permesso di non essere visto. Il branco di Giak continua la caccia senza neanche dare un'occhiata al fiume.",
+      "choices": [
+        { "text": "Vai al 174.", "target": "174" }
+      ]
+    },
+    "183": {
+      "testo": "L'ufficiale ordina ai suoi uomini di fermarsi e ti chiede cosa fai lì. Gli dici chi sei, e gli racconti la distruzione del monastero. Queste notizie lo rattristano profondamente. Ti offre un cavallo e ti prega di accompagnarlo dal principe Pelatar, figlio del Re.",
+      "choices": [
+        { "text": "Se accetti, vai al 97.", "target": "97" },
+        { "text": "Se rifiuti la sua offerta, vai al 200.", "target": "200" }
+      ]
+    },
+    "184": {
+      "testo": "Il carrozzone è senza guida e sobbalza violentemente sul terreno accidentato che costeggia la strada. A stento riesci a controllare i cavalli imbizzarriti e a riportarli sulla strada, dove fermi il carrozzone. Rovistando rapidamente all'interno trovi 40 Corone d'oro, una Spada e cibo sufficiente per 4 Pasti. Se vuoi tenere qualcuno di questi oggetti segnali sul tuo Registro di Guerra. La fatica prende a questo punto il sopravvento. Devi fare un Pasto, dopo il quale ti addormenti profondamente.",
+      "onEnter": { "addCorone": 40, "addItems": ["Spada", "Pasto", "Pasto", "Pasto", "Pasto"] },
+      "choices": [
+        { "text": "Vai al 64.", "target": "64" }
+      ]
+    },
+    "185": {
+      "testo": "Aguzzando la vista cerchi di individuare tra gli alberi l'arciere nascosto. Ma subito dopo senti al petto un violento dolore e sei catapultato all'indietro dall'impatto di tre frecce. Due si conficcano nel costato e la terza nel fianco. L'ultima cosa che vedi è la volta del fogliame sopra di te e una grande libellula verde che si appoggia sulla fibbia della tua cintura. La tua vita e il tuo viaggio finiscono qui.",
+      "gameOver": true
+    },
+    "186": {
+      "testo": "I Kakarmi spariscono nel fitto sottobosco e presto perdi l'orientamento. Dopo aver camminato per quasi due ore senti un rumore di acqua corrente. Decidi di andare a vedere.",
+      "choices": [
+        { "text": "Vai al 106.", "target": "106" }
+      ]
+    },
+    "187": {
+      "testo": "Due facce pelose compaiono al di sopra del tronco. Due paia di occhi guardano le tue Armi, e le due bestioline lanciano un grido di paura. Saltando giù dal tronco scappano nella foresta.",
+      "choices": [
+        { "text": "Se vuoi seguirli, vai al 186.", "target": "186" },
+        { "text": "Se vuoi lasciarli andare e continuare, vai al 228.", "target": "228" }
+      ]
+    },
+    "188": {
+      "testo": "L'ombra del Kraan diventa sempre più grande intorno a te. Improvvisamente il mostro ti attacca violentemente facendoti cadere a faccia in giù. Scegli un numero della Tabella del Destino. Se esce un numero da 0 a 6, il Kraan ti strappa lo Zaino. Lo perdi con tutto ciò che c'è dentro. Da 7 a 9 salvi lo Zaino ma vieni ferito su tutte e due le braccia. Perdi 3 punti di Resistenza e fuggi verso gli alberi.",
+      "dice": { "0-6": "303", "7-9": "303" }
+    },
+    "189": {
+      "testo": "Ringrazi il tuo addestramento Ramas e la tua prontezza, perché quella palude avrebbe potuto essere più pericolosa di un Drakkar o di un Kraan. Sei preoccupato per il tempo che hai perso, e continui verso sud. Davanti a te vedi un sentiero che va nella tua stessa direzione.",
+      "choices": [
+        { "text": "Vai al 118.", "target": "118" }
+      ]
+    },
+    "190": {
+      "testo": "Cammini per cinque chilometri lungo il fiume quando ti imbatti nel relitto di una chiatta. Evidentemente qualcuno ha trovato riparo qui: attraverso un'apertura nel ponte vedi infatti un lettino, e qualche arnese da cucina.",
+      "choices": [
+        { "text": "Se vuoi dare un'occhiata sotto coperta, vai al 20.", "target": "20" },
+        { "text": "Se vuoi continuare il viaggio, vai al 273.", "target": "273" }
+      ]
+    },
+    "191": {
+      "testo": "La guardia del corpo sguaina una enorme scimitarra e cerca di tagliarti la testa.",
+      "combat": {
+        "name": "Guardia del corpo",
+        "combattività": 11,
+        "resistenza": 21,
+        "onWin": "24",
+        "onFlee": "234"
+      }
+    },
+    "192": {
+      "testo": "Vedi le zanne aguzze di un Tigerwolf e senti le grida orripilanti dei Giak. Ti stanno venendo contro. Ti salvi da morte sicura perché il tuo cavallo si lancia contro di loro e li abbatte entrambi. Colpisci il Giak alla testa ferendolo gravemente... e improvvisamente, come per miracolo, ti ritrovi a correre lungo la strada, libero dal resto del branco. Ma un'ombra ti segue: è un Kraan che già si lancia su di te.",
+      "choices": [
+        { "text": "Se lasci la strada per metterti al riparo tra gli alberi, vai al 171.", "target": "171" },
+        { "text": "Se vuoi tentare di continuare la tua corsa lungo la strada nonostante il Kraan, vai al 120.", "target": "120" }
+      ]
+    },
+    "193": {
+      "testo": "La bestia e il suo cavaliere giacciono morti. Noti una Pergamena infilata nella cintura del Giak. Se vuoi puoi prenderla, ma ricordati di segnarla sul tuo Registro di Guerra. Gli altri Tigerwolf stanno arrivando lungo il sentiero.",
+      "onEnter": { "addItems": ["Pergamena"] },
+      "choices": [
+        { "text": "Se vuoi combatterli, vai al 253.", "target": "253" },
+        { "text": "Se vuoi fuggire verso gli alberi, vai al 126.", "target": "126" }
+      ]
+    },
+    "194": {
+      "testo": "Corri verso il carro. La gente fugge in ogni direzione mentre i Kraan attaccano, scomparendo poi con le povere vittime tra gli artigli nel cielo che scurisce. Un enorme Kraan montato da tre Giak è proprio sopra il carro: questi si lasciano cadere e saltano in groppa ai cavalli spaventati. Devi combatterli oppure rifugiarti dentro una fattoria lì vicino.",
+      "choices": [
+        { "text": "Se vuoi combattere, vai al 208.", "target": "208" },
+        { "text": "Se vuoi rifugiarti nella fattoria, vai al 148.", "target": "148" }
+      ]
+    },
+    "195": {
+      "testo": "Mentre pulisci l'arma dal sangue dell'orso vedi l'imboccatura di una grotta, dietro il masso da dove era uscita la belva.",
+      "choices": [
+        { "text": "Se vuoi guardare dentro la grotta, vai al 59.", "target": "59" },
+        { "text": "Se preferisci andare avanti, vai al 106.", "target": "106" }
+      ]
+    },
+    "196": {
+      "testo": "Segui l'uomo, che entra in una piccola biblioteca accanto alla Grande Sala. Preme uno dei libri che coprono tutte e quattro le pareti, e tu senti come uno scatto metallico. Una sezione della libreria scivola indietro rivelando un passaggio segreto.",
+      "choices": [
+        { "text": "Se vuoi seguire l'uomo dentro il passaggio, vai al 332.", "target": "332" },
+        { "text": "Se non vuoi entrare nel corridoio buio e preferisci tornare sulla strada, vai al 144.", "target": "144" }
+      ]
+    },
+    "197": {
+      "testo": "Il Drakkar giace morto sul ponte del traghetto. È armato con una Daga e ha 6 Corone d'oro: se vuoi puoi tenerle. Spingi il corpo in acqua e lo vedi galleggiare per un attimo prima che scompaia nei gelidi abissi. Manovrando con la lunga asta raggiungi l'altra sponda del lago e abbandoni il traghetto.",
+      "onEnter": { "addCorone": 6, "addItems": ["Daga"] },
+      "choices": [
+        { "text": "Vai al 172.", "target": "172" }
+      ]
+    },
+    "198": {
+      "testo": "Intuisci che c'è qualcun altro dietro il paravento. Nella bottega c'è un'atmosfera di maleficio. Stai in guardia, qui c'è qualcosa che non va.",
+      "choices": [
+        { "text": "Se vuoi tornare sulla strada, vai al 7.", "target": "7" },
+        { "text": "Se vuoi esaminare la merce esposta, vai al 152.", "target": "152" }
+      ]
+    },
+    "199": {
+      "testo": "Gran parte degli armadi e dei cassetti sono vuoti. Chi viveva qui ha portato via quasi tutto, ma nella cantina riesci a recuperare abbastanza frutta per un Pasto. Segnalo sul tuo Registro di Guerra.",
+      "onEnter": { "addItems": ["Pasto"] },
+      "choices": [
+        { "text": "Vai all'81.", "target": "81" }
+      ]
+    },
+    "200": {
+      "testo": "Comincia a cadere la notte. Le ombre della foresta si fanno più lunghe e cupe. Mentre stai per fare una sosta, vedi una fila di gente diretta a sud lungo una grande strada. Avvicinandoti vedi anche un carrozzone, probabilmente di qualche mercante, che viaggia sulla strada polverosa. È tirato da sei grandi cavalli e va molto più veloce di qualsiasi altro mezzo. Potrebbe essere la tua occasione per raggiungere al più presto la capitale.",
+      "choices": [
+        { "text": "Se vuoi saltare sul carrozzone, vai al 78.", "target": "78" },
+        { "text": "Se vuoi usare l'Arte del Mimetismo per nasconderti tra i bagagli legati sul tetto, vai al 168.", "target": "168", "requisito": "Mimetismo" }
+      ]
+    },
+    "201": {
+      "testo": "Segui il sentiero accidentato per circa un'ora, poi vedi un sentiero più largo che si diparte verso sud.",
+      "choices": [
+        { "text": "Se vuoi seguire questo nuovo sentiero, vai al 238.", "target": "238" },
+        { "text": "Se preferisci andare a est, vai al 215.", "target": "215" },
+        { "text": "Se vuoi andare a ovest, vai al 130.", "target": "130" }
+      ]
+    },
+    "202": {
+      "testo": "Spronando il cavallo galoppi lungo la strada verso la capitale. Ma dopo pochi minuti il cavallo rallenta e si ferma zoppicando. Smonti ed esamini la zampa malata. Imprechi contro la malasorte quando vedi che ha perso un ferro e che lo zoccolo è rovinato. Dovrai lasciarlo qua e procedere a piedi.",
+      "choices": [
+        { "text": "Vai al 58.", "target": "58" }
+      ]
+    },
+    "203": {
+      "testo": "Ad un tratto senti un terribile dolore al petto, una specie di esplosione tra una pioggia di scintille rosse. Perdi 10 punti di Resistenza. Attraverso il fumo vedi l'erborista che si prepara a colpirti di nuovo.",
+      "onEnter": { "damage": 10 },
+      "choices": [
+        { "text": "Se ti rimangono 10 o più punti di Resistenza, vai all'80.", "target": "80" },
+        { "text": "Se ne hai di meno, vai al 344.", "target": "344" }
+      ]
+    },
+    "204": {
+      "testo": "Dopo un'ora di cammino arrivi a un incrocio. Andando a ovest torneresti nella palude, quindi continui verso sud.",
+      "choices": [
+        { "text": "Vai al 111.", "target": "111" }
+      ]
+    },
+    "205": {
+      "testo": "Il capo raccoglie il tuo equipaggiamento e ti invita a metterti in cammino. Un ghigno malvagio sulla faccia degli altri due ti fa capire che non sono affatto soldati, quindi decidi di rischiare e ti metti a correre verso la capitale.",
+      "dice": { "0-4": "181", "5-9": "145" }
+    },
+    "206": {
+      "testo": "Il sentiero raggiunge una strada dove un cartello indica la direzione per Holmgard. Sei sulla strada giusta. Continui a cavalcare verso sud.",
+      "choices": [
+        { "text": "Vai al 233.", "target": "233" }
+      ]
+    },
+    "207": {
+      "testo": "Il sentiero si addentra nella foresta e dopo un po' arriva a una radura con un altare di pietra. Sopra l'altare c'è una Spada. Se vuoi puoi prenderla.",
+      "choices": [
+        { "text": "Vai al 15.", "target": "15" }
+      ]
+    },
+    "208": {
+      "testo": "Ti avvicini al carro e combatti i tre Giak che sono scesi dal Kraan. Devi combatterli uno alla volta.",
+      "combat": {
+        "name": "Giak 1",
+        "combattività": 13,
+        "resistenza": 10,
+        "nextEnemy": [
+          { "name": "Giak 2", "combattività": 12, "resistenza": 10 },
+          { "name": "Giak 3", "combattività": 12, "resistenza": 10 }
+        ],
+        "onWin": "320"
+      }
+    },
+    "209": {
+      "testo": "Ti prepari a combattere contro i banditi che ti hanno circondato.",
+      "choices": [
+        { "text": "Vai al 180.", "target": "180" }
+      ]
+    },
+    "210": {
+      "testo": "Entri nella Sala del Consiglio. È un grande edificio di pietra, pieno di gente che discute animatamente. Nessuno ti dà retta. Ti avvicini a un ufficiale che sembra essere a capo delle guardie e gli racconti la tua storia. L'uomo ti ascolta con attenzione e poi ti dice: 'Sono stati giorni terribili, ma la tua notizia è la peggiore. Il Re è nella rocca. Ti ci porterò io stesso'.",
+      "choices": [
+        { "text": "Vai al 314.", "target": "314" }
+      ]
+    },
+    "211": {
+      "testo": "Continuando ad esplorare la galleria, trovi una piccola nicchia con una scatola di legno. Se vuoi puoi aprirla.",
+      "choices": [
+        { "text": "Vai al 124.", "target": "124" }
+      ]
+    },
+    "212": {
+      "testo": "Ti svegli in un letto morbido e pulito. Davanti a te c'è un uomo alto, vestito di bianco, con una ciotola di erbe in mano. Lo riconosci come uno dei più anziani medici del Re: la colomba ricamata in oro sulla sua manica è il segno della sua nobile professione. Gli racconti ciò che è successo al monastero, e del tuo pericoloso viaggio per raggiungere il Re. Aiutandoti ad alzarti dal letto ti prega di seguirlo. Vedi che sei in una stanza sontuosamente decorata, da cui parte un lungo corridoio con le pareti coperte di arazzi. A poco a poco capisci dove ti trovi. Questa è la rocca di Holmgard, e tu stai per incontrare il Re.",
+      "choices": [
+        { "text": "Vai al 350.", "target": "350" }
+      ]
+    },
+    "213": {
+      "testo": "Sono due ore che marci nella foresta. La paura di esserti perso diventa sempre più forte. Tranne qualche grido isolato di un Kraan in distanza, non hai visto o udito nulla che lasci supporre la presenza del nemico. Scendendo una collina rocciosa vedi qualcosa di strano tra gli alberi.",
+      "choices": [
+        { "text": "Vai al 331.", "target": "331" }
+      ]
+    },
+    "214": {
+      "testo": "Il sentiero si fa sempre meno evidente, fino a scomparire nel folto della vegetazione. Di qua non puoi proseguire, e devi tornare alla radura.",
+      "choices": [
+        { "text": "Vai al 125 e prendi il sentiero verso sud.", "target": "125" }
+      ]
+    },
+    "215": {
+      "testo": "Esci in una piccola radura. Nel mezzo vedi il cadavere di un grande animale. Più in là c'è un sentiero che va verso sud.",
+      "choices": [
+        { "text": "Vai al 228.", "target": "228" }
+      ]
+    },
+    "216": {
+      "testo": "Usi la tua Arte della Guarigione per alleviare il dolore del soldato. Le sue ferite sono gravi, ma riesci a fermare l'emorragia. Il soldato ti ringrazia e ti dice che il principe Pelatar è in pericolo. Ti prega di andare ad aiutarlo.",
+      "choices": [
+        { "text": "Vai al 97.", "target": "97" }
+      ]
+    },
+    "217": {
+      "testo": "Schivi il vecchio pazzo e ti allontani rapidamente. Dopo poco riesci a seminarlo e a riprendere il cammino verso la rocca.",
+      "choices": [
+        { "text": "Vai al 144.", "target": "144" }
+      ]
+    },
+    "218": {
+      "testo": "Usi l'Arte del Sesto Senso per scrutare la riva. Senti che i cavalieri non sono nemici: sono Rangers del Re in pattuglia. Puoi mostrarti senza timore.",
+      "choices": [
+        { "text": "Vai al 75.", "target": "75" }
+      ]
+    },
+    "219": {
+      "testo": "Mentre togli lo spillo decorato, senti un rumore che ti stordisce. Scegli un numero dalla Tabella del Destino. Da 0 a 4, vai al 317. Da 5 a 9, vai al 317.",
+      "dice": { "0-4": "317", "5-9": "317" }
+    },
+    "220": {
+      "testo": "Estrai la tua Arma e attacchi la guardia del corpo. Devi combatterla.",
+      "choices": [
+        { "text": "Vai al 191.", "target": "191" }
+      ]
+    },
+    "221": {
+      "testo": "Ti arrampichi sulla palizzata e riesci a entrare nella città senza essere visto. Ora ti trovi nelle strade affollate di Holmgard.",
+      "choices": [
+        { "text": "Vai al 51.", "target": "51" }
+      ]
+    },
+    "222": {
+      "testo": "A un certo punto arrivi a un sentiero che si biforca.",
+      "choices": [
+        { "text": "Se vuoi andare a sud, vai al 140.", "target": "140" },
+        { "text": "Se vuoi andare a est, vai al 252.", "target": "252" },
+        { "text": "Se vuoi usare l'Arte dell'Orientamento, vai al 67.", "target": "67", "requisito": "Orientamento" }
+      ]
+    },
+    "223": {
+      "testo": "Con molta fatica riesci a spingere in acqua il pesante tronco. Fai un fagotto del tuo equipaggiamento e lo sistemi in modo che non si bagni; quindi, reggendoti al tronco, ti lasci trascinare dalla corrente. Dopo una ventina di minuti senti dei cavalli che galoppano sulla sponda sinistra.",
+      "choices": [
+        { "text": "Se vuoi star nascosto dietro il tronco, vai al 75.", "target": "75" },
+        { "text": "Se vuoi arrampicarti sul tronco per attirare l'attenzione dei cavalieri, vai al 175.", "target": "175" }
+      ]
+    },
+    "224": {
+      "testo": "Hai cavalcato per alcuni chilometri e non hai visto né profughi né traccia del nemico. Ti dirigi verso un'altura poco distante; da lì dovrebbe essere possibile vedere la capitale. Come raggiungi la cima ti si riempie il cuore di speranza, ma sai che le difficoltà non sono ancora finite.",
+      "choices": [
+        { "text": "Vai al 153.", "target": "153" }
+      ]
+    },
+    "225": {
+      "testo": "Riconosci il linguaggio dei Kakarmi, una specie di animali molto intelligenti che vivono nelle foreste di Sommerlund. Non hai niente da temere da loro perché sono timidi e dolci. Usando la tua Affinità animale gli parli nella loro strana lingua.",
+      "choices": [
+        { "text": "Se dici 'Non temete, sono un amico', vai al 187.", "target": "187" },
+        { "text": "Se dici 'Sono un Ramas, non voglio farvi del male. Devo parlare con voi', vai al 39.", "target": "39" }
+      ]
+    },
+    "226": {
+      "testo": "All'inizio la discesa è abbastanza facile, ma poi ti si annebbia la vista e le gambe cedono. Il Dente del sonno sta facendo il suo effetto, e improvvisamente cadi in avanti e tutto diventa buio.",
+      "dice": { "0-4": "277", "5-9": "338" }
+    },
+    "227": {
+      "testo": "Sei immerso fino alla vita nell'acqua limacciosa. L'aria è piena di piccoli insetti che ti pungono e ti entrano nel naso. Senti qualcosa che si avvolge a una gamba. È un serpente, e devi ucciderlo.",
+      "combat": {
+        "name": "Serpente",
+        "combattività": 16,
+        "resistenza": 6,
+        "onWin": "348",
+        "onDamage": { "2": "271" }
+      }
+    },
+    "228": {
+      "testo": "Il sentiero continua verso est ma presto si perde nel fitto sottobosco.",
+      "choices": [
+        { "text": "Se vuoi continuare verso est aprendoti la strada con l'Ascia, vai al 140.", "target": "140" },
+        { "text": "Se vai verso sud, dove i cespugli sono meno folti, vai al 215.", "target": "215" }
+      ]
+    },
+    "229": {
+      "testo": "Il Kraan è sopra di te, e la polvere alzata dalle sue ali nere ti entra negli occhi e nel naso, e ti fa mancare il respiro. Ora il mostro attacca. Devi ucciderlo assolutamente. A causa della polvere devi togliere 1 punto di Combattività.",
+      "combat": {
+        "name": "Kraan",
+        "combattività": 16,
+        "resistenza": 25,
+        "modificatori": { "combattività": -1 },
+        "onWin": "267",
+        "onWinChoices": [
+          { "text": "Esaminare il cadavere del Kraan andando al 267.", "target": "267" },
+          { "text": "Continuare lungo il sentiero verso est, andando al 125.", "target": "125" }
+        ]
+      }
+    },
+    "230": {
+      "testo": "Se vuoi, dopo due scontri, puoi fuggire per la porta principale, andando al 7.",
+      "choices": [
+        { "text": "Vai al 7.", "target": "7" }
+      ]
+    },
+    "231": {
+      "testo": "Stai per chiedere il prezzo delle pozioni quando il paravento di bambù si rovescia e un giovane con un lungo pugnale ricurvo si lancia su di te. Ti è addosso e devi salvarti la vita.",
+      "combat": {
+        "name": "Assassino",
+        "combattività": 13,
+        "resistenza": 20,
+        "onWin": "94",
+        "onWinAfterRounds": { "4": "203" },
+        "onFlee": "7"
+      }
+    },
+    "232": {
+      "testo": "Il capo si avvicina e ti dice: 'Non ti chiediamo molto, signore: o la borsa o la vita'.",
+      "choices": [
+        { "text": "Se vuoi combattere, vai al 180.", "target": "180" },
+        { "text": "Se vuoi fuggire, vai al 22.", "target": "22" }
+      ]
+    },
+    "233": {
+      "testo": "Dopo circa un'ora raggiungi il cavallo e riesci a tranquillizzarlo. Ti trovi a nord rispetto alla capanna, ma non sarà difficile trovare la via del ritorno. A cavallo ritorni alla capanna e continui verso sud.",
+      "choices": [
+        { "text": "Vai al 206.", "target": "206" }
+      ]
+    },
+    "234": {
+      "testo": "Salti giù dal carrozzone in corsa ma cadi malamente e ti rompi la caviglia. Il dolore è terribile e presto perdi conoscenza. Purtroppo non ti sveglierai più, ma forse ti interessa sapere che la tua testa ora adorna la sella di un Kraan.",
+      "gameOver": true
+    },
+    "235": {
+      "testo": "Il cavallo del principe è veramente un magnifico animale, veloce e dai garretti saldi. Galoppi lungo il sentiero tortuoso come se fosse un rettilineo, mentre il rumore della battaglia si affievolisce dietro di te. Hai fame e devi fare un Pasto altrimenti perdi 3 punti di Resistenza. Dopo diversi chilometri il sentiero arriva a un incrocio. C'era sicuramente un cartello, ma è stato distrutto.",
+      "onEnter": { "consumePasto": true, "penaltySeNoPasto": -3 },
+      "choices": [
+        { "text": "Se vuoi girare a sinistra, vai al 32.", "target": "32" },
+        { "text": "Se vuoi girare a destra, vai al 146.", "target": "146" },
+        { "text": "Se vuoi usare l'Arte dell'Orientamento, vai al 254.", "target": "254", "requisito": "Orientamento" }
+      ]
+    },
+    "236": {
+      "testo": "La Gemma sta sospesa sopra la testa dello scheletro, ed emette un chiarore rossastro. Improvvisamente una violenta esplosione di fuoco esce dal sarcofago distruggendo completamente la Gemma. La violenza dello scoppio ti scaglia contro la parete opposta e il colpo ti fa perdere i sensi. Quando ti svegli la stanza è vuota. Lo scheletro e il sarcofago sono svaniti. Hai perso 6 punti di Resistenza e la tua Combattività iniziale è ridotta di un punto per sempre. Ti rimetti in piedi e ti trascini verso la galleria.",
+      "onEnter": { "damage": 6, "permanentCombattività": -1 },
+      "choices": [
+        { "text": "Vai al 104.", "target": "104" }
+      ]
+    },
+    "237": {
+      "testo": "Usando al meglio la tua Arte del Mimetismo ti scavi un buco nel fianco della collina. Coprendoti col mantello ti nascondi sotto dei rami caduti.",
+      "dice": { "0-4": "265", "5-9": "72" }
+    },
+    "238": {
+      "testo": "Il sentiero si snoda tra piccole alture boscose e conduce a una capanna in rovina. Sembra che sia stata incendiata non molto tempo fa, perché le ceneri sono ancora calde e una nuvola di fumo ristagna ancora nell'aria. Avverti un pericolo vicino.",
+      "choices": [
+        { "text": "Puoi andare verso sud, andando al 42.", "target": "42" },
+        { "text": "Oppure a nord, andando al 68.", "target": "68" }
+      ]
+    },
+    "239": {
+      "testo": "Inoltrandoti nella foresta senti le ali del Kraan che si allontana sopra gli alberi, e continui a cavalcare per un'ora fino a una radura. Sul lato opposto c'è un sentiero che va a sud.",
+      "choices": [
+        { "text": "Se vuoi attraversare la radura per imboccare il sentiero, vai al 34.", "target": "34" },
+        { "text": "Se preferisci tenerti al coperto e raggiungere il sentiero più avanti, vai al 118.", "target": "118" }
+      ]
+    },
+    "240": {
+      "testo": "Il sentiero costeggia un dirupo e piega verso est.",
+      "choices": [
+        { "text": "Vai al 79.", "target": "79" }
+      ]
+    },
+    "241": {
+      "testo": "Il mago sente il tuo grido e si gira in tempo per colpire il Giak con un lampo. La testa della creatura si disintegra in fiamme mentre il corpo si contrae in uno spasimo cadendo ai piedi della colonna. Il capo dei Giak ti vede e grida 'Ogot... Ogot!' ai suoi che si ritirano curvi nella foresta. Il giovane mago tira un sospiro di sollievo e viene verso di te con la mano tesa in segno di gratitudine e amicizia.",
+      "choices": [
+        { "text": "Vai al 349.", "target": "349" }
+      ]
+    },
+    "242": {
+      "testo": "Il coperchio del sarcofago scivola sul pavimento con un sordo rimbombo. Dentro ci sono i resti di un antico Re che giace circondato dal suo tesoro, con la corona che orna ancora il teschio. Tra le mascelle spalancate si intravede un'oscurità senza fondo. Dalle viscere della terra sale un cupo rumore.",
+      "choices": [
+        { "text": "Se hai l'Arte dello Psicoschermo, vai al 166.", "target": "166", "requisito": "Psicoschermo" },
+        { "text": "Altrimenti, vai al 9.", "target": "9" }
+      ]
+    },
+    "243": {
+      "testo": "Mentre corri nella foresta inciampi giù per una scarpata e ti ritrovi su un sentiero, accanto a un cadavere. È uno dei Giak, i malvagi servitori dei Signori delle Tenebre. Molti secoli fa i loro antenati furono impiegati dai Signori delle Tenebre come schiavi per costruire l'infernale città di Helgedad, che si trova nelle desolate terre vulcaniche oltre i monti Dumcrag. La costruzione della città fu un lungo e tormentato incubo, e solo i più forti dei Giak sopravvissero all'aria soffocante e nociva di Helgedad. L'essere che giace davanti a te è un discendente di quegli schiavi. È stato ucciso da un colpo di spada, e accanto a lui c'è una Mazza. Puoi prenderla, se vuoi. Continua lungo il sentiero.",
+      "onEnter": { "addItems": ["Mazza"] },
+      "choices": [
+        { "text": "Vai al 97.", "target": "97" }
+      ]
+    },
+    "244": {
+      "testo": "I tuoi sensi ti dicono che non sei solo, sei in presenza di un grande pericolo: torna in superficie più presto che puoi.",
+      "choices": [
+        { "text": "Vai al 93.", "target": "93" }
+      ]
+    },
+    "245": {
+      "testo": "Le frecce cadono dolcemente nell'acqua intorno a te, ormai innocue, mentre nuotando sotto la superficie raggiungi la riva opposta. Rapidamente esci dall'acqua e corri tra gli alberi. Sei fuori dalla portata dei Giak, i quali salgono in groppa ai Tigerwolf e continuano la caccia.",
+      "choices": [
+        { "text": "Vai al 190.", "target": "190" }
+      ]
+    },
+    "246": {
+      "testo": "Quando il traghetto arriva in mezzo al lago l'uomo smette di remare, si alza e con un sogghigno sinistro si toglie il cappuccio. È un Drakkar, e devi combatterlo.",
+      "combat": {
+        "name": "Drakkar",
+        "combattività": 15,
+        "resistenza": 23,
+        "onWin": "197"
+      }
+    },
+    "247": {
+      "testo": "Il mercante sembra arrabbiato e chiama la guardia del corpo. Devi escogitare rapidamente qualcosa.",
+      "choices": [
+        { "text": "Se decidi di offrirgli qualcosa di grande valore che hai nello Zaino, vai al 159.", "target": "159" },
+        { "text": "Se decidi di combatterlo, vai al 220.", "target": "220" }
+      ]
+    },
+    "248": {
+      "testo": "Arrivi alla base della collina e corri nella foresta. Dopo pochi minuti scopri un sentiero poco battuto.",
+      "choices": [
+        { "text": "Se vuoi seguirlo verso nord, vai al 44.", "target": "44" },
+        { "text": "Se vuoi seguirlo verso est, vai al 300.", "target": "300" }
+      ]
+    },
+    "249": {
+      "testo": "Per una scala di pietra scendi in una grande stanza. Ti attende una macabra visione: la strana luce verdastra proviene da due file di teschi appoggiati ognuno su un capitello e sistemati uno di fronte all'altro come per segnare il passaggio. Dal lato...",
+      "choices": [
+        { "text": "Vai al 100.", "target": "100" }
+      ]
+    },
+    "250": {
+      "testo": "Saltando oltre il tronco ti trovi davanti a due bestioline pelose. Sono Kakarmi, una specie di animali intelligenti che vivono nella foresta di Sommerlund. Prima che tu possa scusarti per il modo in cui sei apparso, gli animaletti impauriti scappano nella foresta.",
+      "choices": [
+        { "text": "Se vuoi seguirli, vai al 186.", "target": "186" },
+        { "text": "Se preferisci continuare, vai al 228.", "target": "228" }
+      ]
+    },
+    "251": {
+      "testo": "Hai fortuna, non sembra che ti abbiano visto. Dopo un po' si muovono e scompaiono oltre la collina. Tu continui a correre.",
+      "choices": [
+        { "text": "Vai al 10.", "target": "10" }
+      ]
+    },
+    "252": {
+      "testo": "Nel centro di una piccola radura c'è un gruppo di persone che parla e gesticola animatamente. Ci sono due bambini, tre uomini e una donna. Portano sulle spalle dei fagotti con tutti i loro averi. I loro vestiti sono di buona qualità, ma laceri e sporchi.",
+      "choices": [
+        { "text": "Se vuoi avvicinarti e chiedere chi sono, vai al 155.", "target": "155" },
+        { "text": "Se vuoi evitarli e continuare il viaggio, vai al 70.", "target": "70" }
+      ]
+    },
+    "253": {
+      "testo": "I Tigerwolf ti sono addosso e devi combatterli uno alla volta.",
+      "combat": {
+        "name": "Tigerwolf 1",
+        "combattività": 13,
+        "resistenza": 24,
+        "nextEnemy": [
+          { "name": "Tigerwolf 2", "combattività": 14, "resistenza": 23 },
+          { "name": "Tigerwolf 3", "combattività": 14, "resistenza": 22 },
+          { "name": "Tigerwolf 4", "combattività": 15, "resistenza": 21 }
+        ],
+        "onWin": "278"
+      }
+    },
+    "254": {
+      "testo": "La tua Arte dell'Orientamento ti dice che ci sono tracce di Tigerwolf che si dirigono verso il sentiero di sinistra. Sono bestie malvage che i Signori delle Tenebre impiegano come segugi, e che spesso sono montate dai Giak. Il sentiero di sinistra porta verso Holmgard, quello di destra verso i monti Dumcrag. A te la scelta.",
+      "choices": [
+        { "text": "Se vai a sinistra, vai al 32.", "target": "32" },
+        { "text": "Se vai a destra, vai al 146.", "target": "146" }
+      ]
+    },
+    "255": {
+      "testo": "Sei di fronte a un Gurgaz, una specie di rettile che vive nelle infide paludi di Makenmire. Il suo cibo prediletto è la carne umana! La Spada del principe giace ai tuoi piedi. Se vuoi puoi prenderla e usarla. Il Gurgaz sta per colpirti, e devi combatterlo fino alla morte.",
+      "onEnter": { "addItems": ["Spada del Principe"] },
+      "combat": {
+        "name": "Gurgaz",
+        "combattività": 20,
+        "resistenza": 30,
+        "note": "Questo essere è insensibile allo Psicolaser.",
+        "onWin": "82"
+      }
+    },
+    "256": {
+      "testo": "Ti svegliano le grida dei Kraan che volteggiano nella chiara luce del mattino. Scrutando tra l'intrico dei rami vedi tre di quelle bestiacce allontanarsi verso nord. Anche se pensi che non ti abbiano visto è opportuno che tu ti metta in viaggio. Sali a cavallo e galoppi verso sud.",
+      "choices": [
+        { "text": "Vai al 224.", "target": "224" }
+      ]
+    },
+    "257": {
+      "testo": "Trovi un portale di pietra sulla parete est, ma sembra che sia impossibile aprirlo.",
+      "choices": [
+        { "text": "Se vuoi esaminare la statua, vai al 133.", "target": "133" },
+        { "text": "Se vuoi sederti sul trono, vai al 161.", "target": "161" }
+      ]
+    },
+    "258": {
+      "testo": "Usando l'Arte della Telecinesi, sciogli le corde che ti legano le mani. Aspetti il momento opportuno e scappi velocemente nel fitto sottobosco. Nere frecce ti sibilano intorno, ma sei presto al sicuro tra gli alberi. Hai perso Zaino e Armi, ma sei sano e salvo. Continui ad avanzare nella foresta.",
+      "onEnter": { "loseAllItems": true, "loseAllWeapons": true },
+      "choices": [
+        { "text": "Vai al 50.", "target": "50" }
+      ]
+    },
+    "259": {
+      "testo": "La stanza si sta raffreddando. Cominci a sentire un odore di zolfo nell'aria, e una sorta di litania che giunge da qualche parte della caverna. Si apre una fessura nel muro di pietra, e spunta la cima di una asta nera. Un lampo di luce azzurra si sprigiona dall'asta e ti colpisce in pieno petto. Mentre la tua vita si spegne, ti resta negli occhi l'immagine di un vecchio vestito di nero che ti avvicina un pugnale alla gola.",
+      "gameOver": true
+    },
+    "260": {
+      "testo": "Nuotando verso la riva vedi il Ranger riverso sul bordo dell'acqua. Lo raggiungi ma ti accorgi subito che nella caduta si è spezzato il collo ed è morto. Improvvisamente due Giak si lanciano su di te, e devi combattere. Sei disarmato e puoi usare solo le mani. Togli 4 punti dalla tua Combattività e affrontali uno alla volta.",
+      "combat": {
+        "name": "Giak 1",
+        "combattività": 11,
+        "resistenza": 18,
+        "modificatori": { "combattività": -4 },
+        "nextEnemy": { "name": "Giak 2", "combattività": 12, "resistenza": 17 },
+        "onWin": "156"
+      }
+    },
+    "261": {
+      "testo": "Coperto di sudore, e senza fiato, intravvedi tra il fogliame un Kraan esattamente sopra il carro. Tre Giak si lasciano cadere dalla sua groppa, spaventando i cavalli. Con le lance alzate si muovono verso i bambini indifesi.",
+      "choices": [
+        { "text": "Se vuoi tornare a difendere i bambini, vai al 208.", "target": "208" },
+        { "text": "Se vuoi fuggire nella foresta, vai al 264.", "target": "264" }
+      ]
+    },
+    "262": {
+      "testo": "Il mercante prende il tuo oro e schiocca le dita. La sua guardia del corpo ti attacca con la scimitarra.",
+      "choices": [
+        { "text": "Se vuoi combattere, vai al 191.", "target": "191" },
+        { "text": "Se vuoi evitare lo scontro puoi saltare dal carrozzone in corsa e andare al 234.", "target": "234" }
+      ]
+    },
+    "263": {
+      "testo": "Cammini per quasi un'ora seguendo il corso tortuoso del fiume. Al di là di un'ansa senti un rumore di battaglia. Decidi di salire sulla sponda per controllare un'area più estesa.",
+      "choices": [
+        { "text": "Vai al 273.", "target": "273" }
+      ]
+    },
+    "264": {
+      "testo": "La salita sembra durare un'eternità, ma alla fine raggiungi la cima. Dietro di te vedi le fumanti rovine del monastero. Verso nord una colonna di fumo nero si alza nel cielo e capisci, con una stretta al cuore, che il porto di Toran è in fiamme. Improvvisamente un urlo sinistro ti fa capire che un Kraan sta per attaccarti. È sopra di te, a una trentina di metri, e sta scendendo in picchiata.",
+      "choices": [
+        { "text": "Se vuoi restare a combattere, vai al 17.", "target": "17" },
+        { "text": "Se vuoi fuggire scendendo l'altro lato della collina, vai all'89.", "target": "89" }
+      ]
+    },
+    "265": {
+      "testo": "Il Kraan è volato via durante il combattimento. Sistemi lo Zaino e prosegui il viaggio.",
+      "choices": [
+        { "text": "Vai al 272.", "target": "272" }
+      ]
+    },
+    "266": {
+      "testo": "Il Serpente Alato giace morto ai tuoi piedi. La stanza è ora silenziosa. Puoi cercare un'uscita.",
+      "choices": [
+        { "text": "Vai al 23.", "target": "23" }
+      ]
+    },
+    "267": {
+      "testo": "Da oltre il lago ti giungono le grida infuriate del nemico. Devi andartene prima che compaiano altri Kraan. Monti a cavallo e ti inoltri nella foresta.",
+      "choices": [
+        { "text": "Vai al 21.", "target": "21" }
+      ]
+    },
+    "268": {
+      "testo": "Perdi conoscenza per un paio di minuti, poi qualcuno ti fa rinvenire con un sorso di acquavite. Ancora preoccupato, ma contento di essere in vita, ti appoggi sulle spalle dei soldati del Re e ti trascini verso le prime fortificazioni.",
+      "choices": [
+        { "text": "Vai al 288.", "target": "288" }
+      ]
+    },
+    "269": {
+      "testo": "Il pazzo giace morto ai tuoi piedi. Due soldati compaiono sulla porta e si congratulano con te. Gli stavano dando la caccia da almeno due giorni, e uno di loro ti dà 10 Corone come ricompensa e si offre di scortarti alla rocca.",
+      "onEnter": { "addCorone": 10 },
+      "choices": [
+        { "text": "Se accetti la sua offerta, vai al 314.", "target": "314" },
+        { "text": "Se preferisci andare da solo, vai al 7.", "target": "7" }
+      ]
+    },
+    "270": {
+      "testo": "Da oltre il lago ti giungono le grida infuriate del nemico. Devi andartene prima che compaiano altri Kraan. Monti a cavallo e ti inoltri nella foresta.",
+      "choices": [
+        { "text": "Vai al 21.", "target": "21" }
+      ]
+    },
+    "271": {
+      "testo": "Ti senti molto debole, il veleno del serpente ti è entrato nel sangue. Non controlli più il movimento dei muscoli, le gambe ti vengono meno, e le acque limacciose della palude si chiudono sopra di te. La morte ti ha colto.",
+      "gameOver": true
+    },
+    "272": {
+      "testo": "Continuando a guardare sopra di te cammini velocemente sul sentiero. Sei sulla strada per Fogwood, un piccolo insediamento di baracche dove da cinquant'anni vivono dei carbonai. Le raggiungi dopo una ventina di minuti, ma ti fermi al margine della radura: stranamente non un filo di fumo esce dalle baracche, e regna un'insolita calma.",
+      "choices": [
+        { "text": "Se possiedi l'Arte dell'Orientamento, vai al 134.", "target": "134", "requisito": "Orientamento" },
+        { "text": "Altrimenti impugna la tua Arma e avvicinati cautamente, andando al 305.", "target": "305" }
+      ]
+    },
+    "273": {
+      "testo": "Ora puoi vedere la prima linea di fortificazioni. Attraverso il fiume si stende una fila di chiatte legate l'una all'altra in modo da formare una barriera. Ci sono dei soldati che corrono lungo la palizzata e senti un lontano rumore di battaglia verso ovest.",
+      "choices": [
+        { "text": "Se vuoi avvicinarti alle chiatte, vai al 179.", "target": "179" },
+        { "text": "Se vuoi ripararti tra gli alberi, vai al 51.", "target": "51" }
+      ]
+    },
+    "274": {
+      "testo": "Nella fretta inciampi in una radice affiorante e rotoli tra le foglie polverose. Ti rimetti subito in piedi e lanciandoti tra i cespugli corri nella foresta. Dopo dieci minuti ti accorgi che non hai più Armi. In compenso hai ancora lo Zaino, e sei vivo. Con un sospiro di sollievo continui ad avanzare.",
+      "onEnter": { "loseAllWeapons": true },
+      "choices": [
+        { "text": "Vai al 331.", "target": "331" }
+      ]
+    },
+    "275": {
+      "testo": "Dopo una ventina di minuti che cammini sul sentiero tortuoso, senti un battito di ali al di sopra degli alberi. Un Kraan si avvicina da nord, e le sue enormi ali nere proiettano un'ombra gigantesca sulla verde distesa. Lo montano due creature armate di lunghe lance. Sono Giak della montagna, esseri malvagi e spietati. Ti metti rapidamente al riparo di un albero, e col cuore in gola speri di non essere visto.",
+      "dice": { "0-4": "345", "5-9": "74" }
+    },
+    "276": {
+      "testo": "A colpi d'Ascia ti apri la strada nell'intrico dei rami fin dove gli alberi sono più radi. Il tuo mantello è strappato in più punti e hai preso un brutto colpo sul ginocchio destro. Perdi 1 punto di Resistenza, e vai al 213.",
+      "onEnter": { "damage": 1 },
+      "choices": [
+        { "text": "Vai al 213.", "target": "213" }
+      ]
+    },
+    "277": {
+      "testo": "Quando riprendi i sensi ti ritrovi disteso tra l'erba ai piedi di una scarpata. Non vedi il tuo Zaino né le tue Armi, e ti fa male la testa. Non sai quanto tempo sei stato privo di conoscenza, ma sai che non puoi ritardare ancora la tua missione. Alzandoti in piedi trovi lo Zaino, ma l'Arma si è spezzata ed è fuori uso. Ricordati di cancellarla dal tuo Registro di Guerra: (se hai più di un'arma, solo una si è spezzata; scegli tu quale) prendi lo Zaino e ti metti in cammino.",
+      "onEnter": { "breakOneWeapon": true },
+      "choices": [
+        { "text": "Vai al 113.", "target": "113" }
+      ]
+    },
+    "278": {
+      "testo": "Lasci il sentiero e galoppi lungo la pista che porta alla capitale. Arrivato al punto dove i Tigerwolf si erano fermati vedi oltre un campo la grande strada che collega Holmgard al porto settentrionale di Toran. Dovresti raggiungere la capitale al mattino.",
+      "choices": [
+        { "text": "Vai al 149.", "target": "149" }
+      ]
+    },
+    "279": {
+      "testo": "Oltrepassando le pietre ammassate entri nella grotta, e rapidamente spingi un macigno contro l'apertura. Dopo pochi minuti ecco comparire i Giak che scrutano con i loro occhi feroci ogni centimetro del fianco della collina. Sono così vicini che ormai sei sicuro che ti vedranno da un momento all'altro.",
+      "dice": { "0-6": "112", "7-9": "96" }
+    },
+    "280": {
+      "testo": "Mentre inizi la scalata senti un battito di ali sopraggiungere da ovest. I Kraan! A giudicare dal rumore ce ne sono almeno dieci, forse di più. Imprechi contro la sfortuna, perché la collina non offre alcun riparo dal cielo. Se vieni attaccato adesso ti sarà quasi impossibile difenderti e stare in piedi nello stesso tempo.",
+      "choices": [
+        { "text": "Se decidi di rimanere immobile sperando che i Kraan non ti vedano, vai al 327.", "target": "327" }
+      ]
+    },
+    "281": {
+      "testo": "Fuggi immediatamente nella foresta, cercando di seminare i tuoi inseguitori. Dopo una corsa estenuante riesci a raggiungere un sentiero sicuro.",
+      "choices": [
+        { "text": "Vai al 101.", "target": "101" }
+      ]
+    },
+    "282": {
+      "testo": "Usi l'Arte del Mimetismo per nasconderti tra la vegetazione. I tuoi inseguitori passano oltre senza vederti.",
+      "choices": [
+        { "text": "Vai al 114.", "target": "114", "requisito": "Mimetismo" }
+      ]
+    },
+    "283": {
+      "testo": "Estrai la tua Arma e attacchi lo sconosciuto. Con tuo grande orrore, l'uomo si gira e rivela il volto cadaverico di un Vordak. Devi combatterlo.",
+      "choices": [
+        { "text": "Vai al 309.", "target": "309" }
+      ]
+    },
+    "284": {
+      "testo": "Ti inoltri nel Cimitero degli Antichi. Le tombe sono antiche e ricoperte di muschio, e l'aria è gelida e immobile. Improvvisamente senti un rumore alle tue spalle.",
+      "choices": [
+        { "text": "Vai al 329.", "target": "329" }
+      ]
+    },
+    "285": {
+      "testo": "Ti lanci in aiuto del giovane mago.",
+      "choices": [
+        { "text": "Vai al 325.", "target": "325" }
+      ]
+    },
+    "286": {
+      "testo": "Solerti messaggeri di morte, i Tigerwolf ti circondano e ti attaccano. Combatti valorosamente, ma è tutto inutile, sono in troppi. Mentre il tuo flusso vitale se ne va e il buio eterno ti abbraccia, vedi in lontananza il riverbero del sole sulle torri di Holmgard.",
+      "gameOver": true
+    },
+    "287": {
+      "testo": "Il sentiero si perde nell'intrico di rovi e conifere nane.",
+      "choices": [
+        { "text": "Se vuoi tornare all'incrocio e andare a est, vai al 13.", "target": "13" },
+        { "text": "Se vuoi continuare in questa direzione aprendoti la strada a colpi d'Ascia, vai al 330.", "target": "330" }
+      ]
+    },
+    "288": {
+      "testo": "Appena raggiungi le fortificazioni le ampie porte si aprono e vieni fatto entrare rapidamente. Un sergente lacero e insanguinato chiama un ufficiale, che si gira e riconosce il tuo mantello. 'Signore, dice, dove sono gli altri Ramas? Abbiamo un disperato bisogno della vostra guida. I Signori delle Tenebre ci incalzano e le perdite sono alte'. Gli racconti della triste sorte dei tuoi fratelli, e gli dici di avere assoluta urgenza di parlare al Re. Senza dire una parola fa segno a un soldato di portare due cavalli. Insieme montate a cavallo e galoppate verso le alte mura di Holmgard.",
+      "choices": [
+        { "text": "Vai al 129.", "target": "129" }
+      ]
+    },
+    "289": {
+      "testo": "Le due guardie sembrano stanche e preoccupate. Impugnano nervosamente le alabarde, usandole per allontanare chi si avvicina troppo alle porte. Una donna infuriata riesce ad aggrapparsi a uno dei soldati e lo spinge contro l'altro; cadono tutti e tre in un groviglio di braccia e gambe. È la tua occasione: ti lanci in avanti e riesci ad aprire le porte. Entri e le richiudi senza che i soldati si accorgano di nulla.",
+      "choices": [
+        { "text": "Vai al 139.", "target": "139" }
+      ]
+    },
+    "290": {
+      "testo": "Dentro la lunga cassa c'è un'Asta da combattimento avvolta in una guaina di cuoio. Puoi prendere quest'Arma. Chiudi la cassa e scendi la scala stando attento a evitare i gradini rotti.",
+      "onEnter": { "addItems": ["Asta da combattimento"] },
+      "choices": [
+        { "text": "Vai al 140.", "target": "140" }
+      ]
+    },
+    "291": {
+      "testo": "I due Giak sono ai tuoi piedi, riversi ed esanimi. Gli trovi addosso 6 Corone d'oro, un Pugnale e due Lance. Puoi prendere l'oro, e tenere o il Pugnale o una Lancia, segnando tutto sul Registro di Guerra.",
+      "onEnter": { "addCorone": 6, "addItems": ["Pugnale"] },
+      "choices": [
+        { "text": "Vai al 272.", "target": "272" }
+      ]
+    },
+    "292": {
+      "testo": "La tua ultima sensazione è di essere trascinato in un gorgo di tenebre. In questo mondo non resterà traccia alcuna di te, perché sei passato in una dimensione senza tempo. Ora sei schiavo delle forze del male. La tua avventura è finita.",
+      "gameOver": true
+    },
+    "293": {
+      "testo": "Con un cenno di saluto Banedon si allontana e tu riprendi la tua strada nella foresta. Dopo poco tempo ti accorgi che sulla tua sinistra ci sono molte paia di occhi giallastri che ti spiano. Una freccia nera ti sfiora il capo. È un'imboscata dei Giak, e devi scappare più presto che puoi.",
+      "choices": [
+        { "text": "Vai al 281.", "target": "281" }
+      ]
+    },
+    "294": {
+      "testo": "Resti il più possibile sott'acqua, poi finalmente torni alla superficie: i Giak sono molto indietro. Hai perso Armi e Zaino, ma sei ancora vivo. Esci dall'acqua fangosa e continui il viaggio sulla riva destra al riparo degli alberi.",
+      "onEnter": { "loseAllItems": true, "loseAllWeapons": true },
+      "choices": [
+        { "text": "Vai al 190.", "target": "190" }
+      ]
+    },
+    "295": {
+      "testo": "Il sentiero si addentra in una zona di foresta più rada. Dopo un po' vedi una radura con un albero solitario.",
+      "choices": [
+        { "text": "Vai al 113.", "target": "113" }
+      ]
+    },
+    "296": {
+      "testo": "Usi l'Arte del Sesto Senso per scrutare il traghettatore. Senti che le sue intenzioni non sono buone: è un Drakkar travestito. Rifiuti l'offerta e ti allontani.",
+      "choices": [
+        { "text": "Vai al 46.", "target": "46", "requisito": "Sesto Senso" }
+      ]
+    },
+    "297": {
+      "testo": "Usi l'Arte della Caccia per avvicinarti furtivamente ai Giak. Li cogli di sorpresa e li elimini prima che possano reagire. Liberi il Ranger e lo curi.",
+      "choices": [
+        { "text": "Vai al 128.", "target": "128", "requisito": "Caccia" }
+      ]
+    },
+    "298": {
+      "testo": "Chiami il corvo con l'Arte dell'Affinità Animale. L'uccello volta la testa, gracchia, e poi si alza in volo verso sud. Sembra quasi che ti stia invitando a seguirlo...",
+      "choices": [
+        { "text": "Se vuoi seguirlo, vai al 121.", "target": "121" }
+      ]
+    },
+    "299": {
+      "testo": "Togliendo il fango viscido dai vestiti, riprendi a camminare nella foresta. Dopo un po' raggiungi un sentiero che porta verso est.",
+      "choices": [
+        { "text": "Vai al 38.", "target": "38" }
+      ]
+    },
+    "300": {
+      "testo": "Seguendo il sentiero verso est, arrivi a un incrocio. Da qui puoi proseguire in diverse direzioni.",
+      "choices": [
+        { "text": "Vai al 248.", "target": "248" }
+      ]
+    },
+    "301": {
+      "testo": "Usi l'Arte dell'Orientamento per esaminare le tracce. Scopri che il sentiero a ovest è stato percorso di recente da Giak, mentre quello a sud è più sicuro.",
+      "choices": [
+        { "text": "Vai al 125.", "target": "125", "requisito": "Orientamento" }
+      ]
+    },
+    "302": {
+      "testo": "Raccogli un pezzo di pietra e lo lanci contro il Giak. Il colpo va a segno e il Giak cade dalla colonna, permettendoti di salvarlo.",
+      "choices": [
+        { "text": "Vai al 110.", "target": "110" }
+      ]
+    },
+    "303": {
+      "testo": "Mentre corri verso il bosco, un Kraan scende su di te e ti graffia un braccio. Prima che tu possa reagire se ne vola via, emettendo un grido sinistro. Arrivi al bosco, ma hai perso 2 punti di Resistenza.",
+      "onEnter": { "damage": 2 },
+      "choices": [
+        { "text": "Vai al 264.", "target": "264" }
+      ]
+    },
+    "304": {
+      "testo": "La Gemma è rovente, e ti brucia la mano. Perdi 2 punti di Resistenza. Ti avvolgi la mano nell'orlo del mantello e la metti nella tasca della Tunica. Una Gemma di tali dimensioni deve valere centinaia di Corone! Sorridi della fortuna che ti capita, sali a cavallo e ti dirigi verso sud.",
+      "onEnter": { "damage": 2, "addItems": ["Gemma"] },
+      "choices": [
+        { "text": "Vai al 118.", "target": "118" }
+      ]
+    },
+    "305": {
+      "testo": "Attraverso la porta spalancata della prima baracca vedi il cadavere di un carbonaio a faccia in giù. È stato ucciso con un colpo di lancia nella schiena. Tutte le sue cose sono state fracassate e distrutte. Questa è opera dei maledetti Giak che provano piacere nel distruggere ogni cosa. Una rapida occhiata nelle altre baracche rivela la stessa triste vicenda di distruzione e di morte. Nell'ultima baracca trovi una Lancia Giak a conferma dei tuoi sospetti. Puoi tenerla, se vuoi. Sempre più deciso a portare a termine la tua missione continui lungo il sentiero.",
+      "onEnter": { "addItems": ["Lancia Giak"] },
+      "choices": [
+        { "text": "Vai al 105.", "target": "105" }
+      ]
+    },
+    "306": {
+      "testo": "Il rumore della battaglia si smorza dietro di te. Improvvisamente sei trascinato a terra da tre Drakkar che si erano nascosti su un albero. Ogni resistenza è inutile, sono in troppi e sono molto forti. L'ultima cosa che senti è il loro ringhio malvagio mentre alzano le lance. Qui ha termine la tua missione.",
+      "gameOver": true
+    },
+    "307": {
+      "testo": "Arrivi velocemente in cima. Ti ricordi di tanti alberi che hai scalato da bambino a Toran, quando volevi raccogliere qualche frutto o ammirare lo splendido paesaggio di Sommerlund. Alzando la botola vedi un vecchio eremita accovacciato in un angolo. Un'espressione di sollievo gli si dipinge sul volto quando riconosce il tuo verde mantello Ramas. Ti dice che questa zona è piena di Giak e che lui ha contato più di quaranta Kraan in volo nelle ultime tre ore; andavano verso est. Va ad un armadio e torna con un piatto di frutta fresca. Lo ringrazi e metti la frutta nello Zaino: ti basterà per un Pasto. Poi tira fuori un magnifico Martello da combattimento, dicendo 'Servirà di più a te, mio Signore. Prendilo pure'. Puoi prendere quest'Arma solo se gliene dai un'altra in cambio, perché non puoi lasciare l'eremita indifeso. Ringrazi il vecchio e scendi dall'albero per continuare la tua strada.",
+      "onEnter": { "addItems": ["Pasto"], "tradeWeaponFor": "Martello da combattimento" },
+      "choices": [
+        { "text": "Vai al 213.", "target": "213" }
+      ]
+    },
+    "308": {
+      "testo": "La porta della stalla è aperta e puoi sentire il respiro di un cavallo nell'oscurità. Improvvisamente il cavallo sente la tua presenza e parte di scatto, gettandoti a terra. Perdi 1 punto di Resistenza.",
+      "onEnter": { "damage": 1 },
+      "choices": [
+        { "text": "Se vuoi usare l'Arte dell'Affinità animale, vai al 122.", "target": "122", "requisito": "Affinità Animale" },
+        { "text": "Se vuoi inseguire il cavallo fuggito, vai al 233.", "target": "233" }
+      ]
+    },
+    "309": {
+      "testo": "Non hai fatto neanche dieci passi che il corvo gracchia un avvertimento allo sconosciuto. Questi si gira e lancia un grido acuto che ti gela il sangue nelle vene, mentre il panico ti attanaglia lo stomaco. È un Vordak, uno dei morti viventi al servizio dei Signori delle Tenebre. In un attimo una torma di Giak compare accanto a lui e ti attacca. Combatti coraggiosamente ma sei sopraffatto dal numero. L'ultima cosa che ricordi sono le scheletriche mani del Vordak che si stringono sulla tua gola.",
+      "gameOver": true
+    },
+    "310": {
+      "testo": "Sul muro di un palazzo di fronte vedi un cartello sbiadito. Ti ricordi che le sedute del tribunale si svolgono nella rocca, quindi sei sulla strada giusta.",
+      "choices": [
+        { "text": "Vai al 37.", "target": "37" }
+      ]
+    },
+    "311": {
+      "testo": "Il fianco della collina è ripido e il terreno è instabile e franoso. Guardando indietro vedi i due Giak uscire dal bosco: ti stanno inseguendo. A mezzacosta vedi sulla tua destra una grotta, quasi completamente ostruita da una frana.",
+      "choices": [
+        { "text": "Se vuoi nasconderti nella grotta, vai al 279.", "target": "279" },
+        { "text": "Se vuoi continuare la salita, vai al 47.", "target": "47" },
+        { "text": "Se possiedi l'Arte del Mimetismo, vai al 324.", "target": "324", "requisito": "Mimetismo" }
+      ]
+    },
+    "312": {
+      "testo": "Imprechi contro la malasorte. Sembra che la natura si sia alleata ai Signori delle Tenebre, ma questo non ti smuove dal proposito di raggiungere il Re. Togliendo il fango viscido dai vestiti, riprendi a camminare nella foresta.",
+      "choices": [
+        { "text": "Vai al 299.", "target": "299" }
+      ]
+    },
+    "313": {
+      "testo": "Pulisci l'arma dal fetido sangue dei Giak e scendi rapidamente la collina, prima che il Kraan veda i suoi cavalieri ormai senza vita. Durante la discesa inciampi più volte e rotoli per metri e metri. Perdi 1 punto di Resistenza per i colpi e le ferite.",
+      "onEnter": { "damage": 1 },
+      "choices": [
+        { "text": "Vai al 248.", "target": "248" }
+      ]
+    },
+    "314": {
+      "testo": "Impieghi quasi un'ora per raggiungere la rocca. Quando arrivi trovi i cittadini di Holmgard in preda al panico. La tua scorta si avvicina alle guardie armate della porta principale annunciando che hai un messaggio urgente per il Re.",
+      "dice": { "0-6": "341", "7-9": "98" }
+    },
+    "315": {
+      "testo": "Avvolto in un fagotto di vesti femminili c'è un borsellino di velluto con dentro 6 Corone d'oro e una tavoletta di Sapone profumato. Puoi prendere questi oggetti e continuare.",
+      "onEnter": { "addCorone": 6, "addItems": ["Sapone profumato"] },
+      "choices": [
+        { "text": "Vai al 213.", "target": "213" }
+      ]
+    },
+    "316": {
+      "testo": "Nella fretta inciampi in una radice affiorante e fai un capitombolo tra una nuvola di polvere e foglie secche. Piombi tra i cespugli alla base della collina, raccogli la tua Arma e fuggi nella foresta. Il Kraan non c'è più, ma distingui la sagoma di due Giak sulla cima della collina. Nella caduta hai preso un brutto colpo sulla fronte, ma non puoi fermarti. Devi continuare a fuggire nella foresta.",
+      "choices": [
+        { "text": "Vai al 331.", "target": "331" }
+      ]
+    },
+    "317": {
+      "testo": "Istitintivamente ti tuffi giù dalla scala e piombi sul pavimento di pietra. La tua prontezza ti ha salvato: un enorme masso di granito caduto dal soffitto ha schiantato la scala proprio davanti alla porta. Sconvolto, ma ancora intero, ti alzi in piedi. Un tenue raggio di luce filtra da dove si è staccato il masso. Attraverso l'apertura vedi il cielo nuvoloso tra i cespugli. Esci dalla tomba e ti dirigi verso il portale sul lato sud. Ora riesci a vedere le palizzate della prima linea di difesa di Holmgard.",
+      "choices": [
+        { "text": "Vai al 61.", "target": "61" }
+      ]
+    },
+    "318": {
+      "testo": "Due soldati e un sergente corrono verso di te, con le balestre puntate. Quando sono vicini riconoscono il tuo mantello Ramas e danno un sospiro di sollievo. 'Signore, dice il sergente, dove sono gli altri Ramas? Abbiamo un disperato bisogno della vostra guida. I Signori delle Tenebre ci incalzano, e le nostre perdite sono alte'. Racconti al soldato la triste sorte dei tuoi fratelli, e la tua urgenza di vedere il Re. Ti accompagna fino alle chiatte, da dove un ufficiale ti scorta a cavallo fino alla grande porta che si apre nelle mura di Holmgard.",
+      "choices": [
+        { "text": "Vai al 129.", "target": "129" }
+      ]
+    },
+    "319": {
+      "testo": "La viscida bestia emette un lungo e orribile grido di morte e stramazza al suolo. In preda al panico ti alzi in piedi e strappi dalle mascelle del mostro quella che ti sembra la tua cintura. Vedi una luce in lontananza e corri in quella direzione: appena arrivi all'esterno crolli a terra e cerchi di riprendere fiato. Tirandoti a sedere ti accorgi che hai ancora addosso la tua cintura, evidentemente non l'avevi persa. Ciò che hai strappato dalle fauci del Ragno-talpa era una bandoliera su cui sono attaccati un borsellino e un Pugnale nel suo fodero. Nel borsellino ci sono venti Corone d'oro. Se vuoi, puoi prendere questi oggetti. Ti senti un po' meglio, raccogli il tuo equipaggiamento e prosegui verso est.",
+      "onEnter": { "addCorone": 20, "addItems": ["Pugnale"] },
+      "choices": [
+        { "text": "Vai al 157.", "target": "157" }
+      ]
+    },
+    "320": {
+      "testo": "Ti rifugi nella foresta, sperando di essere al sicuro. Dopo un po' raggiungi una radura con una fattoria abbandonata.",
+      "choices": [
+        { "text": "Vai al 148.", "target": "148" }
+      ]
+    },
+    "321": {
+      "testo": "Tiri su il cappuccio e ti nascondi tra le rocce davanti alla grotta. Trattenendo il respiro ti raggomitoli il più possibile e ti copri col mantello. Dopo pochi minuti arrivano i Giak, scrutando da ogni parte con i loro occhi satanici. Imprecando nella loro strana lingua si allontanano e continuano a salire. Dentro di te ringrazi i tuoi maestri che ti hanno insegnato l'Arte del Mimetismo: in questa occasione ti ha salvato la vita.",
+      "choices": [
+        { "text": "Se vuoi esplorare la grotta, vai al 33.", "target": "33" },
+        { "text": "Se vuoi scendere la collina prima che tornino i Giak, vai al 248.", "target": "248" }
+      ]
+    },
+    "322": {
+      "testo": "Vedendoti sbucare dagli alberi il capo dei Giak grida 'Ogot, ogot!' ai suoi, che fuggono dalle rovine e si ritirano nella foresta. Agitando il pugno verso di te, il capo grida 'Raneg rogag okorgadaka okak rogag gaj!' e se ne va. Osservando la scena della battaglia vedi più di...",
+      "choices": [
+        { "text": "Vai al 349.", "target": "349" }
+      ]
+    },
+    "323": {
+      "testo": "Riesci a salire sulla torretta senza cadere. Da lassù vedi un vecchio baule. Se vuoi puoi aprirlo.",
+      "choices": [
+        { "text": "Vai al 307.", "target": "307" }
+      ]
+    },
+    "324": {
+      "testo": "Usi l'Arte del Mimetismo per nasconderti tra le rocce. I Giak passano oltre senza vederti.",
+      "choices": [
+        { "text": "Vai al 279.", "target": "279", "requisito": "Mimetismo" }
+      ]
+    },
+    "325": {
+      "testo": "Il giovane mago ti ringrazia per il tuo aiuto. È Banedon, un apprendista della Fratellanza della Stella di Cristallo. Ti dà un messaggio importante e una Stella di Cristallo come talismano.",
+      "choices": [
+        { "text": "Vai al 349.", "target": "349" }
+      ]
+    },
+    "326": {
+      "testo": "Usi la Chiave d'Oro per aprire la porta. Il meccanismo scatta e la porta si apre rivelando un passaggio segreto.",
+      "choices": [
+        { "text": "Vai al 23.", "target": "23", "requisito": "Chiave d'Oro" }
+      ]
+    },
+    "327": {
+      "testo": "Rimani immobile sperando che i Kraan non ti vedano. Dopo un po' i mostri si allontanano verso est. Riprendi la scalata.",
+      "choices": [
+        { "text": "Vai al 280.", "target": "280" }
+      ]
+    },
+    "328": {
+      "testo": "Il Vordak giace morto ai tuoi piedi. Il suo corpo si dissolve in una pozza di liquido nero. Riprendi il tuo cammino.",
+      "choices": [
+        { "text": "Vai al 29.", "target": "29" }
+      ]
+    },
+    "329": {
+      "testo": "Scendendo tra le rocce verso il Cimitero degli Antichi, ti accorgi che una strana foschia avvolge questo luogo sinistro, offuscando la luce del sole e dando al Cimitero un'aria di mestizia. Un gelido soffio ti dà il benvenuto. Con un senso di inquieto timore ti inoltri nella cupa necropoli.",
+      "location": "cimitero_antichi",
+      "choices": [
+        { "text": "Vai al 284.", "target": "284" }
+      ]
+    },
+    "330": {
+      "testo": "Ti apri la strada a colpi d'Ascia nel fitto della vegetazione. Dopo un'ora di faticoso cammino raggiungi una radura.",
+      "choices": [
+        { "text": "Vai al 287.", "target": "287" }
+      ]
+    },
+    "331": {
+      "testo": "Dopo due ore di marcia nella foresta, scendendo una collina rocciosa vedi qualcosa di strano tra gli alberi. È una vecchia torre di guardia.",
+      "choices": [
+        { "text": "Vai al 213.", "target": "213" }
+      ]
+    },
+    "332": {
+      "testo": "Segui l'uomo nel passaggio segreto. Dopo un breve corridoio arrivi in una stanza lussuosamente arredata, dove l'uomo ti invita a prepararti per l'udienza con il Re.",
+      "choices": [
+        { "text": "Vai al 196.", "target": "196" }
+      ]
+    },
+    "333": {
+      "testo": "Ti sei aperto la strada per quasi mezz'ora nel fitto sottobosco, quando senti un battito di ali sopra gli alberi. Guardando in su vedi la sagoma di un Kraan che si avvicina da nord. È uno dei mostri che hanno attaccato il monastero, e porta in groppa due esseri dalla pelle grigia, armati di lancia. Sono Giak della montagna, esseri malvagi e spietati. Se vuoi entrare nella galleria, vai al 170. Se preferisci arrampicarti sulla collina, vai al 280.",
+      "choices": [
+        { "text": "Se vuoi entrare nella galleria, vai al 170.", "target": "170" },
+        { "text": "Se preferisci arrampicarti sulla collina, vai al 280.", "target": "280" }
+      ]
+    },
+    "334": {
+      "testo": "Dopo circa dieci minuti arrivate a una ripida scala che conduce a una porticina di legno. L'uomo preme un pulsante nascosto e la porta si apre. Entri in una stanza da letto arredata lussuosamente, con un'enorme vasca di marmo in un angolo. L'uomo ti invita a metterti a tuo agio mentre lui chiede udienza al Re. Fai un rapido bagno e indossi delle vesti bianche che trovi su un tavolo di marmo. Dopo un po' l'uomo ritorna e ti conduce attraverso un lungo corridoio con splendidi arazzi alle pareti. Finalmente arrivi davanti a una grande porta guardata da due soldati con le armature d'argento. Stai per incontrare il Re.",
+      "choices": [
+        { "text": "Vai al 350.", "target": "350" }
+      ]
+    },
+    "335": {
+      "testo": "Nascosto sotto gli alberi rimani immobile, mentre il Kraan sparisce verso sud passando sopra di te. Quando sei sicuro che si è allontanato ti rimetti in cammino.",
+      "choices": [
+        { "text": "Vai al 131.", "target": "131" }
+      ]
+    },
+    "336": {
+      "testo": "Irrompi nella radura cogliendo i Giak di sorpresa. Senza esitare colpisci quello più vicino a te: lo uccidi prima che abbia il tempo di accorgersene. Ma gli altri hanno già sguainato le loro scimitarre, e si lanciano su di te. Devi combatterli uno alla volta.",
+      "combat": {
+        "name": "Giak 1",
+        "combattività": 14,
+        "resistenza": 11,
+        "nextEnemy": { "name": "Giak 2", "combattività": 13, "resistenza": 11 },
+        "onWin": "117"
+      }
+    },
+    "337": {
+      "testo": "Mentre togli lo spillo decorato, senti un rumore che ti stordisce.",
+      "dice": { "0-4": "219", "5-9": "317" }
+    },
+    "338": {
+      "testo": "Quando riprendi i sensi ti ritrovi disteso tra l'erba ai piedi di una scarpata. Non vedi il tuo Zaino né la tua Arma, e ti fa male la testa. Non sai quanto tempo sei rimasto privo di conoscenza, ma sai che non puoi ritardare ancora la tua missione. Alzandoti in piedi trovi lo Zaino e la tua Arma più indietro sulla scarpata. Li recuperi velocemente e vai verso gli alberi.",
+      "choices": [
+        { "text": "Vai al 113.", "target": "113" }
+      ]
+    },
+    "339": {
+      "testo": "Fai un salto di lato proprio mentre un lungo pugnale rompe in mille pezzi il vetro della bacheca. Un giovane tarchiato ti viene addosso e devi combatterlo.",
+      "combat": {
+        "name": "Assassino",
+        "combattività": 13,
+        "resistenza": 20,
+        "onWin": "94",
+        "onWinAfterRounds": { "4": "203" },
+        "onFlee": "7"
+      }
+    },
+    "340": {
+      "testo": "Galoppi contro il nemico con l'Arma pronta a colpire. Il Giak ti vede e sguaina la scimitarra. Devi combattere Giak e Tigerwolf come un solo nemico.",
+      "combat": {
+        "name": "Giak + Tigerwolf",
+        "combattività": 14,
+        "resistenza": 24,
+        "onWin": "193"
+      }
+    },
+    "341": {
+      "testo": "Le guardie non credono alla tua storia e si rifiutano di lasciarti entrare. La tua scorta sparisce fra la folla e ti ritrovi da solo a muoverti nella confusione della città. Sorpreso e demoralizzato da questo rifiuto ti lasci trascinare dalla folla finché capiti davanti alla Sala del Consiglio. Lì vicino c'è il ponte che attraversa il fiume Eledil subito prima che sbocchi nel golfo di Holm.",
+      "choices": [
+        { "text": "Se vuoi entrare nella Sala del Consiglio, vai al 210.", "target": "210" }
+      ]
+    },
+    "342": {
+      "testo": "Chiami lo sconosciuto. L'uomo si volta lentamente. Il suo volto è coperto dal cappuccio, ma vedi un sorriso malvagio. È un Vordak! Devi combatterlo o fuggire.",
+      "choices": [
+        { "text": "Vai al 121.", "target": "121" }
+      ]
+    },
+    "343": {
+      "testo": "Inciampi in un ramo basso e finisci dentro un cespuglio. Ti rialzi rapidamente e continui a correre.",
+      "choices": [
+        { "text": "Vai al 2.", "target": "2" }
+      ]
+    },
+    "344": {
+      "testo": "Sei gravemente ferito e l'erborista ti colpisce di nuovo. Non sopravvivi.",
+      "gameOver": true
+    },
+    "345": {
+      "testo": "Il Kraan passa sopra di te senza vederti. Continui a camminare nel sottobosco.",
+      "choices": [
+        { "text": "Vai al 275.", "target": "275" }
+      ]
+    },
+    "346": {
+      "testo": "Il Serpente Alato è morto. La stanza è silenziosa.",
+      "choices": [
+        { "text": "Vai al 266.", "target": "266" }
+      ]
+    },
+    "347": {
+      "testo": "Decidi di tenerti alla larga dall'odore di legna bruciata e continui il tuo cammino nella foresta.",
+      "choices": [
+        { "text": "Vai al 38.", "target": "38" }
+      ]
+    },
+    "348": {
+      "testo": "Uccidi il serpente senza perdere punti di Resistenza. Prosegui il tuo cammino.",
+      "choices": [
+        { "text": "Vai al 227.", "target": "227" }
+      ]
+    },
+    "349": {
+      "testo": "È un giovane biondo, con gli occhi malinconici. Porta sul volto i segni della battaglia, e la lunga veste azzurra in cattive condizioni mostra che ha vissuto a lungo alla macchia. Ti stringe la mano e si inchina. 'Ti ringrazio profondamente, cavaliere. I miei poteri sono quasi esauriti. Se tu non mi avessi aiutato avrei finito i miei giorni infilzato sulla punta di una lancia Giak'. È debole e si regge a stento. Lo prendi per un braccio e lo fai sedere su un masso. Il giovane comincia il suo racconto: 'Il mio nome è Banedon. Sono un iniziato della Fratellanza della Stella di Cristallo, la corporazione dei maghi di Toran. Il mio Maestro mi ha inviato al tuo monastero con questo messaggio urgente'. Così dicendo prende una pergamena da sotto le vesti e te la porge. 'Come vedi ho aperto la lettera e ho letto il contenuto. Quando la guerra è cominciata mi trovavo per strada con due compagni di viaggio. I Kraan ci hanno attaccato e durante la fuga ci siamo persi nella foresta'. La lettera avvisa i Ramas che i Signori delle Tenebre hanno radunato un enorme esercito al di là dei monti Dumcrag. Il Maestro esorta a annullare i festeggiamenti di Fendar e a prepararsi per la guerra. 'Temo che siamo stati traditi', dice Banedon con un'espressione di dolore. 'Uno dei miei confratelli, di nome Vonatar, aveva approfondito i misteri proibiti dell'Arte Nera. Dieci giorni or sono ha rinnegato la Fratellanza e ha assassinato uno degli anziani. Poi è scomparso. Dicono che ora sta con i Signori delle Tenebre'. Racconti a Banedon cosa è successo al monastero, e della tua missione. Senza dir nulla si toglie dal collo una catena d'oro e te la porge. Appesa alla catena c'è una piccola Stella di Cristallo. 'È il simbolo della mia Fratellanza: in quest'ora buia siamo davvero fratelli. È un talismano benefico che ti proteggerà nel tuo cammino'. Lo ringrazi e ti metti la catena intorno al collo nascondendola sotto la tunica. (Ricordati di segnarla sul tuo Registro di Guerra). Banedon ti saluta: 'Dobbiamo lasciare questo luogo perché i Giak potrebbero tornare con dei rinforzi. Devo tornare alla mia corporazione. Addio fratello. Che il cielo ti protegga'.",
+      "onEnter": { "addItems": ["Stella di Cristallo"] },
+      "choices": [
+        { "text": "Vai al 293.", "target": "293" }
+      ]
+    },
+    "350": {
+      "testo": "Entri nella Camera Reale, una splendida sala riccamente decorata in bianco e oro. Il Re e i suoi ministri stanno studiando una grande carta geografica aperta su un tavolo di marmo al centro della sala. Le loro facce sono segnate dalla preoccupazione. Cade il silenzio mentre racconti della morte dei tuoi fratelli e il lungo e travagliato viaggio per raggiungere la rocca. Quando finisci la tua storia il Re si avvicina e ti prende la mano destra. 'Lupo Solitario, il tuo coraggio è senza limiti, sei un vero Ramas. Benché queste notizie siano un grave colpo per noi, il tuo spirito di abnegazione accende un lampo di speranza nel fondo dei nostri cuori. Tu rendi onore alla memoria dei tuoi Maestri, e noi siamo orgogliosi di te'. Tutti i presenti ti lodano e ti ringraziano, ma appena il Re alza una mano tutte le voci tacciono. 'Hai fatto tutto ciò che Sommerlund poteva chiedere a un suo leale figlio, ma questa terra ha ancora molto bisogno di te. I Signori delle Tenebre sono sempre più potenti, e la loro ambizione non conosce limiti. La nostra unica speranza è riposta nel regno di Durenor e nella sua forza, che già una volta ha sconfitto i Signori delle Tenebre. Lupo Solitario, tu sei l'ultimo dei Ramas, tu solo conosci le nobili Arti. Vuoi tu andare a Durenor e tornare con la Spada del Sole? Solamente con questo dono degli Dei potremo sconfiggere il male e salvare la nostra terra'.",
+      "isEnding": true,
+      "nextBook": "02",
+      "choices": [
+        { "text": "Accetta l'incarico e preparati per la Traversata Infernale!", "target": "next_book" }
+      ]
+    },
+    "palude_1": {
+      "testo": "Il tuo cavallo sprofonda improvvisamente con tutte le zampe nel fango denso. Prendi di nuovo la Tabella del Destino e scegli un altro numero. Se questa volta il numero è da 7 in giù, sprofondi fino alle ascelle. Con un ultimo disperato nitrito il cavallo scompare nella melma gorgogliante. Se esce un numero superiore a 7 ce la fai a raggiungere il terreno solido, e puoi andare al 189.",
+      "dice": { "0-7": "morte_palude", "8-9": "189" }
+    },
+    "morte_palude": {
+      "testo": "Altrimenti ti resta soltanto una possibilità! Prendi di nuovo la Tabella del Destino: se esce un numero diverso da 9 allora il fango fetido ti prende e ti trascina giù. Qui finisce il tuo viaggio, e con lui la vita. Se invece esce il 9, vai al 312.",
+      "dice": { "0-8": "gameover", "9": "312" }
+    },
+    "caduta_140": {
+      "testo": "Cadi dalla scala, perdi 2 punti di Resistenza e torni al 140.",
+      "onEnter": { "damage": 2 },
+      "choices": [
+        { "text": "Torna al 140.", "target": "140" }
+      ]
+    },
+    "dice_53_274_331": {
+      "testo": "Se uccidi il mostro, puoi scendere dall'altro lato della collina in modo da evitare i Giak. Scegli un numero dalla Tabella del Destino.",
+      "dice": { "0": "53", "1-2": "274", "3-9": "331" }
+    },
+    "33_248": {
+      "testo": "Se vinci puoi esplorare la grotta in profondità, andando al 33. Oppure puoi scendere la collina, andando al 248.",
+      "choices": [
+        { "text": "Se vinci puoi esplorare la grotta in profondità, andando al 33.", "target": "33" },
+        { "text": "Oppure puoi scendere la collina, andando al 248.", "target": "248" }
+      ]
+    }
+  }
+}
