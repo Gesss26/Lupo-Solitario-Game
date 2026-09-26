@@ -1,6 +1,6 @@
 /* ===================================================================
    LUPO SOLITARIO - MOTORE DI GIOCO
-   Versione: 9.0 - Arma attiva selezionabile
+   Versione: 9.1 - Caricamento automatico libri + blocco progressivo
    =================================================================== */
 
 // ==================== COSTANTI ====================
@@ -12,6 +12,7 @@ const DEFAULT_FONT_SIZE = '20';
 const GOOGLE_CLIENT_ID = '1061090074111-2d0ebutt2ri4tdah2qdefq7bpmra37qb.apps.googleusercontent.com';
 
 const DESKTOP_BREAKPOINT = 1024;
+const COVER_EXTENSIONS = ['jpeg', 'jpg', 'png', 'webp'];
 
 // ==================== ARMI (Maestria) ====================
 const armiMaestria = {
@@ -90,7 +91,8 @@ function createEmptyGameState() {
         },
         enemy: { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 },
         history: [], inCombat: false, combatData: null,
-        completedBooks: [], unlockedBooks: ['01']
+        completedBooks: [],
+        unlockedBooks: []
     };
 }
 
@@ -222,7 +224,6 @@ function playResultSound(isPositive) {
     }
 }
 
-// 🆕 Suono quando cambi arma
 function playWeaponChangeSound() {
     initAudio();
     if (!audioContext) return;
@@ -292,6 +293,7 @@ async function init() {
     initDom();
     applySettings();
     await loadAllBooks();
+    await normalizeGameStateAfterLoad();
     loadBooksToMenu();
     setupEventListeners();
     createClickZones();
@@ -304,6 +306,56 @@ async function init() {
 function handleResize() {
     updateSideInventory();
     updateDicePanelStatus();
+}
+
+// ==================== NORMALIZZAZIONE STATO LIBRI ====================
+/**
+ * Dopo il caricamento dei libri, sistema `unlockedBooks` e `completedBooks`:
+ * - Se `unlockedBooks` è vuoto, sblocca SOLO il primo libro (in ordine numerico).
+ * - Rimuove ID di libri che non esistono più.
+ * - Garantisce che i libri completati siano anche sbloccati.
+ */
+async function normalizeGameStateAfterLoad() {
+    const allIds = getSortedBookIds();
+    if (allIds.length === 0) return;
+    
+    // Pulisci ID inesistenti
+    gameState.unlockedBooks = (gameState.unlockedBooks || []).filter(id => allIds.includes(id));
+    gameState.completedBooks = (gameState.completedBooks || []).filter(id => allIds.includes(id));
+    
+    // I libri completati devono essere sbloccati
+    gameState.completedBooks.forEach(id => {
+        if (!gameState.unlockedBooks.includes(id)) gameState.unlockedBooks.push(id);
+    });
+    
+    // Sblocco a cascata: il libro N+1 si sblocca solo se N è completato
+    let changed = true;
+    while (changed) {
+        changed = false;
+        for (let i = 0; i < allIds.length - 1; i++) {
+            if (gameState.completedBooks.includes(allIds[i])) {
+                if (!gameState.unlockedBooks.includes(allIds[i + 1])) {
+                    gameState.unlockedBooks.push(allIds[i + 1]);
+                    changed = true;
+                }
+            }
+        }
+    }
+    
+    // Se non c'è nessun libro sbloccato, sblocca solo il primo
+    if (gameState.unlockedBooks.length === 0) {
+        gameState.unlockedBooks.push(allIds[0]);
+    }
+}
+
+// ==================== ORDINAMENTO ID LIBRI ====================
+function getSortedBookIds() {
+    return Object.keys(booksData).sort((a, b) => {
+        const na = parseInt(a, 10);
+        const nb = parseInt(b, 10);
+        if (!isNaN(na) && !isNaN(nb) && na !== nb) return na - nb;
+        return a.localeCompare(b);
+    });
 }
 
 // ==================== GOOGLE DRIVE ====================
@@ -413,8 +465,10 @@ async function loadFromDrive() {
         if (docs && docs.length > 0) {
             const latest = docs[0];
             gameState = { ...createEmptyGameState(), ...latest.data };
+            await normalizeGameStateAfterLoad();
             console.log('✅ Salvataggio caricato da Google Drive');
             if (gameState.currentBook) await loadCurrentBook();
+            loadBooksToMenu();
         }
     } catch (err) {
         console.warn('Nessun salvataggio remoto trovato:', err);
@@ -433,29 +487,70 @@ async function saveToDrive() {
 
 // ==================== CARICAMENTO LIBRI ====================
 async function loadAllBooks() {
-    const bookFiles = ['01-I-Signori-delle-Tenebre.json'];
-    console.log('📚 Cerco i libri in:', BOOKS_FOLDER);
+    const manifestPath = BOOKS_FOLDER + 'index.json';
+    console.log('📚 Leggo il manifest:', manifestPath);
     
-    for (const file of bookFiles) {
+    let bookFiles = [];
+    
+    try {
+        const manifestResponse = await fetch(manifestPath + '?t=' + Date.now());
+        
+        if (manifestResponse.ok) {
+            const manifest = await manifestResponse.json();
+            bookFiles = Array.isArray(manifest) ? manifest : (manifest.libri || []);
+            console.log(`📖 Manifest trovato: ${bookFiles.length} libri`);
+        } else {
+            console.warn('⚠️ Manifest non trovato (HTTP ' + manifestResponse.status + '), fallback');
+            bookFiles = ['01-signori-tenebre.json'];
+        }
+    } catch (err) {
+        console.warn('⚠️ Errore lettura manifest:', err);
+        bookFiles = ['01-signori-tenebre.json'];
+    }
+    
+    let okCount = 0, failCount = 0;
+    
+    const loadPromises = bookFiles.map(async (file) => {
         const fullPath = BOOKS_FOLDER + file;
         try {
             const response = await fetch(fullPath);
-            console.log(`📡 ${file}:`, response.status);
-            if (!response.ok) { console.warn(`❌ File non trovato: ${fullPath}`); continue; }
+            if (!response.ok) {
+                console.warn(`❌ File non trovato: ${fullPath} (${response.status})`);
+                failCount++;
+                return;
+            }
             
             const bookData = await response.json();
-            console.log(`✅ Libro caricato: ${bookData.titolo || bookData.id}`);
             
-            const coverName = file.replace('.json', '.jpeg');
+            // Fallback: se manca "id", usa il numero dal nome file
+            if (!bookData.id) {
+                const match = file.match(/^(\d+)/);
+                bookData.id = match ? match[1] : file.replace('.json', '');
+                console.warn(`⚠️ Libro "${file}" senza campo "id": uso "${bookData.id}"`);
+            }
+            
+            // Normalizza l'ID con zero iniziale se è un numero a 1 cifra
+            if (/^\d$/.test(bookData.id)) {
+                bookData.id = '0' + bookData.id;
+            }
+            
+            const coverBase = COVERS_FOLDER + file.replace('.json', '');
+            
             booksData[bookData.id] = {
                 ...bookData,
-                cover: COVERS_FOLDER + coverName
+                cover: coverBase + '.jpeg', // default; verrà testato in fallback
+                _coverBase: coverBase
             };
+            
+            okCount++;
         } catch (err) {
-            console.error(`💥 Errore caricando ${fullPath}:`, err);
+            console.error(`💥 Errore parsing ${fullPath}:`, err);
+            failCount++;
         }
-    }
-    console.log('📚 Libri caricati totali:', Object.keys(booksData).length);
+    });
+    
+    await Promise.all(loadPromises);
+    console.log(`📚 Caricati: ${okCount} OK, ${failCount} falliti (totale ${bookFiles.length})`);
 }
 
 // ==================== MENU PRINCIPALE ====================
@@ -463,34 +558,48 @@ async function loadBooksToMenu() {
     if (!bookList) return;
     bookList.innerHTML = '';
     
-    if (Object.keys(booksData).length === 0) {
+    const bookIds = getSortedBookIds();
+    
+    if (bookIds.length === 0) {
         bookList.innerHTML = `<div class="loading-books"><p>📭 Nessun libro trovato</p></div>`;
         return;
     }
 
-    for (const bookId of Object.keys(booksData).sort()) {
+    for (const bookId of bookIds) {
         const book = booksData[bookId];
         const isUnlocked = gameState.unlockedBooks.includes(bookId);
+        const isCompleted = gameState.completedBooks.includes(bookId);
         
         const coverDiv = document.createElement('div');
         coverDiv.className = 'book-cover';
         if (!isUnlocked) coverDiv.classList.add('locked');
+        if (isCompleted) coverDiv.classList.add('completed');
         
         const numberSpan = document.createElement('span');
         numberSpan.className = 'book-number';
         numberSpan.textContent = `#${bookId}`;
         coverDiv.appendChild(numberSpan);
         
+        // Immagine con fallback multi-estensione
         const img = document.createElement('img');
-        img.src = book.cover;
         img.alt = book.titolo || `Libro ${bookId}`;
+        let extIndex = 0;
         img.onerror = function() {
-            this.style.display = 'none';
-            const fallback = document.createElement('div');
-            fallback.className = 'fallback-cover';
-            fallback.innerHTML = `<div class="fallback-icon">📖</div>`;
-            coverDiv.insertBefore(fallback, titleSpan);
+            extIndex++;
+            if (extIndex < COVER_EXTENSIONS.length) {
+                this.src = book._coverBase + '.' + COVER_EXTENSIONS[extIndex];
+            } else {
+                // Tutte le estensioni fallite -> fallback grafico
+                this.style.display = 'none';
+                if (!coverDiv.querySelector('.fallback-cover')) {
+                    const fallback = document.createElement('div');
+                    fallback.className = 'fallback-cover';
+                    fallback.innerHTML = `<div class="fallback-icon">📖</div>`;
+                    coverDiv.insertBefore(fallback, titleSpan);
+                }
+            }
         };
+        img.src = book._coverBase + '.' + COVER_EXTENSIONS[extIndex];
         coverDiv.appendChild(img);
         
         const titleSpan = document.createElement('span');
@@ -503,15 +612,30 @@ async function loadBooksToMenu() {
             lockIcon.className = 'lock-icon';
             lockIcon.textContent = '🔒';
             coverDiv.appendChild(lockIcon);
+        } else if (isCompleted) {
+            const checkIcon = document.createElement('span');
+            checkIcon.className = 'completed-icon';
+            checkIcon.textContent = '✅';
+            coverDiv.appendChild(checkIcon);
         }
         
         coverDiv.onclick = () => {
-            if (isUnlocked) startNewGame(bookId);
-            else alert('🔒 Questo libro è ancora bloccato.');
+            if (!isUnlocked) {
+                const prevId = getPreviousBookId(bookId);
+                alert(`🔒 Questo libro è ancora bloccato.\n\nDevi prima completare il Libro ${prevId || 'precedente'}.`);
+                return;
+            }
+            startNewGame(bookId);
         };
         
         bookList.appendChild(coverDiv);
     }
+}
+
+function getPreviousBookId(bookId) {
+    const allIds = getSortedBookIds();
+    const idx = allIds.indexOf(bookId);
+    return idx > 0 ? allIds[idx - 1] : null;
 }
 
 // ==================== EVENT LISTENERS ====================
@@ -524,6 +648,7 @@ function setupEventListeners() {
         if (confirm("Tornare al menu? I progressi non salvati andranno persi.")) {
             autoSave();
             showScreen('main-menu');
+            loadBooksToMenu();
         }
     });
 
@@ -585,15 +710,16 @@ function setupEventListeners() {
             const file = e.target.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = (ev) => {
+            reader.onload = async (ev) => {
                 try {
                     const loadedState = JSON.parse(ev.target.result);
                     gameState = { ...createEmptyGameState(), ...loadedState };
-                    loadCurrentBook().then(() => {
-                        showScreen('game-screen');
-                        renderPage(gameState.currentPage);
-                        updateHeader();
-                    });
+                    await normalizeGameStateAfterLoad();
+                    await loadCurrentBook();
+                    showScreen('game-screen');
+                    renderPage(gameState.currentPage);
+                    updateHeader();
+                    loadBooksToMenu();
                 } catch (err) { alert("❌ File non valido!"); }
             };
             reader.readAsText(file);
@@ -658,6 +784,7 @@ function startNewGame(bookId) {
     gameState.currentBook = bookId;
     gameState.currentPage = '1';
     gameState.player.borsa = 0;
+    gameState.unlockedBooks = [bookId];
     
     currentBookData = booksData[bookId];
     if (!currentBookData) { alert('❌ Libro non trovato!'); return; }
@@ -980,17 +1107,13 @@ function getIconaArma(nomeArma) {
 // ==================== CAMBIO ARMA ATTIVA ====================
 function setActiveWeapon(index) {
     if (index < 0 || index >= gameState.player.armi.length) return;
-    
-    // Se è già quella attiva, non fare nulla
     if (index === 0) return;
     
-    // Sposta l'arma selezionata in prima posizione
     const armaSelezionata = gameState.player.armi.splice(index, 1)[0];
     gameState.player.armi.unshift(armaSelezionata);
     
     console.log(`⚔️ Arma attiva: ${armaSelezionata}`);
     
-    // Effetti visivi e sonori
     playWeaponChangeSound();
     
     if (statWeaponBox) {
@@ -998,16 +1121,13 @@ function setActiveWeapon(index) {
         setTimeout(() => statWeaponBox.classList.remove('changing'), 600);
     }
     
-    // Aggiorna UI
     updateActiveWeaponDisplay();
     updateSideInventory();
     
-    // Su mobile, aggiorna anche la modale se aperta
     if (!isDesktop() && inventoryModal.classList.contains('active')) {
         showInventory();
     }
     
-    // Auto-save
     autoSave();
     if (drivedb && googleToken) saveToDrive();
 }
@@ -1023,7 +1143,6 @@ function updateActiveWeaponDisplay() {
         activeWeaponEl.textContent = `${icona} ${armaAttuale}`;
         activeWeaponEl.title = `Arma attiva: ${armaAttuale}`;
         
-        // Se c'è bonus Scherma, mostra +2
         const bonus = getBonusScherma();
         if (bonus > 0) {
             activeWeaponEl.textContent += ' +2';
@@ -1040,11 +1159,9 @@ function updateSideInventory() {
     
     let html = '';
     
-    // Borsa
     html += `<h3>💰 Borsa</h3>`;
     html += `<p><strong>${gameState.player.borsa}</strong> Corone</p>`;
     
-    // Armi (cliccabili)
     html += `<h3>⚔️ Armi (clicca per usare)</h3>`;
     if (gameState.player.armi && gameState.player.armi.length > 0) {
         html += '<ul>';
@@ -1061,7 +1178,6 @@ function updateSideInventory() {
         html += '<p class="inventory-empty">Nessuna arma (👊 Mani nude, -4 COMB)</p>';
     }
     
-    // Maestria
     if (gameState.player.maestriaArma) {
         html += `<h3>🎯 Maestria</h3>`;
         html += `<p>${getIconaArma(gameState.player.maestriaArma)} <strong>${gameState.player.maestriaArma}</strong></p>`;
@@ -1070,7 +1186,6 @@ function updateSideInventory() {
         }
     }
     
-    // Zaino
     html += `<h3>🎒 Zaino</h3>`;
     if (gameState.player.zaino.length > 0) {
         html += '<ul>';
@@ -1082,7 +1197,6 @@ function updateSideInventory() {
         html += '<p class="inventory-empty">Vuoto</p>';
     }
     
-    // Oggetti Speciali
     if (gameState.player.oggettiSpeciali.length > 0) {
         html += `<h3>✨ Speciali</h3>`;
         html += '<ul>';
@@ -1092,7 +1206,6 @@ function updateSideInventory() {
         html += '</ul>';
     }
     
-    // Arti Ramas
     if (gameState.player.artiRamas.length > 0) {
         html += `<h3>🧘 Arti Ramas</h3>`;
         html += '<ul>';
@@ -1104,7 +1217,6 @@ function updateSideInventory() {
     
     inventorySidebarContent.innerHTML = html;
     
-    // Aggiungi click handler alle armi
     inventorySidebarContent.querySelectorAll('.weapon-item').forEach(li => {
         li.addEventListener('click', () => {
             const idx = parseInt(li.dataset.weaponIndex);
@@ -1548,7 +1660,7 @@ function renderGameOver() {
     const menuBtn = document.createElement('button');
     menuBtn.className = 'choice-btn';
     menuBtn.textContent = 'Torna al menu principale';
-    menuBtn.onclick = () => showScreen('main-menu');
+    menuBtn.onclick = () => { showScreen('main-menu'); loadBooksToMenu(); };
     choicesArea.appendChild(menuBtn);
 }
 
@@ -1562,43 +1674,74 @@ function renderEnding(page) {
             <p>${page.testo}</p>
         </div>
     `;
+    
+    // Segna come completato
     if (!gameState.completedBooks.includes(gameState.currentBook)) {
         gameState.completedBooks.push(gameState.currentBook);
     }
-    if (page.nextBook && !gameState.unlockedBooks.includes(page.nextBook)) {
-        gameState.unlockedBooks.push(page.nextBook);
+    
+    // Sblocca il prossimo libro in ordine (non quello dichiarato nella pagina, così eviti errori di scrittura)
+    const allIds = getSortedBookIds();
+    const currentIdx = allIds.indexOf(gameState.currentBook);
+    let nextBookId = null;
+    
+    if (currentIdx >= 0 && currentIdx < allIds.length - 1) {
+        nextBookId = allIds[currentIdx + 1];
+        if (!gameState.unlockedBooks.includes(nextBookId)) {
+            gameState.unlockedBooks.push(nextBookId);
+            console.log(`🔓 Sbloccato libro: ${nextBookId}`);
+        }
     }
+    
     autoSave();
+    if (drivedb && googleToken) saveToDrive();
+    
     choicesArea.innerHTML = '';
-    if (page.nextBook && booksData[page.nextBook]) {
+    
+    if (nextBookId && booksData[nextBookId]) {
         const nextBtn = document.createElement('button');
         nextBtn.className = 'choice-btn combat-btn';
-        nextBtn.textContent = `Continua con il Libro ${page.nextBook}`;
-        nextBtn.onclick = () => goToNextBook(page.nextBook);
+        nextBtn.textContent = `➡️ Continua con il Libro ${nextBookId}`;
+        nextBtn.onclick = () => goToNextBook(nextBookId);
         choicesArea.appendChild(nextBtn);
     }
+    
     const menuBtn = document.createElement('button');
     menuBtn.className = 'choice-btn';
-    menuBtn.textContent = 'Torna al menu principale';
-    menuBtn.onclick = () => showScreen('main-menu');
+    menuBtn.textContent = '🏠 Torna al menu principale';
+    menuBtn.onclick = () => { showScreen('main-menu'); loadBooksToMenu(); };
     choicesArea.appendChild(menuBtn);
 }
 
 // ==================== PROSSIMO LIBRO ====================
 function goToNextBook(nextBookId) {
+    if (!nextBookId) {
+        const allIds = getSortedBookIds();
+        const currentIdx = allIds.indexOf(gameState.currentBook);
+        if (currentIdx < 0 || currentIdx >= allIds.length - 1) {
+            alert('🎉 Hai completato tutti i libri disponibili!');
+            showScreen('main-menu');
+            loadBooksToMenu();
+            return;
+        }
+        nextBookId = allIds[currentIdx + 1];
+    }
+    
+    if (!gameState.unlockedBooks.includes(nextBookId)) {
+        alert(`🔒 Il Libro ${nextBookId} è ancora bloccato.`);
+        return;
+    }
+    
     const playerState = { ...gameState.player };
     const unlockedBooks = [...gameState.unlockedBooks];
     const completedBooks = [...gameState.completedBooks];
     
     gameState = createEmptyGameState();
     gameState.player = playerState;
-    gameState.currentBook = nextBookId || '02';
+    gameState.currentBook = nextBookId;
     gameState.currentPage = '1';
     gameState.unlockedBooks = unlockedBooks;
     gameState.completedBooks = completedBooks;
-    if (!gameState.unlockedBooks.includes(gameState.currentBook)) {
-        gameState.unlockedBooks.push(gameState.currentBook);
-    }
     
     loadCurrentBook().then(() => {
         showScreen('game-screen');
@@ -1607,6 +1750,7 @@ function goToNextBook(nextBookId) {
     }).catch(err => {
         alert('❌ Il prossimo libro non è ancora disponibile!');
         showScreen('main-menu');
+        loadBooksToMenu();
     });
 }
 
@@ -1767,12 +1911,10 @@ function showInventory() {
     inventoryList.innerHTML = html;
     inventoryModal.classList.add('active');
     
-    // Aggiungi click handler alle armi (mobile)
     inventoryList.querySelectorAll('.weapon-item').forEach(li => {
         li.addEventListener('click', () => {
             const idx = parseInt(li.dataset.weaponIndex);
             setActiveWeapon(idx);
-            // La modale viene aggiornata automaticamente da setActiveWeapon
         });
     });
 }
@@ -1807,8 +1949,9 @@ function checkAutoSave() {
                 continueBtn.id = 'continue-game-btn';
                 continueBtn.className = 'menu-btn';
                 continueBtn.innerHTML = '<span class="btn-icon">▶️</span><span>Continua Partita</span>';
-                continueBtn.onclick = () => {
+                continueBtn.onclick = async () => {
                     gameState = { ...createEmptyGameState(), ...loaded };
+                    await normalizeGameStateAfterLoad();
                     loadCurrentBook().then(() => {
                         showScreen('game-screen');
                         renderPage(gameState.currentPage);
