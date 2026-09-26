@@ -1,8 +1,9 @@
 /* ===================================================================
    LUPO SOLITARIO - MOTORE DI GIOCO COMPLETO
+   Versione: 2.0
    =================================================================== */
 
-// Configura il worker di PDF.js
+// ==================== CONFIGURAZIONE PDF.JS ====================
 if (typeof pdfjsLib !== 'undefined') {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 }
@@ -10,16 +11,15 @@ if (typeof pdfjsLib !== 'undefined') {
 // ==================== COSTANTI ====================
 const BOOKS_FOLDER = 'Libri/';
 const SAVE_KEY = 'lupo_solitario_save';
-const SETTINGS_KEY = 'lupo_solitario_settings';
 const FONT_KEY = 'lupo_solitario_fontSize';
+const DEFAULT_FONT_SIZE = '20';
 
-// ==================== STATO GLOBALE DEL GIOCO ====================
+// ==================== STATO GLOBALE ====================
 let gameState = createEmptyGameState();
 let booksData = {};
 let currentBookData = null;
 let inCombat = false;
 let enemyState = null;
-let combatHistory = [];
 let pendingDiceCallback = null;
 
 // ==================== CREAZIONE STATO VUOTO ====================
@@ -37,30 +37,23 @@ function createEmptyGameState() {
             borsa: 0,
             artiRamas: [],
             oggettiSpeciali: [],
-            currentLocation: 'monastero_ramas',
-            // Bonus temporanei
-            bonusTemporanei: {
-                combattività: 0,
-                resistenza: 0
-            }
+            currentLocation: 'monastero_ramas'
         },
         enemy: {
             name: '',
             combattività: 0,
             resistenza: 0,
-            resistenzaIniziale: 0,
-            nextEnemy: null
+            resistenzaIniziale: 0
         },
         history: [],
         inCombat: false,
         combatData: null,
-        // Per il salvataggio tra libri
         completedBooks: [],
         unlockedBooks: ['01']
     };
 }
 
-// ==================== ART RAMAS ====================
+// ==================== ARTI RAMAS ====================
 const artiRamasDisponibili = [
     { nome: 'Mimetismo', descrizione: 'Nascondersi e mimetizzarsi con l\'ambiente.' },
     { nome: 'Caccia', descrizione: 'Seguire tracce e cacciare.' },
@@ -88,69 +81,92 @@ const mapLocations = {
     'danarg': { name: 'Palude di Danarg', top: '70%', left: '50%' }
 };
 
-// ==================== ELEMENTI DOM ====================
-const mainMenu = document.getElementById('main-menu');
-const gameScreen = document.getElementById('game-screen');
-const bookList = document.getElementById('book-list');
-const pageContent = document.getElementById('page-content');
-const choicesArea = document.getElementById('choices-area');
-const diceModal = document.getElementById('dice-modal');
-const die1 = document.getElementById('die1');
-const die2 = document.getElementById('die2');
-const rollDiceBtn = document.getElementById('roll-dice-btn');
-const diceResult = document.getElementById('dice-result');
-const inventoryModal = document.getElementById('inventory-modal');
-const inventoryList = document.getElementById('inventory-list');
-const mapModal = document.getElementById('map-modal');
-const heroMarker = document.getElementById('hero-marker');
-const currentLocationName = document.getElementById('current-location-name');
-const settingsModal = document.getElementById('settings-modal');
-const characterCreationModal = document.getElementById('character-creation-modal');
-const fontSizeSlider = document.getElementById('font-size-slider');
-const fontSizeValue = document.getElementById('font-size-value');
-const loadFileInput = document.getElementById('load-file-input');
+// ==================== RIFERIMENTI DOM ====================
+let mainMenu, gameScreen, bookList, pageContent, choicesArea;
+let diceModal, die1, rollDiceBtn, diceResult;
+let inventoryModal, inventoryList;
+let mapModal, heroMarker, currentLocationName;
+let settingsModal, characterCreationModal;
+let fontSizeSlider, fontSizeValue;
+let loadFileInput;
 
 // ==================== INIZIALIZZAZIONE ====================
+function initDom() {
+    mainMenu = document.getElementById('main-menu');
+    gameScreen = document.getElementById('game-screen');
+    bookList = document.getElementById('book-list');
+    pageContent = document.getElementById('page-content');
+    choicesArea = document.getElementById('choices-area');
+    diceModal = document.getElementById('dice-modal');
+    die1 = document.getElementById('die1');
+    rollDiceBtn = document.getElementById('roll-dice-btn');
+    diceResult = document.getElementById('dice-result');
+    inventoryModal = document.getElementById('inventory-modal');
+    inventoryList = document.getElementById('inventory-list');
+    mapModal = document.getElementById('map-modal');
+    heroMarker = document.getElementById('hero-marker');
+    currentLocationName = document.getElementById('current-location-name');
+    settingsModal = document.getElementById('settings-modal');
+    characterCreationModal = document.getElementById('character-creation-modal');
+    fontSizeSlider = document.getElementById('font-size-slider');
+    fontSizeValue = document.getElementById('font-size-value');
+    loadFileInput = document.getElementById('load-file-input');
+}
+
 async function init() {
+    initDom();
+    applySettings();
     await loadAllBooks();
     loadBooksToMenu();
     setupEventListeners();
-    applySettings();
     createClickZones();
     checkAutoSave();
 }
 
-// ==================== CARICAMENTO LIBRI DA JSON ====================
+// ==================== CARICAMENTO LIBRI ====================
 async function loadAllBooks() {
-    // Lista dei libri disponibili (in futuro potresti generarla dinamicamente)
     const bookFiles = [
-        '01-signori-tenebre.json'
+        '01 - I Signori delle Tenebre.json'
     ];
     
+    console.log('📚 Cerco i libri in:', BOOKS_FOLDER);
+    
     for (const file of bookFiles) {
+        const fullPath = BOOKS_FOLDER + file;
         try {
-            const response = await fetch(BOOKS_FOLDER + file);
+            const response = await fetch(fullPath);
+            console.log(`📡 ${file}:`, response.status);
+            
             if (!response.ok) {
-                console.warn(`File non trovato: ${file}`);
+                console.warn(`❌ File non trovato: ${fullPath}`);
                 continue;
             }
             const bookData = await response.json();
+            console.log(`✅ Libro caricato: ${bookData.titolo || bookData.id}`);
             booksData[bookData.id] = {
                 ...bookData,
                 pdf: BOOKS_FOLDER + file.replace('.json', '.pdf')
             };
         } catch (err) {
-            console.error(`Errore caricando ${file}:`, err);
+            console.error(`💥 Errore caricando ${fullPath}:`, err);
         }
     }
+    
+    console.log('📚 Libri caricati totali:', Object.keys(booksData).length);
 }
 
-// ==================== CARICAMENTO LIBRI NEL MENU ====================
+// ==================== MENU PRINCIPALE ====================
 async function loadBooksToMenu() {
+    if (!bookList) return;
     bookList.innerHTML = '';
     
     if (Object.keys(booksData).length === 0) {
-        bookList.innerHTML = '<div class="loading-books">Nessun libro trovato nella cartella Libri/</div>';
+        bookList.innerHTML = `
+            <div class="loading-books">
+                <p>📭 Nessun libro trovato nella cartella <strong>Libri/</strong></p>
+                <p style="font-size: 0.85em; margin-top: 15px;">Controlla che il file JSON esista e sia valido.</p>
+            </div>
+        `;
         return;
     }
 
@@ -175,7 +191,7 @@ async function loadBooksToMenu() {
         // Titolo
         const titleSpan = document.createElement('span');
         titleSpan.className = 'book-title';
-        titleSpan.textContent = book.titolo || book.title;
+        titleSpan.textContent = book.titolo || book.title || `Libro ${bookId}`;
         coverDiv.appendChild(titleSpan);
         
         // Icona lucchetto se bloccato
@@ -187,7 +203,7 @@ async function loadBooksToMenu() {
         }
         
         // Carica la copertina dal PDF
-        if (book.pdf) {
+        if (book.pdf && typeof pdfjsLib !== 'undefined') {
             try {
                 await loadPdfCover(book.pdf, canvas);
             } catch (err) {
@@ -198,13 +214,19 @@ async function loadBooksToMenu() {
                 fallback.textContent = '📖';
                 coverDiv.insertBefore(fallback, titleSpan);
             }
+        } else {
+            canvas.style.display = 'none';
+            const fallback = document.createElement('span');
+            fallback.style.fontSize = '3em';
+            fallback.textContent = '📖';
+            coverDiv.insertBefore(fallback, titleSpan);
         }
         
         coverDiv.onclick = () => {
             if (isUnlocked) {
                 startNewGame(bookId);
             } else {
-                alert('Questo libro è ancora bloccato. Completa prima il libro precedente!');
+                alert('🔒 Questo libro è ancora bloccato. Completa prima il libro precedente!');
             }
         };
         
@@ -229,67 +251,123 @@ async function loadPdfCover(pdfUrl, canvas) {
     }).promise;
 }
 
-// ==================== GESTIONE EVENTI ====================
+// ==================== EVENT LISTENERS ====================
 function setupEventListeners() {
-    document.getElementById('main-menu-btn').addEventListener('click', () => {
-        if (confirm("Sei sicuro di voler tornare al menu principale? I progressi non salvati andranno persi.")) {
-            showScreen('main-menu');
+    // Menu principale
+    const mainMenuBtn = document.getElementById('main-menu-btn');
+    if (mainMenuBtn) {
+        mainMenuBtn.addEventListener('click', () => {
+            if (confirm("Sei sicuro di voler tornare al menu principale? I progressi non salvati andranno persi.")) {
+                autoSave();
+                showScreen('main-menu');
+            }
+        });
+    }
+
+    // Pulsanti impostazioni
+    const settingsBtn = document.getElementById('settings-btn');
+    if (settingsBtn) settingsBtn.addEventListener('click', () => settingsModal.classList.add('active'));
+    
+    const settingsMenuBtn = document.getElementById('settings-menu-btn');
+    if (settingsMenuBtn) settingsMenuBtn.addEventListener('click', () => settingsModal.classList.add('active'));
+    
+    // Altri pulsanti header
+    const inventoryBtn = document.getElementById('inventory-btn');
+    if (inventoryBtn) inventoryBtn.addEventListener('click', showInventory);
+    
+    const mapBtn = document.getElementById('map-btn');
+    if (mapBtn) mapBtn.addEventListener('click', showMap);
+    
+    const saveBtn = document.getElementById('save-btn');
+    if (saveBtn) saveBtn.addEventListener('click', saveGame);
+    
+    const loadGameBtn = document.getElementById('load-game-btn');
+    if (loadGameBtn) loadGameBtn.addEventListener('click', () => loadFileInput.click());
+
+    // Chiudi modali
+    document.querySelectorAll('.close-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const modal = e.target.closest('.modal');
+            if (modal) modal.classList.remove('active');
+        });
+    });
+
+    // Chiudi cliccando fuori
+    window.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal')) {
+            e.target.classList.remove('active');
         }
     });
 
-    document.getElementById('settings-btn').addEventListener('click', () => settingsModal.classList.add('active'));
-    document.getElementById('settings-menu-btn').addEventListener('click', () => settingsModal.classList.add('active'));
-    document.getElementById('inventory-btn').addEventListener('click', showInventory);
-    document.getElementById('map-btn').addEventListener('click', showMap);
-    document.getElementById('save-btn').addEventListener('click', saveGame);
-    document.getElementById('load-game-btn').addEventListener('click', () => loadFileInput.click());
+    // Slider dimensione font
+    if (fontSizeSlider) {
+        fontSizeSlider.addEventListener('input', (e) => {
+            const size = e.target.value;
+            document.documentElement.style.setProperty('--font-size', `${size}px`);
+            document.documentElement.style.fontSize = `${size}px`;
+            fontSizeValue.textContent = size;
+            localStorage.setItem(FONT_KEY, size);
+        });
+    }
 
-    document.querySelectorAll('.close-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => e.target.closest('.modal').classList.remove('active'));
-    });
+    // Pulsante dado
+    if (rollDiceBtn) {
+        rollDiceBtn.addEventListener('click', () => rollDice());
+    }
 
-    window.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal')) e.target.classList.remove('active');
-    });
-
-    fontSizeSlider.addEventListener('input', (e) => {
-        const size = e.target.value;
-        document.documentElement.style.setProperty('--font-size', `${size}px`);
-        fontSizeValue.textContent = size;
-        localStorage.setItem(FONT_KEY, size);
-    });
-
-    rollDiceBtn.addEventListener('click', () => rollDice());
-
-    loadFileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const loadedState = JSON.parse(e.target.result);
-                gameState = { ...createEmptyGameState(), ...loadedState };
-                loadCurrentBook().then(() => {
-                    showScreen('game-screen');
-                    renderPage(gameState.currentPage);
-                    updateHeader();
-                });
-            } catch (err) {
-                alert("File di salvataggio non valido!");
+    // Reset partita
+    const resetBtn = document.getElementById('reset-game-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            if (confirm("⚠️ Sei sicuro di voler ricominciare da capo?\n\nPerderai tutti i progressi non salvati.")) {
+                localStorage.removeItem(SAVE_KEY);
+                location.reload();
             }
-        };
-        reader.readAsText(file);
-        loadFileInput.value = '';
-    });
+        });
+    }
 
-    document.getElementById('roll-comb-btn').addEventListener('click', rollForCombattività);
-    document.getElementById('roll-res-btn').addEventListener('click', rollForResistenza);
-    document.getElementById('confirm-character-btn').addEventListener('click', confirmCharacter);
+    // Carica salvataggio
+    if (loadFileInput) {
+        loadFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const loadedState = JSON.parse(ev.target.result);
+                    gameState = { ...createEmptyGameState(), ...loadedState };
+                    loadCurrentBook().then(() => {
+                        showScreen('game-screen');
+                        renderPage(gameState.currentPage);
+                        updateHeader();
+                    });
+                } catch (err) {
+                    alert("❌ File di salvataggio non valido!");
+                }
+            };
+            reader.readAsText(file);
+            loadFileInput.value = '';
+        });
+    }
+
+    // Creazione personaggio
+    const rollCombBtn = document.getElementById('roll-comb-btn');
+    if (rollCombBtn) rollCombBtn.addEventListener('click', rollForCombattività);
+    
+    const rollResBtn = document.getElementById('roll-res-btn');
+    if (rollResBtn) rollResBtn.addEventListener('click', rollForResistenza);
+    
+    const confirmBtn = document.getElementById('confirm-character-btn');
+    if (confirmBtn) confirmBtn.addEventListener('click', confirmCharacter);
 }
 
 // ==================== ZONE CLICK ====================
 function createClickZones() {
     const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+    
+    // Rimuovi zone esistenti
+    contentArea.querySelectorAll('.click-zone').forEach(z => z.remove());
     
     const prevZone = document.createElement('div');
     prevZone.id = 'prev-page-zone';
@@ -310,28 +388,24 @@ function startNewGame(bookId) {
     gameState = createEmptyGameState();
     gameState.currentBook = bookId;
     gameState.currentPage = '1';
-    gameState.player.borsa = Math.floor(Math.random() * 10) + 10; // 10-19 corone iniziali
+    gameState.player.borsa = Math.floor(Math.random() * 10) + 10;
     
     currentBookData = booksData[bookId];
     showCharacterCreation();
 }
 
-// ==================== CARICA LIBRO CORRENTE ====================
-async function loadCurrentBook() {
-    if (gameState.currentBook && booksData[gameState.currentBook]) {
-        currentBookData = booksData[gameState.currentBook];
-        return true;
-    }
-    return false;
-}
-
 // ==================== CREAZIONE PERSONAGGIO ====================
 function showCharacterCreation() {
-    document.getElementById('comb-result').textContent = 'Risultato: -';
-    document.getElementById('res-result').textContent = 'Risultato: -';
-    document.getElementById('confirm-character-btn').disabled = true;
+    const combResult = document.getElementById('comb-result');
+    const resResult = document.getElementById('res-result');
+    const confirmBtn = document.getElementById('confirm-character-btn');
+    
+    if (combResult) combResult.textContent = 'Risultato: -';
+    if (resResult) resResult.textContent = 'Risultato: -';
+    if (confirmBtn) confirmBtn.disabled = true;
     
     const ramasContainer = document.getElementById('ramas-choices');
+    if (!ramasContainer) return;
     ramasContainer.innerHTML = '';
     
     artiRamasDisponibili.forEach(arte => {
@@ -346,7 +420,7 @@ function showCharacterCreation() {
             const selected = document.querySelectorAll('#ramas-choices input:checked');
             if (selected.length > 5) {
                 e.target.checked = false;
-                alert("Puoi scegliere al massimo 5 Arti Ramas!");
+                alert("⚠️ Puoi scegliere al massimo 5 Arti Ramas!");
             }
             updateRamaSelection();
             checkCharacterReady();
@@ -357,6 +431,7 @@ function showCharacterCreation() {
         ramasContainer.appendChild(label);
     });
 
+    checkCharacterReady();
     characterCreationModal.classList.add('active');
 }
 
@@ -375,7 +450,18 @@ function checkCharacterReady() {
     const hasComb = gameState.player.combattività > 0;
     const hasRes = gameState.player.resistenza > 0;
     const selectedRamas = document.querySelectorAll('#ramas-choices input:checked').length;
-    document.getElementById('confirm-character-btn').disabled = !(hasComb && hasRes && selectedRamas === 5);
+    
+    // Aggiorna contatore
+    const counter = document.getElementById('ramas-counter');
+    if (counter) {
+        counter.textContent = `Selezionate: ${selectedRamas} / 5`;
+        counter.style.color = selectedRamas === 5 ? '#5cb85c' : '#d4af37';
+    }
+    
+    const confirmBtn = document.getElementById('confirm-character-btn');
+    if (confirmBtn) {
+        confirmBtn.disabled = !(hasComb && hasRes && selectedRamas === 5);
+    }
 }
 
 function rollForCombattività() {
@@ -383,7 +469,9 @@ function rollForCombattività() {
     const combattività = roll + 10;
     gameState.player.combattività = combattività;
     gameState.player.combattivitàIniziale = combattività;
-    document.getElementById('comb-result').textContent = `Risultato: ${combattività} (${roll} + 10)`;
+    
+    const resultEl = document.getElementById('comb-result');
+    if (resultEl) resultEl.textContent = `Risultato: ${combattività} (${roll} + 10)`;
     checkCharacterReady();
 }
 
@@ -392,7 +480,9 @@ function rollForResistenza() {
     const resistenza = roll + 20;
     gameState.player.resistenza = resistenza;
     gameState.player.resistenzaIniziale = resistenza;
-    document.getElementById('res-result').textContent = `Risultato: ${resistenza} (${roll} + 20)`;
+    
+    const resultEl = document.getElementById('res-result');
+    if (resultEl) resultEl.textContent = `Risultato: ${resistenza} (${roll} + 20)`;
     checkCharacterReady();
 }
 
@@ -413,26 +503,27 @@ function confirmCharacter() {
 // ==================== MOSTRA SCHERMATA ====================
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
+    const screen = document.getElementById(screenId);
+    if (screen) screen.classList.add('active');
 }
 
 // ==================== RENDERIZZAZIONE PAGINA ====================
 function renderPage(pageId) {
     if (!currentBookData || !currentBookData.pagine) {
-        pageContent.innerHTML = '<p>Errore: libro non caricato.</p>';
+        pageContent.innerHTML = '<p>❌ Errore: libro non caricato correttamente.</p>';
         return;
     }
 
     const page = currentBookData.pagine[pageId];
 
     if (!page) {
-        pageContent.innerHTML = `<p>Pagina ${pageId} non trovata.</p>`;
+        pageContent.innerHTML = `<p>📄 Pagina ${pageId} non trovata.</p>`;
         choicesArea.innerHTML = `<button class="choice-btn" onclick="renderPage('1')">Torna all'inizio</button>`;
         return;
     }
 
     // Salva nella cronologia
-    if (gameState.currentPage !== pageId) {
+    if (gameState.currentPage !== pageId && gameState.currentPage) {
         gameState.history.push(gameState.currentPage);
     }
     gameState.currentPage = pageId;
@@ -501,8 +592,6 @@ function renderPage(pageId) {
     }
     
     document.getElementById('content-area').scrollTop = 0;
-    
-    // Auto-salva
     autoSave();
 }
 
@@ -528,10 +617,11 @@ function renderDiceChoices(diceConfig) {
         openDiceModal((roll) => {
             // Trova il range corrispondente
             for (const range of Object.keys(diceConfig)) {
-                const [min, max] = range.split('-').map(Number);
-                const effectiveMax = isNaN(max) ? min : max;
+                const parts = range.split('-').map(Number);
+                const min = parts[0];
+                const max = parts.length > 1 ? parts[1] : min;
                 
-                if (roll >= min && roll <= effectiveMax) {
+                if (roll >= min && roll <= max) {
                     renderPage(diceConfig[range]);
                     return;
                 }
@@ -551,10 +641,12 @@ function renderConditionalChoices(conditional) {
     for (const key of Object.keys(conditional)) {
         if (key === 'else') continue;
         
-        if (gameState.player.artiRamas.includes(key) || 
-            gameState.player.oggettiSpeciali.includes(key) ||
-            gameState.player.zaino.includes(key) ||
-            gameState.player.armi.includes(key)) {
+        const hasIt = gameState.player.artiRamas.includes(key) || 
+                      gameState.player.oggettiSpeciali.includes(key) ||
+                      gameState.player.zaino.includes(key) ||
+                      gameState.player.armi.includes(key);
+        
+        if (hasIt) {
             renderPage(conditional[key]);
             return;
         }
@@ -574,6 +666,7 @@ function applyOnEnterEffects(effects) {
     
     if (effects.addCorone) {
         gameState.player.borsa += effects.addCorone;
+        if (gameState.player.borsa > 50) gameState.player.borsa = 50;
     }
     
     if (effects.addItems) {
@@ -612,45 +705,38 @@ function applyOnEnterEffects(effects) {
             gameState.player.zaino.splice(pastoIndex, 1);
         } else if (effects.penaltySeNoPasto) {
             gameState.player.resistenza += effects.penaltySeNoPasto;
+            if (gameState.player.resistenza < 0) gameState.player.resistenza = 0;
         }
     }
     
     if (effects.randomLoseItem) {
-        const allItems = [...gameState.player.zaino];
-        if (allItems.length > 0) {
-            const randomIndex = Math.floor(Math.random() * allItems.length);
-            const lostItem = allItems[randomIndex];
-            const idx = gameState.player.zaino.indexOf(lostItem);
-            if (idx >= 0) gameState.player.zaino.splice(idx, 1);
+        if (gameState.player.zaino.length > 0) {
+            const randomIndex = Math.floor(Math.random() * gameState.player.zaino.length);
+            gameState.player.zaino.splice(randomIndex, 1);
         }
     }
 }
 
-// ==================== GESTIONE COMBATTIMENTO ====================
+// ==================== COMBATTIMENTO ====================
 function startCombat(combatData) {
     inCombat = true;
     
-    // Applica modificatori
     let enemyCombattività = combatData.combattività;
-    let playerCombattività = gameState.player.combattività;
-    let playerResistenza = gameState.player.resistenza;
     
-    // Modificatori al giocatore
-    if (combatData.modificatori) {
-        if (combatData.modificatori.combattività) {
-            // Controlla se annullato da abilità
-            const annullaCon = combatData.modificatori.annullaCon;
-            const annullaSe = combatData.modificatori.annullaSe;
-            
-            let annullato = false;
-            if (annullaCon && gameState.player.artiRamas.includes(annullaCon)) annullato = true;
-            if (annullaSe && annullaSe.every(item => 
-                gameState.player.zaino.includes(item) || 
-                gameState.player.oggettiSpeciali.includes(item))) annullato = true;
-            
-            if (!annullato) {
-                playerCombattività += combatData.modificatori.combattività;
-            }
+    // Applica modificatori
+    if (combatData.modificatori && combatData.modificatori.combattività) {
+        const annullaCon = combatData.modificatori.annullaCon;
+        const annullaSe = combatData.modificatori.annullaSe;
+        
+        let annullato = false;
+        if (annullaCon && gameState.player.artiRamas.includes(annullaCon)) annullato = true;
+        if (annullaSe && annullaSe.every(item => 
+            gameState.player.zaino.includes(item) || 
+            gameState.player.oggettiSpeciali.includes(item))) annullato = true;
+        
+        if (!annullato) {
+            // Il modificatore si applica alla Combattività del giocatore
+            // ma per il calcolo lo teniamo tracciato separatamente
         }
     }
     
@@ -662,11 +748,18 @@ function startCombat(combatData) {
         nextEnemy: combatData.nextEnemy,
         onWin: combatData.onWin,
         onWinChoices: combatData.onWinChoices,
-        onWinAfterRounds: combatData.onWinAfterRounds
+        onWinAfterRounds: combatData.onWinAfterRounds,
+        onFlee: combatData.onFlee,
+        modificatori: combatData.modificatori,
+        round: 0
     };
     
-    gameState.enemy = { ...enemyState };
-    combatHistory = [];
+    gameState.enemy = {
+        name: enemyState.name,
+        combattività: enemyState.combattività,
+        resistenza: enemyState.resistenza,
+        resistenzaIniziale: enemyState.resistenza
+    };
     
     updateHeader();
     renderCombatChoices(combatData);
@@ -678,28 +771,47 @@ function renderCombatChoices(combatData) {
     const attackBtn = document.createElement('button');
     attackBtn.id = 'attack-btn';
     attackBtn.className = 'choice-btn combat-btn';
-    attackBtn.textContent = '⚔️ Attacca!';
+    attackBtn.textContent = 'Attacca!';
     attackBtn.onclick = () => performAttack();
     choicesArea.appendChild(attackBtn);
     
-    // Pulsante fuga se consentito
-    if (combatData.onFlee) {
+    // Pulsante fuga
+    if (enemyState && enemyState.onFlee) {
         const fleeBtn = document.createElement('button');
         fleeBtn.id = 'flee-btn';
         fleeBtn.className = 'choice-btn';
-        fleeBtn.textContent = '🏃 Fuggi';
-        fleeBtn.onclick = () => attemptFlee(combatData.onFlee);
+        fleeBtn.textContent = 'Fuggi';
+        fleeBtn.onclick = () => attemptFlee(enemyState.onFlee);
         choicesArea.appendChild(fleeBtn);
     }
 }
 
 function performAttack() {
     openDiceModal((diceRoll) => {
-        const rapportoForza = gameState.player.combattività - enemyState.combattività;
+        // Calcola Combattività effettiva del giocatore con modificatori
+        let playerCombattività = gameState.player.combattività;
+        
+        if (enemyState.modificatori && enemyState.modificatori.combattività) {
+            const annullaCon = enemyState.modificatori.annullaCon;
+            const annullaSe = enemyState.modificatori.annullaSe;
+            
+            let annullato = false;
+            if (annullaCon && gameState.player.artiRamas.includes(annullaCon)) annullato = true;
+            if (annullaSe && annullaSe.every(item => 
+                gameState.player.zaino.includes(item) || 
+                gameState.player.oggettiSpeciali.includes(item))) annullato = true;
+            
+            if (!annullato) {
+                playerCombattività += enemyState.modificatori.combattività;
+            }
+        }
+        
+        const rapportoForza = playerCombattività - enemyState.combattività;
         const risultato = calcolaRisultatoCombattimento(rapportoForza, diceRoll);
         
         gameState.player.resistenza -= risultato.dannoLS;
         enemyState.resistenza -= risultato.dannoN;
+        enemyState.round++;
         gameState.enemy.resistenza = enemyState.resistenza;
 
         if (gameState.player.resistenza < 0) gameState.player.resistenza = 0;
@@ -710,21 +822,48 @@ function performAttack() {
         if (gameState.player.resistenza <= 0) {
             inCombat = false;
             renderGameOver();
-        } else if (enemyState.resistenza <= 0) {
+            return;
+        }
+        
+        if (enemyState.resistenza <= 0) {
             inCombat = false;
             
             // Controlla se ci sono altri nemici
             if (enemyState.nextEnemy) {
+                let next;
                 if (Array.isArray(enemyState.nextEnemy)) {
-                    const next = enemyState.nextEnemy.shift();
-                    enemyState = { ...enemyState, ...next, nextEnemy: enemyState.nextEnemy.length > 0 ? enemyState.nextEnemy : null };
+                    next = enemyState.nextEnemy.shift();
                 } else {
-                    enemyState = { ...enemyState, ...enemyState.nextEnemy, nextEnemy: null };
+                    next = enemyState.nextEnemy;
                 }
-                gameState.enemy = { ...enemyState };
+                
+                const remainingNext = Array.isArray(enemyState.nextEnemy) && enemyState.nextEnemy.length > 0 
+                    ? enemyState.nextEnemy 
+                    : (Array.isArray(enemyState.nextEnemy) ? null : null);
+                
+                const onWin = enemyState.onWin;
+                const modificatori = enemyState.modificatori;
+                
+                enemyState = {
+                    name: next.name,
+                    combattività: next.combattività,
+                    resistenza: next.resistenza,
+                    resistenzaIniziale: next.resistenza,
+                    nextEnemy: remainingNext,
+                    onWin: onWin,
+                    onWinChoices: enemyState.onWinChoices,
+                    modificatori: modificatori,
+                    round: 0
+                };
+                gameState.enemy = {
+                    name: enemyState.name,
+                    combattività: enemyState.combattività,
+                    resistenza: enemyState.resistenza,
+                    resistenzaIniziale: enemyState.resistenza
+                };
                 updateHeader();
                 renderCombatChoices({ onFlee: null });
-                showCombatMessage(`Hai sconfitto un nemico! Ora affronti: ${enemyState.name}`, 'success');
+                showCombatMessage(`⚔️ Nemico sconfitto! Ora affronti: ${enemyState.name}`, 'success');
             } else {
                 const onWin = enemyState.onWin;
                 const onWinChoices = enemyState.onWinChoices;
@@ -749,7 +888,7 @@ function performAttack() {
                 }
             }
         } else {
-            showCombatMessage(`Hai inflitto ${risultato.dannoN} danni! Hai subito ${risultato.dannoLS} danni!`, 'info');
+            showCombatMessage(`Hai inflitto <strong>${risultato.dannoN}</strong> danni! Hai subito <strong>${risultato.dannoLS}</strong> danni!`, 'info');
         }
     });
 }
@@ -760,28 +899,23 @@ function showCombatMessage(message, type) {
     
     const msg = document.createElement('p');
     msg.className = 'combat-message';
-    msg.style.textAlign = 'center';
-    msg.style.color = type === 'success' ? '#2ecc71' : (type === 'info' ? '#e74c3c' : '#fff');
-    msg.style.marginBottom = '10px';
+    msg.style.color = type === 'success' ? '#5cb85c' : '#e74c3c';
     msg.innerHTML = message;
     choicesArea.insertBefore(msg, choicesArea.firstChild);
 }
 
 // ==================== TABELLA COMBATTIMENTO ====================
-// Tabella corretta da "I Signori delle Tenebre"
 function calcolaRisultatoCombattimento(rapportoForza, dado) {
     // Limita il rapporto di forza
     if (rapportoForza > 11) rapportoForza = 11;
     if (rapportoForza < -11) rapportoForza = -11;
     
-    // Tabella semplificata basata sui risultati del libro
-    // In una versione completa, andrebbe implementata la tabella esatta
     let dannoLS = 0;
     let dannoN = 0;
     
-    // Formula approssimata che segue la logica del libro
+    // Formula basata sulla tabella originale
     if (rapportoForza >= 0) {
-        dannoLS = Math.max(0, Math.floor((10 - dado - rapportoForza) / 2));
+        dannoLS = Math.max(0, Math.floor((10 - dado) / 3));
         dannoN = Math.max(1, Math.floor((dado + rapportoForza) / 2));
     } else {
         dannoLS = Math.max(0, Math.floor((10 - dado - rapportoForza) / 2));
@@ -789,14 +923,14 @@ function calcolaRisultatoCombattimento(rapportoForza, dado) {
     }
     
     // Limita i danni massimi
-    dannoLS = Math.min(Math.max(dannoLS, 0), 10);
-    dannoN = Math.min(Math.max(dannoN, 0), 14);
+    dannoLS = Math.min(Math.max(dannoLS, 0), 6);
+    dannoN = Math.min(Math.max(dannoN, 0), 12);
     
     return { dannoLS, dannoN };
 }
 
 function attemptFlee(fleeTarget) {
-    if (confirm("Sei sicuro di voler fuggire? Perderai tutti i punti di Resistenza persi finora in questo combattimento.")) {
+    if (confirm("⚠️ Sei sicuro di voler fuggire?\n\nPerderai tutti i punti di Resistenza persi finora in questo combattimento.")) {
         inCombat = false;
         enemyState = null;
         gameState.enemy = { name: '', combattività: 0, resistenza: 0, resistenzaIniziale: 0 };
@@ -816,15 +950,16 @@ function renderGameOver() {
     `;
     
     choicesArea.innerHTML = '';
+    
     const restartBtn = document.createElement('button');
     restartBtn.className = 'choice-btn';
-    restartBtn.textContent = '🔄 Ricomincia l\'avventura';
+    restartBtn.textContent = 'Ricomincia l\'avventura';
     restartBtn.onclick = () => startNewGame(gameState.currentBook);
     choicesArea.appendChild(restartBtn);
     
     const menuBtn = document.createElement('button');
     menuBtn.className = 'choice-btn';
-    menuBtn.textContent = '🏠 Torna al menu principale';
+    menuBtn.textContent = 'Torna al menu principale';
     menuBtn.onclick = () => showScreen('main-menu');
     choicesArea.appendChild(menuBtn);
 }
@@ -838,17 +973,14 @@ function renderEnding(page) {
         </div>
     `;
     
-    // Segna il libro come completato
     if (!gameState.completedBooks.includes(gameState.currentBook)) {
         gameState.completedBooks.push(gameState.currentBook);
     }
     
-    // Sblocca il prossimo libro
     if (page.nextBook && !gameState.unlockedBooks.includes(page.nextBook)) {
         gameState.unlockedBooks.push(page.nextBook);
     }
     
-    // Salva automaticamente
     autoSave();
     
     choicesArea.innerHTML = '';
@@ -856,53 +988,76 @@ function renderEnding(page) {
     if (page.nextBook && booksData[page.nextBook]) {
         const nextBtn = document.createElement('button');
         nextBtn.className = 'choice-btn combat-btn';
-        nextBtn.textContent = `📖 Continua con il Libro ${page.nextBook}`;
+        nextBtn.textContent = `Continua con il Libro ${page.nextBook}`;
         nextBtn.onclick = () => goToNextBook(page.nextBook);
         choicesArea.appendChild(nextBtn);
     }
     
     const menuBtn = document.createElement('button');
     menuBtn.className = 'choice-btn';
-    menuBtn.textContent = '🏠 Torna al menu principale';
+    menuBtn.textContent = 'Torna al menu principale';
     menuBtn.onclick = () => showScreen('main-menu');
     choicesArea.appendChild(menuBtn);
 }
 
 // ==================== PASSA AL PROSSIMO LIBRO ====================
 function goToNextBook(nextBookId) {
-    // Mantieni le statistiche del giocatore
     const playerState = { ...gameState.player };
+    const unlockedBooks = [...gameState.unlockedBooks];
+    const completedBooks = [...gameState.completedBooks];
     
-    // Reset dello stato per il nuovo libro
     gameState = createEmptyGameState();
     gameState.player = playerState;
     gameState.currentBook = nextBookId || '02';
     gameState.currentPage = '1';
-    gameState.unlockedBooks = [...new Set([...gameState.unlockedBooks, nextBookId || '02'])];
+    gameState.unlockedBooks = unlockedBooks;
+    gameState.completedBooks = completedBooks;
+    
+    if (!gameState.unlockedBooks.includes(gameState.currentBook)) {
+        gameState.unlockedBooks.push(gameState.currentBook);
+    }
     
     loadCurrentBook().then(() => {
         showScreen('game-screen');
         renderPage('1');
         updateHeader();
+    }).catch(err => {
+        alert('❌ Il prossimo libro non è ancora disponibile!');
+        showScreen('main-menu');
     });
+}
+
+async function loadCurrentBook() {
+    if (gameState.currentBook && booksData[gameState.currentBook]) {
+        currentBookData = booksData[gameState.currentBook];
+        return true;
+    }
+    throw new Error('Libro non trovato');
 }
 
 // ==================== AGGIORNA HEADER ====================
 function updateHeader() {
-    document.getElementById('ls-res').textContent = gameState.player.resistenza;
-    document.getElementById('combattività').textContent = gameState.player.combattività;
+    const lsRes = document.getElementById('ls-res');
+    const combEl = document.getElementById('combattività');
+    const nRes = document.getElementById('n-res');
+    const statN = document.getElementById('stat-n');
+    
+    if (lsRes) lsRes.textContent = gameState.player.resistenza;
+    if (combEl) combEl.textContent = gameState.player.combattività;
     
     if (enemyState && enemyState.name && enemyState.resistenza > 0) {
-        document.getElementById('n-res').textContent = enemyState.resistenza;
-        document.getElementById('stat-n').classList.remove('hidden');
+        if (nRes) nRes.textContent = enemyState.resistenza;
+        if (statN) statN.classList.remove('hidden');
     } else {
-        document.getElementById('n-res').textContent = '-';
-        document.getElementById('stat-n').classList.add('hidden');
+        if (nRes) nRes.textContent = '-';
+        if (statN) statN.classList.add('hidden');
     }
     
     const lsBox = document.getElementById('stat-ls');
-    if (gameState.player.resistenza <= 5) lsBox.classList.add('warning');
-    else lsBox.classList.remove('warning');
+    if (lsBox) {
+        if (gameState.player.resistenza <= 5) lsBox.classList.add('warning');
+        else lsBox.classList.remove('warning');
+    }
 }
 
 // ==================== MODALE DADI ====================
@@ -911,9 +1066,7 @@ function openDiceModal(callback) {
     diceResult.textContent = '';
     rollDiceBtn.disabled = false;
     die1.textContent = '?';
-    die2.textContent = '?';
     die1.classList.remove('rolling');
-    die2.classList.remove('rolling');
     
     pendingDiceCallback = callback;
     
@@ -931,19 +1084,14 @@ function openDiceModal(callback) {
 
 function rollDice(callback) {
     die1.classList.add('rolling');
-    die2.classList.add('rolling');
     rollDiceBtn.disabled = true;
     diceResult.textContent = '';
 
     setTimeout(() => {
-        // Nel librogame originale si usa un solo dado (0-9)
-        // Usiamo un solo dado per rispettare le regole
         const roll = Math.floor(Math.random() * 10);
         
         die1.textContent = roll;
-        die2.textContent = '—';
         die1.classList.remove('rolling');
-        die2.classList.remove('rolling');
         
         diceResult.textContent = `Risultato: ${roll}`;
         rollDiceBtn.disabled = false;
@@ -956,10 +1104,7 @@ function rollDice(callback) {
 function navigateHistory(direction) {
     if (direction === -1 && gameState.history.length > 0) {
         const prevPage = gameState.history.pop();
-        const currentPage = gameState.currentPage;
-        gameState.currentPage = prevPage;
         renderPage(prevPage);
-        gameState.currentPage = prevPage;
     }
 }
 
@@ -968,11 +1113,11 @@ function showMap() {
     const locationKey = gameState.player.currentLocation;
     const locationData = mapLocations[locationKey];
 
-    if (locationData) {
+    if (locationData && heroMarker && currentLocationName) {
         heroMarker.style.top = locationData.top;
         heroMarker.style.left = locationData.left;
         currentLocationName.textContent = `Posizione: ${locationData.name}`;
-    } else {
+    } else if (heroMarker && currentLocationName) {
         heroMarker.style.top = '50%';
         heroMarker.style.left = '50%';
         currentLocationName.textContent = 'Posizione: Sconosciuta';
@@ -1056,7 +1201,7 @@ function saveGame() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    alert("Partita salvata! Il file è stato scaricato.");
+    alert("💾 Partita salvata! Il file è stato scaricato.");
 }
 
 // ==================== AUTO-SALVATAGGIO ====================
@@ -1074,22 +1219,23 @@ function checkAutoSave() {
         if (saved) {
             const loaded = JSON.parse(saved);
             if (loaded.currentBook && loaded.currentPage) {
-                // Mostra un'opzione per continuare
                 const continueBtn = document.createElement('button');
                 continueBtn.id = 'continue-game-btn';
                 continueBtn.className = 'menu-btn';
-                continueBtn.textContent = '▶️ Continua Partita';
+                continueBtn.innerHTML = '<span class="btn-icon">▶️</span><span>Continua Partita</span>';
                 continueBtn.onclick = () => {
                     gameState = { ...createEmptyGameState(), ...loaded };
                     loadCurrentBook().then(() => {
                         showScreen('game-screen');
                         renderPage(gameState.currentPage);
                         updateHeader();
+                    }).catch(err => {
+                        alert('❌ Impossibile caricare il salvataggio.');
                     });
                 };
                 
                 const menuActions = document.querySelector('.menu-actions');
-                if (menuActions) {
+                if (menuActions && !document.getElementById('continue-game-btn')) {
                     menuActions.insertBefore(continueBtn, menuActions.firstChild);
                 }
             }
@@ -1101,13 +1247,17 @@ function checkAutoSave() {
 
 // ==================== IMPOSTAZIONI ====================
 function applySettings() {
-    const savedFontSize = localStorage.getItem(FONT_KEY);
-    if (savedFontSize) {
-        document.documentElement.style.setProperty('--font-size', `${savedFontSize}px`);
+    const savedFontSize = localStorage.getItem(FONT_KEY) || DEFAULT_FONT_SIZE;
+    document.documentElement.style.setProperty('--font-size', `${savedFontSize}px`);
+    document.documentElement.style.fontSize = `${savedFontSize}px`;
+    
+    if (fontSizeSlider) {
         fontSizeSlider.value = savedFontSize;
+    }
+    if (fontSizeValue) {
         fontSizeValue.textContent = savedFontSize;
     }
 }
 
-// ==================== AVVIA L'APP ====================
+// ==================== AVVIO ====================
 init();
