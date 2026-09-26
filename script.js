@@ -433,7 +433,7 @@ async function saveToDrive() {
 
 // ==================== CARICAMENTO LIBRI ====================
 async function loadAllBooks() {
-    const bookFiles = ['01-signori-tenebre.json'];
+    const bookFiles = ['01-I-Signori-delle-Tenebre.json'];
     console.log('📚 Cerco i libri in:', BOOKS_FOLDER);
     
     for (const file of bookFiles) {
