@@ -13,7 +13,7 @@
     <!-- Favicon inline -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
     
-    <link rel="stylesheet" href="style.css?v=8">
+    <link rel="stylesheet" href="style.css?v=9">
     
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,14 +84,22 @@
         <!-- HEADER CON STATISTICHE -->
         <header id="game-header">
             <div class="stat-group">
+                <!-- 🆕 ARMA ATTIVA -->
+                <div class="stat-box weapon-box" id="stat-weapon" title="Arma attiva - Clicca sull'inventario per cambiarla">
+                    <span class="stat-label">ARMA</span>
+                    <span id="active-weapon" class="stat-value weapon-value">-</span>
+                </div>
+                <!-- VITA -->
                 <div class="stat-box" id="stat-ls">
                     <span class="stat-label">VITA</span>
                     <span id="ls-res" class="stat-value">-</span>
                 </div>
+                <!-- NEMICO -->
                 <div class="stat-box hidden" id="stat-n">
                     <span class="stat-label">NEMICO</span>
                     <span id="n-res" class="stat-value">-</span>
                 </div>
+                <!-- COMB -->
                 <div class="stat-box" id="stat-comb">
                     <span class="stat-label">COMB</span>
                     <span id="combattività" class="stat-value">-</span>

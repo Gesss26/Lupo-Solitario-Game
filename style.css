@@ -1,7 +1,7 @@
 /* ===================================================================
    LUPO SOLITARIO - STILE EPICO
    Tema: pergamena, oro, rune
-   Versione: 8.0 - Layout 3 colonne desktop + pannelli laterali
+   Versione: 9.0 - Arma attiva nell'header + inventario cliccabile
    =================================================================== */
 
 :root {
@@ -447,6 +447,15 @@ body {
 .stat-group {
     display: flex;
     gap: 6px;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.stat-group::-webkit-scrollbar {
+    display: none;
 }
 
 .stat-box {
@@ -459,6 +468,7 @@ body {
     min-width: 58px;
     transition: background-color 0.3s, transform 0.2s;
     border: 1px solid var(--border-gold);
+    flex-shrink: 0;
 }
 
 .stat-box.warning {
@@ -470,6 +480,42 @@ body {
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.6; }
+}
+
+/* ==================== WEAPON BOX (Arma attiva) ==================== */
+.weapon-box {
+    background: linear-gradient(145deg, rgba(139, 105, 20, 0.4), rgba(74, 58, 40, 0.6));
+    border-color: var(--accent-bright);
+    min-width: 70px;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.weapon-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+.weapon-box.changing {
+    animation: weaponChange 0.6s ease-out;
+}
+
+@keyframes weaponChange {
+    0% { transform: scale(1); box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); }
+    50% { transform: scale(1.15); box-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
+    100% { transform: scale(1); box-shadow: 0 0 12px rgba(212, 175, 55, 0.3); }
+}
+
+.weapon-value {
+    color: var(--accent-bright) !important;
+    font-size: 0.85rem !important;
+    text-align: center;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 1.1;
 }
 
 .stat-label {
@@ -496,6 +542,7 @@ body {
 .header-actions {
     display: flex;
     gap: 2px;
+    flex-shrink: 0;
 }
 
 .header-btn {
@@ -520,16 +567,14 @@ body {
     border-color: var(--border-gold);
 }
 
-/* ==================== LAYOUT 3 COLONNE (DESKTOP) ==================== */
+/* ==================== LAYOUT 3 COLONNE ==================== */
 #game-layout {
     flex: 1;
     display: flex;
     overflow: hidden;
-    /* MOBILE: layout a colonna singola */
     flex-direction: column;
 }
 
-/* Mobile: contenuto principale prende tutto lo spazio */
 #content-area {
     flex: 1;
     overflow-y: auto;
@@ -574,7 +619,7 @@ body {
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
 }
 
-/* ==================== PANNELLI LATERALI (BASE) ==================== */
+/* ==================== PANNELLI LATERALI ==================== */
 .sidebar-panel {
     background: linear-gradient(180deg, var(--panel-bg), #1a120b);
     border-right: 2px solid var(--border-gold);
@@ -652,11 +697,41 @@ body {
     line-height: 1.3;
     font-family: var(--font-serif);
     color: var(--text-color);
-    transition: background 0.2s;
+    transition: all 0.2s ease;
 }
 
 #inventory-sidebar-content li:hover {
     background: var(--panel-bg-hover);
+}
+
+/* 🆕 ARMA CLICCABILE */
+#inventory-sidebar-content li.weapon-item {
+    cursor: pointer;
+    position: relative;
+}
+
+#inventory-sidebar-content li.weapon-item:hover {
+    background: linear-gradient(145deg, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.1));
+    border-left-color: var(--accent-bright);
+    transform: translateX(4px);
+}
+
+#inventory-sidebar-content li.weapon-item.active {
+    background: linear-gradient(145deg, rgba(92, 184, 92, 0.25), rgba(92, 184, 92, 0.1));
+    border-left-color: var(--success-bright);
+    box-shadow: 0 0 12px rgba(92, 184, 92, 0.3);
+}
+
+#inventory-sidebar-content li.weapon-item.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    color: var(--success-bright);
+    font-weight: bold;
+    font-size: 1.1em;
+    text-shadow: 0 0 6px rgba(92, 184, 92, 0.8);
 }
 
 #inventory-sidebar-content .inventory-empty {
@@ -682,7 +757,20 @@ body {
     margin-left: 4px;
 }
 
-/* ==================== PANNELLO DADI (DESTRA) ==================== */
+#inventory-sidebar-content .badge-click {
+    color: var(--text-muted);
+    font-size: 0.7em;
+    margin-left: 4px;
+    font-style: italic;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+#inventory-sidebar-content li.weapon-item:hover .badge-click {
+    opacity: 1;
+}
+
+/* ==================== PANNELLO DADI ==================== */
 .dice-panel-content {
     flex: 1;
     display: flex;
@@ -1087,7 +1175,7 @@ body {
     font-family: var(--font-serif);
 }
 
-/* ==================== INVENTARIO MODALE ==================== */
+/* ==================== INVENTARIO MODALE (MOBILE) ==================== */
 #inventory-list {
     text-align: left;
 }
@@ -1117,16 +1205,53 @@ body {
     border-radius: 8px;
     border-left: 4px solid var(--accent-color);
     font-size: 1rem;
-    transition: background 0.2s;
+    transition: all 0.2s;
     font-family: var(--font-serif);
+    position: relative;
 }
 
 #inventory-list li:hover {
     background: var(--panel-bg-hover);
 }
 
+/* 🆕 ARMA CLICCABILE (MODALE MOBILE) */
+#inventory-list li.weapon-item {
+    cursor: pointer;
+}
+
+#inventory-list li.weapon-item:hover,
+#inventory-list li.weapon-item:active {
+    background: linear-gradient(145deg, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.1));
+    border-left-color: var(--accent-bright);
+}
+
+#inventory-list li.weapon-item.active {
+    background: linear-gradient(145deg, rgba(92, 184, 92, 0.25), rgba(92, 184, 92, 0.1));
+    border-left-color: var(--success-bright);
+    box-shadow: 0 0 12px rgba(92, 184, 92, 0.3);
+}
+
+#inventory-list li.weapon-item.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    color: var(--success-bright);
+    font-weight: bold;
+    font-size: 1.2em;
+    text-shadow: 0 0 8px rgba(92, 184, 92, 0.8);
+}
+
 #inventory-list strong {
     color: var(--accent-color);
+}
+
+#inventory-list .badge-click {
+    color: var(--text-muted);
+    font-size: 0.8em;
+    margin-left: 6px;
+    font-style: italic;
 }
 
 .inventory-empty {
@@ -1544,13 +1669,11 @@ body {
 
 /* ==================== RESPONSIVE (MOBILE) ==================== */
 @media (max-width: 1023px) {
-    /* Mobile: nasconde i pannelli laterali */
     #inventory-panel,
     #dice-panel {
         display: none !important;
     }
     
-    /* Mobile: mostra i pulsanti header nascosti su desktop */
     .desktop-hide {
         display: flex !important;
     }
@@ -1558,50 +1681,41 @@ body {
 
 /* ==================== DESKTOP (>=1024px) ==================== */
 @media (min-width: 1024px) {
-    /* Layout a 3 colonne */
     #game-layout {
         flex-direction: row;
     }
     
-    /* Colonna sinistra: inventario */
     #inventory-panel {
         display: flex;
         width: var(--sidebar-width);
     }
     
-    /* Colonna centrale: contenuto */
     #content-area {
         flex: 1;
         padding: 24px 30px;
     }
     
-    /* Colonna destra: dadi */
     #dice-panel {
         display: flex;
         width: var(--sidebar-width);
     }
     
-    /* Nasconde i pulsanti header ridondanti su desktop */
     .desktop-hide {
         display: none !important;
     }
     
-    /* Su desktop: max-width del contenuto più stretto per far spazio alle sidebar */
     #page-content {
         max-width: 100%;
     }
     
-    /* Su desktop: choices-area max-width */
     .choice-btn {
         max-width: 100%;
     }
     
-    /* Su desktop: inventario modale mai usato */
     #inventory-modal {
         display: none !important;
     }
     
-    /* Su desktop: modale dadi mai usato */
     #dice-modal {
         display: none !important;
     }
@@ -1645,23 +1759,32 @@ body {
     }
     
     .stat-box {
-        min-width: 52px;
-        padding: 5px 8px;
+        min-width: 50px;
+        padding: 4px 6px;
     }
     
     .stat-label {
-        font-size: 0.5rem;
+        font-size: 0.45rem;
     }
     
     .stat-value {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+    }
+    
+    .weapon-box {
+        min-width: 60px;
+    }
+    
+    .weapon-value {
+        font-size: 0.75rem !important;
+        max-width: 70px;
     }
     
     .header-btn {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         padding: 6px;
-        min-width: 36px;
-        min-height: 36px;
+        min-width: 34px;
+        min-height: 34px;
     }
     
     .header-actions {

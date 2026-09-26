@@ -1,6 +1,6 @@
 /* ===================================================================
    LUPO SOLITARIO - MOTORE DI GIOCO
-   Versione: 8.0 - Layout 3 colonne desktop
+   Versione: 9.0 - Arma attiva selezionabile
    =================================================================== */
 
 // ==================== COSTANTI ====================
@@ -11,7 +11,6 @@ const FONT_KEY = 'lupo_solitario_fontSize';
 const DEFAULT_FONT_SIZE = '20';
 const GOOGLE_CLIENT_ID = '1061090074111-2d0ebutt2ri4tdah2qdefq7bpmra37qb.apps.googleusercontent.com';
 
-// Soglia desktop (px)
 const DESKTOP_BREAKPOINT = 1024;
 
 // ==================== ARMI (Maestria) ====================
@@ -71,7 +70,7 @@ let syncStatus = 'disconnected';
 // Audio
 let audioContext = null;
 
-// Dadi pannello laterale (desktop)
+// Dadi pannello laterale
 let sideDicePendingCallback = null;
 
 // ==================== CREAZIONE STATO VUOTO ====================
@@ -134,6 +133,7 @@ let settingsModal, characterCreationModal;
 let fontSizeSlider, fontSizeValue;
 let loadFileInput;
 let dicePanelDie, dicePanelResult, dicePanelRollBtn, dicePanelStatus;
+let activeWeaponEl, statWeaponBox;
 
 // ==================== RILEVAMENTO DESKTOP ====================
 function isDesktop() {
@@ -222,6 +222,29 @@ function playResultSound(isPositive) {
     }
 }
 
+// 🆕 Suono quando cambi arma
+function playWeaponChangeSound() {
+    initAudio();
+    if (!audioContext) return;
+    
+    const now = audioContext.currentTime;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(600, now);
+    osc.frequency.exponentialRampToValueAtTime(900, now + 0.15);
+    
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+    
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    
+    osc.start(now);
+    osc.stop(now + 0.25);
+}
+
 function showFlash(isPositive) {
     const existing = document.querySelector('.flash-overlay');
     if (existing) existing.remove();
@@ -256,11 +279,13 @@ function initDom() {
     fontSizeValue = document.getElementById('font-size-value');
     loadFileInput = document.getElementById('load-file-input');
     
-    // Pannello dadi laterale
     dicePanelDie = document.getElementById('dice-panel-die');
     dicePanelResult = document.getElementById('dice-panel-result');
     dicePanelRollBtn = document.getElementById('dice-panel-roll-btn');
     dicePanelStatus = document.getElementById('dice-panel-status');
+    
+    activeWeaponEl = document.getElementById('active-weapon');
+    statWeaponBox = document.getElementById('stat-weapon');
 }
 
 async function init() {
@@ -273,12 +298,10 @@ async function init() {
     checkAutoSave();
     await initGoogleDrive();
     
-    // Ascolta resize per aggiornare layout
     window.addEventListener('resize', handleResize);
 }
 
 function handleResize() {
-    // Aggiorna inventario e pannello dadi in base alla modalità
     updateSideInventory();
     updateDicePanelStatus();
 }
@@ -547,11 +570,7 @@ function setupEventListeners() {
     }
 
     if (rollDiceBtn) rollDiceBtn.addEventListener('click', () => rollDice());
-
-    // Pulsante dadi pannello laterale (desktop)
-    if (dicePanelRollBtn) {
-        dicePanelRollBtn.addEventListener('click', () => rollDiceSidePanel());
-    }
+    if (dicePanelRollBtn) dicePanelRollBtn.addEventListener('click', () => rollDiceSidePanel());
 
     const resetBtn = document.getElementById('reset-game-btn');
     if (resetBtn) resetBtn.addEventListener('click', () => {
@@ -930,9 +949,9 @@ function showScreen(screenId) {
     const screen = document.getElementById(screenId);
     if (screen) screen.classList.add('active');
     
-    // Su desktop, aggiorna l'inventario laterale quando si entra nella schermata di gioco
     if (screenId === 'game-screen') {
         updateSideInventory();
+        updateActiveWeaponDisplay();
     }
 }
 
@@ -958,31 +977,88 @@ function getIconaArma(nomeArma) {
     return armiIcone[nomeArma] || '⚔️';
 }
 
+// ==================== CAMBIO ARMA ATTIVA ====================
+function setActiveWeapon(index) {
+    if (index < 0 || index >= gameState.player.armi.length) return;
+    
+    // Se è già quella attiva, non fare nulla
+    if (index === 0) return;
+    
+    // Sposta l'arma selezionata in prima posizione
+    const armaSelezionata = gameState.player.armi.splice(index, 1)[0];
+    gameState.player.armi.unshift(armaSelezionata);
+    
+    console.log(`⚔️ Arma attiva: ${armaSelezionata}`);
+    
+    // Effetti visivi e sonori
+    playWeaponChangeSound();
+    
+    if (statWeaponBox) {
+        statWeaponBox.classList.add('changing');
+        setTimeout(() => statWeaponBox.classList.remove('changing'), 600);
+    }
+    
+    // Aggiorna UI
+    updateActiveWeaponDisplay();
+    updateSideInventory();
+    
+    // Su mobile, aggiorna anche la modale se aperta
+    if (!isDesktop() && inventoryModal.classList.contains('active')) {
+        showInventory();
+    }
+    
+    // Auto-save
+    autoSave();
+    if (drivedb && googleToken) saveToDrive();
+}
+
+// ==================== AGGIORNA ARMA ATTIVA (HEADER) ====================
+function updateActiveWeaponDisplay() {
+    if (!activeWeaponEl) return;
+    
+    const armaAttuale = getArmaAttuale();
+    
+    if (armaAttuale) {
+        const icona = getIconaArma(armaAttuale);
+        activeWeaponEl.textContent = `${icona} ${armaAttuale}`;
+        activeWeaponEl.title = `Arma attiva: ${armaAttuale}`;
+        
+        // Se c'è bonus Scherma, mostra +2
+        const bonus = getBonusScherma();
+        if (bonus > 0) {
+            activeWeaponEl.textContent += ' +2';
+        }
+    } else {
+        activeWeaponEl.textContent = '👊 Mani nude';
+        activeWeaponEl.title = 'Combatti a mani nude (-4 COMB)';
+    }
+}
+
 // ==================== SIDEBAR INVENTARIO (DESKTOP) ====================
 function updateSideInventory() {
     if (!inventorySidebarContent) return;
     
-    // Genera HTML per il pannello laterale
     let html = '';
     
     // Borsa
     html += `<h3>💰 Borsa</h3>`;
     html += `<p><strong>${gameState.player.borsa}</strong> Corone</p>`;
     
-    // Armi
-    html += `<h3>⚔️ Armi</h3>`;
+    // Armi (cliccabili)
+    html += `<h3>⚔️ Armi (clicca per usare)</h3>`;
     if (gameState.player.armi && gameState.player.armi.length > 0) {
         html += '<ul>';
         gameState.player.armi.forEach((item, idx) => {
             const icona = getIconaArma(item);
+            const isActive = idx === 0;
             const isMaestria = item === gameState.player.maestriaArma;
-            const badge = isMaestria ? '<span class="badge-maestro">⭐</span>' : '';
-            const inUso = idx === 0 ? '<span class="badge-inuso">(in uso)</span>' : '';
-            html += `<li>${icona} ${item}${badge}${inUso}</li>`;
+            const badgeMaestro = isMaestria ? '<span class="badge-maestro">⭐</span>' : '';
+            const badgeInUso = isActive ? '<span class="badge-inuso">(in uso)</span>' : '<span class="badge-click">↻ cambia</span>';
+            html += `<li class="weapon-item ${isActive ? 'active' : ''}" data-weapon-index="${idx}">${icona} ${item}${badgeMaestro} ${badgeInUso}</li>`;
         });
         html += '</ul>';
     } else {
-        html += '<p class="inventory-empty">Nessuna arma</p>';
+        html += '<p class="inventory-empty">Nessuna arma (👊 Mani nude, -4 COMB)</p>';
     }
     
     // Maestria
@@ -1027,9 +1103,17 @@ function updateSideInventory() {
     }
     
     inventorySidebarContent.innerHTML = html;
+    
+    // Aggiungi click handler alle armi
+    inventorySidebarContent.querySelectorAll('.weapon-item').forEach(li => {
+        li.addEventListener('click', () => {
+            const idx = parseInt(li.dataset.weaponIndex);
+            setActiveWeapon(idx);
+        });
+    });
 }
 
-// ==================== SIDEBAR DADI (DESKTOP) ====================
+// ==================== SIDEBAR DADI ====================
 function updateDicePanelStatus(active = false, message = '') {
     if (!dicePanelStatus) return;
     
@@ -1124,7 +1208,8 @@ function renderPage(pageId) {
     if (page.location) updatePlayerLocation(page.location);
 
     updateHeader();
-    updateSideInventory(); // Aggiorna sidebar desktop
+    updateSideInventory();
+    updateActiveWeaponDisplay();
 
     let contentHTML = `<p>${page.testo}</p>`;
     pageContent.innerHTML = contentHTML;
@@ -1146,10 +1231,7 @@ function renderPage(pageId) {
         });
     }
     
-    // Reset pannello dadi quando non serve
-    if (isDesktop()) {
-        disableDicePanel();
-    }
+    if (isDesktop()) disableDicePanel();
     
     document.getElementById('content-area').scrollTop = 0;
     autoSave();
@@ -1183,19 +1265,15 @@ function renderDiceChoices(diceConfig) {
         renderPage(diceConfig[Object.keys(diceConfig)[0]]);
     };
     
-    // Su desktop: usa il pannello laterale
     if (isDesktop()) {
         btn.onclick = () => {
-            if (enableDicePanel((roll) => {
+            enableDicePanel((roll) => {
                 disableDicePanel();
                 handleRoll(roll);
-            })) {
-                // Pannello pronto, aspetta il click su "Lancia"
-            }
+            });
         };
         choicesArea.appendChild(btn);
     } else {
-        // Mobile: modale
         btn.onclick = () => {
             openDiceModal((roll) => handleRoll(roll));
         };
@@ -1279,12 +1357,10 @@ function renderCombatChoices(combatData) {
     
     if (isDesktop()) {
         attackBtn.onclick = () => {
-            if (enableDicePanel((roll) => {
+            enableDicePanel((roll) => {
                 disableDicePanel();
                 performAttackWithRoll(roll);
-            })) {
-                // Pannello pronto, aspetta il click su "Lancia"
-            }
+            });
         };
     } else {
         attackBtn.onclick = () => {
@@ -1302,7 +1378,6 @@ function renderCombatChoices(combatData) {
         choicesArea.appendChild(fleeBtn);
     }
     
-    // Reset pannello dadi
     if (isDesktop()) disableDicePanel();
 }
 
@@ -1310,20 +1385,17 @@ function performAttackWithRoll(diceRoll) {
     let playerCombattività = gameState.player.combattività;
     let modificatoriMsg = [];
     
-    // Bonus Scherma
     const bonusScherma = getBonusScherma();
     if (bonusScherma > 0) {
         playerCombattività += bonusScherma;
         modificatoriMsg.push(`+${bonusScherma} COMB da Scherma`);
     }
     
-    // Bonus Psicolaser
     if (gameState.player.artiRamas.includes('Psicolaser')) {
         playerCombattività += 2;
         modificatoriMsg.push('+2 COMB da Psicolaser');
     }
     
-    // Modificatori del nemico
     if (enemyState.modificatori && enemyState.modificatori.combattività) {
         const annullaCon = enemyState.modificatori.annullaCon;
         const annullaSe = enemyState.modificatori.annullaSe;
@@ -1352,12 +1424,10 @@ function performAttackWithRoll(diceRoll) {
     updateHeader();
     updateSideInventory();
 
-    // Flash
     const isPositive = risultato.dannoN > risultato.dannoLS;
     showFlash(isPositive);
     if (isDesktop()) showDicePanelResult(isPositive);
 
-    // Messaggio
     const armaAttuale = getArmaAttuale();
     let msgArma = '';
     if (armaAttuale) {
@@ -1571,6 +1641,8 @@ function updateHeader() {
         if (gameState.player.resistenza <= 5) lsBox.classList.add('warning');
         else lsBox.classList.remove('warning');
     }
+    
+    updateActiveWeaponDisplay();
 }
 
 // ==================== MODALE DADI (MOBILE) ====================
@@ -1647,19 +1719,20 @@ function showInventory() {
     let html = '';
     html += `<h3>💰 Borsa</h3><p>${gameState.player.borsa} Corone d'Oro</p>`;
     
-    html += `<h3>⚔️ Armi (max 2)</h3>`;
+    html += `<h3>⚔️ Armi (clicca per usare)</h3>`;
     if (gameState.player.armi && gameState.player.armi.length > 0) {
         html += '<ul>';
         gameState.player.armi.forEach((item, idx) => {
             const icona = getIconaArma(item);
+            const isActive = idx === 0;
             const isMaestria = item === gameState.player.maestriaArma;
-            const badge = isMaestria ? ' <span style="color:#d4af37;font-size:0.8em">⭐ Maestro</span>' : '';
-            const inUso = idx === 0 ? ' <span style="color:#5cb85c;font-size:0.8em">(in uso)</span>' : '';
-            html += `<li>${icona} ${item}${badge}${inUso}</li>`;
+            const badgeMaestro = isMaestria ? ' <span style="color:#d4af37;font-size:0.8em">⭐ Maestro</span>' : '';
+            const badgeInUso = isActive ? ' <span style="color:#5cb85c;font-size:0.8em">(in uso)</span>' : ' <span class="badge-click">↻ cambia</span>';
+            html += `<li class="weapon-item ${isActive ? 'active' : ''}" data-weapon-index="${idx}">${icona} ${item}${badgeMaestro}${badgeInUso}</li>`;
         });
         html += '</ul>';
     } else {
-        html += '<p class="inventory-empty">Nessuna arma equipaggiata.</p>';
+        html += '<p class="inventory-empty">Nessuna arma equipaggiata. Combatti a mani nude (-4 COMB).</p>';
     }
     
     if (gameState.player.maestriaArma) {
@@ -1693,6 +1766,15 @@ function showInventory() {
     
     inventoryList.innerHTML = html;
     inventoryModal.classList.add('active');
+    
+    // Aggiungi click handler alle armi (mobile)
+    inventoryList.querySelectorAll('.weapon-item').forEach(li => {
+        li.addEventListener('click', () => {
+            const idx = parseInt(li.dataset.weaponIndex);
+            setActiveWeapon(idx);
+            // La modale viene aggiornata automaticamente da setActiveWeapon
+        });
+    });
 }
 
 // ==================== SALVATAGGIO ====================
