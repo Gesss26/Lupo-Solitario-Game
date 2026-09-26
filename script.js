@@ -1,6 +1,6 @@
 /* ===================================================================
    LUPO SOLITARIO - MOTORE DI GIOCO
-   Versione: 5.0 - Con Google Drive Sync (DriveDB)
+   Versione: 6.0 - Con suoni sintetici e flash
    =================================================================== */
 
 // ==================== COSTANTI ====================
@@ -23,6 +23,9 @@ let pendingDiceCallback = null;
 let drivedb = null;
 let googleToken = null;
 let syncStatus = 'disconnected';
+
+// Audio
+let audioContext = null;
 
 // ==================== CREAZIONE STATO VUOTO ====================
 function createEmptyGameState() {
@@ -65,7 +68,8 @@ const mapLocations = {
     'vassagonia': { name: 'Vassagonia', top: '80%', left: '70%' },
     'kaltenland': { name: 'Kaltenland', top: '10%', left: '20%' },
     'dessi': { name: 'Dessi', top: '75%', left: '60%' },
-    'danarg': { name: 'Palude di Danarg', top: '70%', left: '50%' }
+    'danarg': { name: 'Palude di Danarg', top: '70%', left: '50%' },
+    'cimitero_antichi': { name: 'Cimitero degli Antichi', top: '50%', left: '45%' }
 };
 
 // ==================== RIFERIMENTI DOM ====================
@@ -76,6 +80,105 @@ let mapModal, heroMarker, currentLocationName;
 let settingsModal, characterCreationModal;
 let fontSizeSlider, fontSizeValue;
 let loadFileInput;
+
+// ==================== AUDIO (Web Audio API) ====================
+function initAudio() {
+    if (!audioContext) {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (err) {
+            console.warn('Audio non supportato:', err);
+        }
+    }
+    // Riprendi il context se sospeso (richiesto da browser moderni)
+    if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+}
+
+// Suono sintetico del dado che rotola (6 tick)
+function playDiceSound() {
+    initAudio();
+    if (!audioContext) return;
+    
+    const now = audioContext.currentTime;
+    
+    for (let i = 0; i < 8; i++) {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.type = 'square';
+        const freq = 300 + Math.random() * 500;
+        osc.frequency.setValueAtTime(freq, now + i * 0.07);
+        
+        gain.gain.setValueAtTime(0.12, now + i * 0.07);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.07 + 0.06);
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.start(now + i * 0.07);
+        osc.stop(now + i * 0.07 + 0.07);
+    }
+}
+
+// Suono risultato: positivo (ascendente) o negativo (discendente)
+function playResultSound(isPositive) {
+    initAudio();
+    if (!audioContext) return;
+    
+    const now = audioContext.currentTime;
+    
+    if (isPositive) {
+        // Arpeggio ascendente per vittoria
+        const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+        notes.forEach((freq, i) => {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now + i * 0.1);
+            
+            gain.gain.setValueAtTime(0.2, now + i * 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.start(now + i * 0.1);
+            osc.stop(now + i * 0.1 + 0.3);
+        });
+    } else {
+        // Suono discendente per sconfitta
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(120, now + 0.4);
+        
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.start(now);
+        osc.stop(now + 0.5);
+    }
+}
+
+// Flash a schermo intero
+function showFlash(isPositive) {
+    const existing = document.querySelector('.flash-overlay');
+    if (existing) existing.remove();
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'flash-overlay ' + (isPositive ? 'active-green' : 'active-red');
+    document.body.appendChild(overlay);
+    
+    setTimeout(() => overlay.remove(), 700);
+}
 
 // ==================== INIZIALIZZAZIONE ====================
 function initDom() {
@@ -111,7 +214,7 @@ async function init() {
     await initGoogleDrive();
 }
 
-// ==================== GOOGLE DRIVE (DriveDB) ====================
+// ==================== GOOGLE DRIVE ====================
 async function initGoogleDrive() {
     const savedToken = localStorage.getItem('gdrive_token');
     const tokenExpiry = localStorage.getItem('gdrive_token_expiry');
@@ -135,7 +238,6 @@ async function setupDriveDB(token) {
         drivedb = new window.DriveDB({
             dbName: 'lupo_solitario',
             tableName: 'game_state',
-            gdriveFolderName: 'Lupo Solitario Save',
             accessToken: () => googleToken,
             syncDebounceMs: 2000
         });
@@ -145,18 +247,13 @@ async function setupDriveDB(token) {
         
         if (drivedb.onSyncChange) {
             drivedb.onSyncChange(({ status, error }) => {
-                if (status === 'syncing') {
-                    updateGDriveStatus('syncing', 'Sincronizzazione...');
-                } else if (status === 'synced') {
-                    updateGDriveStatus('synced', 'Sincronizzato');
-                } else if (status === 'error') {
-                    updateGDriveStatus('error', `Errore: ${error || 'sconosciuto'}`);
-                }
+                if (status === 'syncing') updateGDriveStatus('syncing', 'Sincronizzazione...');
+                else if (status === 'synced') updateGDriveStatus('synced', 'Sincronizzato');
+                else if (status === 'error') updateGDriveStatus('error', `Errore: ${error || 'sconosciuto'}`);
             });
         }
         
         await loadFromDrive();
-        
     } catch (err) {
         console.error('Errore inizializzazione DriveDB:', err);
         updateGDriveStatus('error', 'Errore connessione');
@@ -219,17 +316,13 @@ async function connectGoogleDrive() {
 
 async function loadFromDrive() {
     if (!drivedb) return;
-    
     try {
         const docs = drivedb.list();
         if (docs && docs.length > 0) {
             const latest = docs[0];
             gameState = { ...createEmptyGameState(), ...latest.data };
             console.log('✅ Salvataggio caricato da Google Drive');
-            
-            if (gameState.currentBook) {
-                await loadCurrentBook();
-            }
+            if (gameState.currentBook) await loadCurrentBook();
         }
     } catch (err) {
         console.warn('Nessun salvataggio remoto trovato:', err);
@@ -238,7 +331,6 @@ async function loadFromDrive() {
 
 async function saveToDrive() {
     if (!drivedb) return;
-    
     try {
         await drivedb.set('main_save', gameState);
         console.log('💾 Salvataggio inviato a Google Drive');
@@ -250,7 +342,6 @@ async function saveToDrive() {
 // ==================== CARICAMENTO LIBRI ====================
 async function loadAllBooks() {
     const bookFiles = ['01-signori-tenebre.json'];
-    
     console.log('📚 Cerco i libri in:', BOOKS_FOLDER);
     
     for (const file of bookFiles) {
@@ -258,11 +349,8 @@ async function loadAllBooks() {
         try {
             const response = await fetch(fullPath);
             console.log(`📡 ${file}:`, response.status);
+            if (!response.ok) { console.warn(`❌ File non trovato: ${fullPath}`); continue; }
             
-            if (!response.ok) {
-                console.warn(`❌ File non trovato: ${fullPath}`);
-                continue;
-            }
             const bookData = await response.json();
             console.log(`✅ Libro caricato: ${bookData.titolo || bookData.id}`);
             
@@ -275,7 +363,6 @@ async function loadAllBooks() {
             console.error(`💥 Errore caricando ${fullPath}:`, err);
         }
     }
-    
     console.log('📚 Libri caricati totali:', Object.keys(booksData).length);
 }
 
@@ -341,14 +428,12 @@ function setupEventListeners() {
     if (gdriveBtn) gdriveBtn.addEventListener('click', connectGoogleDrive);
     
     const mainMenuBtn = document.getElementById('main-menu-btn');
-    if (mainMenuBtn) {
-        mainMenuBtn.addEventListener('click', () => {
-            if (confirm("Tornare al menu? I progressi non salvati andranno persi.")) {
-                autoSave();
-                showScreen('main-menu');
-            }
-        });
-    }
+    if (mainMenuBtn) mainMenuBtn.addEventListener('click', () => {
+        if (confirm("Tornare al menu? I progressi non salvati andranno persi.")) {
+            autoSave();
+            showScreen('main-menu');
+        }
+    });
 
     const settingsBtn = document.getElementById('settings-btn');
     if (settingsBtn) settingsBtn.addEventListener('click', () => settingsModal.classList.add('active'));
@@ -395,14 +480,12 @@ function setupEventListeners() {
     if (rollDiceBtn) rollDiceBtn.addEventListener('click', () => rollDice());
 
     const resetBtn = document.getElementById('reset-game-btn');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-            if (confirm("⚠️ Ricominciare da capo? Perderai tutti i progressi.")) {
-                localStorage.removeItem(SAVE_KEY);
-                location.reload();
-            }
-        });
-    }
+    if (resetBtn) resetBtn.addEventListener('click', () => {
+        if (confirm("⚠️ Ricominciare da capo? Perderai tutti i progressi.")) {
+            localStorage.removeItem(SAVE_KEY);
+            location.reload();
+        }
+    });
 
     if (loadFileInput) {
         loadFileInput.addEventListener('change', (e) => {
@@ -418,9 +501,7 @@ function setupEventListeners() {
                         renderPage(gameState.currentPage);
                         updateHeader();
                     });
-                } catch (err) {
-                    alert("❌ File non valido!");
-                }
+                } catch (err) { alert("❌ File non valido!"); }
             };
             reader.readAsText(file);
             loadFileInput.value = '';
@@ -467,7 +548,6 @@ function createClickZones() {
 // ==================== AVVIO NUOVA PARTITA ====================
 function startNewGame(bookId) {
     console.log('🎮 Avvio nuova partita:', bookId);
-    
     gameState = createEmptyGameState();
     gameState.currentBook = bookId;
     gameState.currentPage = '1';
@@ -521,7 +601,6 @@ function generateRamasGrid() {
 
 function handleRamaClick(card, arte) {
     showRamaDescription(arte);
-    
     const isSelected = card.classList.contains('selected');
     const selectedCount = document.querySelectorAll('.rama-card.selected').length;
     
@@ -829,6 +908,10 @@ function performAttack() {
 
         updateHeader();
 
+        // 🎯 Flash verde SOLO se i danni inflitti superano quelli subiti
+        const isPositive = risultato.dannoN > risultato.dannoLS;
+        showFlash(isPositive);
+
         if (gameState.player.resistenza <= 0) { inCombat = false; renderGameOver(); return; }
         
         if (enemyState.resistenza <= 0) {
@@ -1033,7 +1116,7 @@ function openDiceModal(callback) {
     diceResult.textContent = '';
     rollDiceBtn.disabled = false;
     die1.textContent = '?';
-    die1.classList.remove('rolling');
+    die1.classList.remove('rolling', 'flash-positive', 'flash-negative');
     pendingDiceCallback = callback;
     
     rollDiceBtn.onclick = () => {
@@ -1052,6 +1135,9 @@ function rollDice(callback) {
     die1.classList.add('rolling');
     rollDiceBtn.disabled = true;
     diceResult.textContent = '';
+    
+    // 🎵 Suono del dado che rotola
+    playDiceSound();
 
     setTimeout(() => {
         const roll = Math.floor(Math.random() * 10);
@@ -1059,7 +1145,11 @@ function rollDice(callback) {
         die1.classList.remove('rolling');
         diceResult.textContent = `Risultato: ${roll}`;
         rollDiceBtn.disabled = false;
-        if (callback) setTimeout(() => callback(roll), 800);
+        
+        // Nota: il flash visivo verde/rosso viene mostrato DOPO il calcolo dei danni
+        // (in performAttack o in base al risultato). Qui mostriamo solo il numero.
+
+        if (callback) setTimeout(() => callback(roll), 1000);
     }, 1000);
 }
 
