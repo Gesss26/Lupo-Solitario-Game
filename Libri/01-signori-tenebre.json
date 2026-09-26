@@ -2230,8 +2230,8 @@
     "location": "cimitero_antichi",
     "choices": [
         { "text": "Vai al 284.", "target": "284" }
-    ]
-}
+      ]
+    },
     "330": {
       "testo": "Se vuoi continuare in questa direzione aprendoti la strada a colpi d'Ascia, vai al 330.",
       "choices": [
