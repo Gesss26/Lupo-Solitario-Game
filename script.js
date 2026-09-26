@@ -126,7 +126,7 @@ async function init() {
 // ==================== CARICAMENTO LIBRI ====================
 async function loadAllBooks() {
     const bookFiles = [
-        '01 - I Signori delle Tenebre.json'
+        '01-signori-tenebre.json'
     ];
     
     console.log('📚 Cerco i libri in:', BOOKS_FOLDER);
