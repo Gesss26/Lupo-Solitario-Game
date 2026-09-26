@@ -2034,11 +2034,12 @@
       ]
     },
     "298": {
-      "testo": "Se hai l'Arte dell'Affinità animale, puoi chiamare questo uccello andando al 298.",
-      "choices": [
-        { "text": "Vai al 298.", "target": "298", "requisito": "Affinità Animale" }
-      ]
-    },
+  "testo": "Chiami il corvo con l'Arte dell'Affinità Animale. L'uccello volta la testa, gracchia, e poi si alza in volo verso sud. Sembra quasi che ti stia invitando a seguirlo...",
+  "choices": [
+    { "text": "Se vuoi seguirlo, vai al 121.", "target": "121" },
+    { "text": "Se preferisci ignorarlo e continuare, vai al 335.", "target": "335" }
+  ]
+},
     "299": {
       "testo": "Togliendo il fango viscido dai vestiti, riprendi a camminare nella foresta.",
       "choices": [
