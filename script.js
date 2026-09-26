@@ -1,15 +1,11 @@
 /* ===================================================================
-   LUPO SOLITARIO - MOTORE DI GIOCO COMPLETO
-   Versione: 2.0
+   LUPO SOLITARIO - MOTORE DI GIOCO
+   Versione: 3.0 - Copertine da /Copertina/*.jpeg
    =================================================================== */
-
-// ==================== CONFIGURAZIONE PDF.JS ====================
-if (typeof pdfjsLib !== 'undefined') {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-}
 
 // ==================== COSTANTI ====================
 const BOOKS_FOLDER = 'Libri/';
+const COVERS_FOLDER = 'Copertina/';
 const SAVE_KEY = 'lupo_solitario_save';
 const FONT_KEY = 'lupo_solitario_fontSize';
 const DEFAULT_FONT_SIZE = '20';
@@ -55,16 +51,56 @@ function createEmptyGameState() {
 
 // ==================== ARTI RAMAS ====================
 const artiRamasDisponibili = [
-    { nome: 'Mimetismo', descrizione: 'Nascondersi e mimetizzarsi con l\'ambiente.' },
-    { nome: 'Caccia', descrizione: 'Seguire tracce e cacciare.' },
-    { nome: 'Sesto Senso', descrizione: 'Percepire pericoli imminenti.' },
-    { nome: 'Orientamento', descrizione: 'Conoscere sempre la direzione.' },
-    { nome: 'Guarigione', descrizione: 'Recupera 1 RES per ogni tappa senza combattimento.' },
-    { nome: 'Scherma', descrizione: 'Scegli un\'arma; +2 COMB se la usi.' },
-    { nome: 'Psicoschermo', descrizione: 'Immunità all\'attacco Psicolaser.' },
-    { nome: 'Psicolaser', descrizione: '+2 COMB in combattimento.' },
-    { nome: 'Affinità Animale', descrizione: 'Comunicare con gli animali.' },
-    { nome: 'Telecinesi', descrizione: 'Muovere piccoli oggetti con la mente.' }
+    { 
+        nome: 'Mimetismo', 
+        icona: '🌿',
+        descrizione: 'Ti permette di nasconderti e mimetizzarti con l\'ambiente circostante. Utile per evitare combattimenti e imboscate, e per seguire nemici senza essere visto.'
+    },
+    { 
+        nome: 'Caccia', 
+        icona: '🏹',
+        descrizione: 'Ti consente di seguire tracce e di riconoscere le impronte degli animali e delle creature. Utile per orientarti nella foresta e prevedere i pericoli.'
+    },
+    { 
+        nome: 'Sesto Senso', 
+        icona: '👁️',
+        descrizione: 'Ti avverte dei pericoli imminenti e ti permette di percepire presenze ostili prima che si manifestino. Ti dà un vantaggio nelle situazioni ambigue.'
+    },
+    { 
+        nome: 'Orientamento', 
+        icona: '🧭',
+        descrizione: 'Ti dà sempre la percezione esatta della direzione e della posizione. Non ti perderai mai nei boschi o nelle paludi, e saprai sempre quale strada prendere.'
+    },
+    { 
+        nome: 'Guarigione', 
+        icona: '💊',
+        descrizione: 'Ti permette di recuperare 1 punto di Resistenza ogni volta che superi una tappa senza combattimenti. Non puoi superare il tuo punteggio iniziale di Resistenza.'
+    },
+    { 
+        nome: 'Scherma', 
+        icona: '⚔️',
+        descrizione: 'Scegli un\'arma in cui sei maestro. Se la impugni durante un combattimento, aggiungi 2 punti alla tua Combattività. Se combatti disarmato, sottrai 4 punti.'
+    },
+    { 
+        nome: 'Psicoschermo', 
+        icona: '🛡️',
+        descrizione: 'Ti protegge dagli attacchi Psicolaser dei Signori delle Tenebre e dei loro accoliti. Non perdi punti di Resistenza se vieni attaccato con questa forma di attacco mentale.'
+    },
+    { 
+        nome: 'Psicolaser', 
+        icona: '🧠',
+        descrizione: 'Ti permette di attaccare i nemici con la forza della tua mente, in aggiunta alle armi normali. Aggiunge 2 punti alla tua Combattività. Non tutte le creature sono sensibili.'
+    },
+    { 
+        nome: 'Affinità Animale', 
+        icona: '🐺',
+        descrizione: 'Ti permette di comunicare con alcuni animali e di comprendere le loro intenzioni. Puoi ottenere informazioni preziose da creature selvatiche che altrimenti ti eviterebbero.'
+    }, 
+    { 
+        nome: 'Telecinesi', 
+        icona: '✨',
+        descrizione: 'Ti consente di muovere piccoli oggetti con la sola forza del pensiero. Utile per aprire serrature, spostare meccanismi e superare ostacoli a distanza.'
+    }
 ];
 
 // ==================== POSIZIONI MAPPA ====================
@@ -125,6 +161,8 @@ async function init() {
 
 // ==================== CARICAMENTO LIBRI ====================
 async function loadAllBooks() {
+    // Lista dei libri disponibili
+    // Quando aggiungi un nuovo libro, aggiungi qui il nome del file JSON
     const bookFiles = [
         '01-signori-tenebre.json'
     ];
@@ -143,9 +181,14 @@ async function loadAllBooks() {
             }
             const bookData = await response.json();
             console.log(`✅ Libro caricato: ${bookData.titolo || bookData.id}`);
+            
+            // Determina il nome della copertina (stesso nome del JSON, ma .jpeg)
+            const coverName = file.replace('.json', '.jpeg');
+            
             booksData[bookData.id] = {
                 ...bookData,
-                pdf: BOOKS_FOLDER + file.replace('.json', '.pdf')
+                pdf: BOOKS_FOLDER + file.replace('.json', '.pdf'), // fallback
+                cover: COVERS_FOLDER + coverName
             };
         } catch (err) {
             console.error(`💥 Errore caricando ${fullPath}:`, err);
@@ -184,9 +227,21 @@ async function loadBooksToMenu() {
         numberSpan.textContent = `#${bookId}`;
         coverDiv.appendChild(numberSpan);
         
-        // Canvas per la copertina
-        const canvas = document.createElement('canvas');
-        coverDiv.appendChild(canvas);
+        // Immagine di copertina
+        const img = document.createElement('img');
+        img.src = book.cover;
+        img.alt = book.titolo || `Libro ${bookId}`;
+        img.onerror = function() {
+            // Fallback se l'immagine non esiste
+            this.style.display = 'none';
+            const fallback = document.createElement('div');
+            fallback.className = 'fallback-cover';
+            fallback.innerHTML = `
+                <div class="fallback-icon">📖</div>
+            `;
+            coverDiv.insertBefore(fallback, titleSpan);
+        };
+        coverDiv.appendChild(img);
         
         // Titolo
         const titleSpan = document.createElement('span');
@@ -202,26 +257,7 @@ async function loadBooksToMenu() {
             coverDiv.appendChild(lockIcon);
         }
         
-        // Carica la copertina dal PDF
-        if (book.pdf && typeof pdfjsLib !== 'undefined') {
-            try {
-                await loadPdfCover(book.pdf, canvas);
-            } catch (err) {
-                console.warn(`Copertina non disponibile per ${book.titolo}:`, err);
-                canvas.style.display = 'none';
-                const fallback = document.createElement('span');
-                fallback.style.fontSize = '3em';
-                fallback.textContent = '📖';
-                coverDiv.insertBefore(fallback, titleSpan);
-            }
-        } else {
-            canvas.style.display = 'none';
-            const fallback = document.createElement('span');
-            fallback.style.fontSize = '3em';
-            fallback.textContent = '📖';
-            coverDiv.insertBefore(fallback, titleSpan);
-        }
-        
+        // Click handler
         coverDiv.onclick = () => {
             if (isUnlocked) {
                 startNewGame(bookId);
@@ -234,44 +270,27 @@ async function loadBooksToMenu() {
     }
 }
 
-// ==================== CARICA COPERTINA PDF ====================
-async function loadPdfCover(pdfUrl, canvas) {
-    const loadingTask = pdfjsLib.getDocument(pdfUrl);
-    const pdf = await loadingTask.promise;
-    const page = await pdf.getPage(1);
-    
-    const viewport = page.getViewport({ scale: 1.5 });
-    canvas.width = viewport.width;
-    canvas.height = viewport.height;
-    
-    const context = canvas.getContext('2d');
-    await page.render({
-        canvasContext: context,
-        viewport: viewport
-    }).promise;
-}
-
 // ==================== EVENT LISTENERS ====================
 function setupEventListeners() {
     // Menu principale
     const mainMenuBtn = document.getElementById('main-menu-btn');
     if (mainMenuBtn) {
         mainMenuBtn.addEventListener('click', () => {
-            if (confirm("Sei sicuro di voler tornare al menu principale? I progressi non salvati andranno persi.")) {
+            if (confirm("Sei sicuro di voler tornare al menu principale?\n\nI progressi non salvati andranno persi.")) {
                 autoSave();
                 showScreen('main-menu');
             }
         });
     }
 
-    // Pulsanti impostazioni
+    // Impostazioni
     const settingsBtn = document.getElementById('settings-btn');
     if (settingsBtn) settingsBtn.addEventListener('click', () => settingsModal.classList.add('active'));
     
     const settingsMenuBtn = document.getElementById('settings-menu-btn');
     if (settingsMenuBtn) settingsMenuBtn.addEventListener('click', () => settingsModal.classList.add('active'));
     
-    // Altri pulsanti header
+    // Inventario, Mappa, Salva, Carica
     const inventoryBtn = document.getElementById('inventory-btn');
     if (inventoryBtn) inventoryBtn.addEventListener('click', showInventory);
     
@@ -284,7 +303,7 @@ function setupEventListeners() {
     const loadGameBtn = document.getElementById('load-game-btn');
     if (loadGameBtn) loadGameBtn.addEventListener('click', () => loadFileInput.click());
 
-    // Chiudi modali
+    // Chiudi modali con X
     document.querySelectorAll('.close-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const modal = e.target.closest('.modal');
@@ -310,7 +329,7 @@ function setupEventListeners() {
         });
     }
 
-    // Pulsante dado
+    // Dado
     if (rollDiceBtn) {
         rollDiceBtn.addEventListener('click', () => rollDice());
     }
@@ -357,6 +376,12 @@ function setupEventListeners() {
     const rollResBtn = document.getElementById('roll-res-btn');
     if (rollResBtn) rollResBtn.addEventListener('click', rollForResistenza);
     
+    const goToRamasBtn = document.getElementById('go-to-ramas-btn');
+    if (goToRamasBtn) goToRamasBtn.addEventListener('click', goToRamasStep);
+    
+    const backToStatsBtn = document.getElementById('back-to-stats-btn');
+    if (backToStatsBtn) backToStatsBtn.addEventListener('click', goToStatsStep);
+    
     const confirmBtn = document.getElementById('confirm-character-btn');
     if (confirmBtn) confirmBtn.addEventListener('click', confirmCharacter);
 }
@@ -366,7 +391,6 @@ function createClickZones() {
     const contentArea = document.getElementById('content-area');
     if (!contentArea) return;
     
-    // Rimuovi zone esistenti
     contentArea.querySelectorAll('.click-zone').forEach(z => z.remove());
     
     const prevZone = document.createElement('div');
@@ -385,12 +409,20 @@ function createClickZones() {
 
 // ==================== AVVIO NUOVA PARTITA ====================
 function startNewGame(bookId) {
+    console.log('🎮 Avvio nuova partita:', bookId);
+    
     gameState = createEmptyGameState();
     gameState.currentBook = bookId;
     gameState.currentPage = '1';
     gameState.player.borsa = Math.floor(Math.random() * 10) + 10;
     
     currentBookData = booksData[bookId];
+    
+    if (!currentBookData) {
+        alert('❌ Libro non trovato!');
+        return;
+    }
+    
     showCharacterCreation();
 }
 
@@ -399,69 +431,105 @@ function showCharacterCreation() {
     const combResult = document.getElementById('comb-result');
     const resResult = document.getElementById('res-result');
     const confirmBtn = document.getElementById('confirm-character-btn');
+    const goToRamasBtn = document.getElementById('go-to-ramas-btn');
     
     if (combResult) combResult.textContent = 'Risultato: -';
     if (resResult) resResult.textContent = 'Risultato: -';
     if (confirmBtn) confirmBtn.disabled = true;
+    if (goToRamasBtn) goToRamasBtn.disabled = true;
     
-    const ramasContainer = document.getElementById('ramas-choices');
-    if (!ramasContainer) return;
-    ramasContainer.innerHTML = '';
+    const stepStats = document.getElementById('creation-step-stats');
+    const stepRamas = document.getElementById('creation-step-ramas');
+    if (stepStats) stepStats.style.display = 'flex';
+    if (stepRamas) stepRamas.style.display = 'none';
     
-    artiRamasDisponibili.forEach(arte => {
-        const label = document.createElement('label');
-        label.className = 'rama-checkbox';
-        label.title = arte.descrizione;
-        
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = arte.nome;
-        checkbox.addEventListener('change', (e) => {
-            const selected = document.querySelectorAll('#ramas-choices input:checked');
-            if (selected.length > 5) {
-                e.target.checked = false;
-                alert("⚠️ Puoi scegliere al massimo 5 Arti Ramas!");
-            }
-            updateRamaSelection();
-            checkCharacterReady();
-        });
-        
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(arte.nome));
-        ramasContainer.appendChild(label);
-    });
-
-    checkCharacterReady();
+    generateRamasGrid();
     characterCreationModal.classList.add('active');
 }
 
-function updateRamaSelection() {
-    document.querySelectorAll('.rama-checkbox').forEach(label => {
-        const checkbox = label.querySelector('input');
-        if (checkbox.checked) {
-            label.classList.add('selected');
-        } else {
-            label.classList.remove('selected');
-        }
+function generateRamasGrid() {
+    const grid = document.getElementById('ramas-grid');
+    if (!grid) {
+        console.error('❌ Elemento #ramas-grid non trovato!');
+        return;
+    }
+    grid.innerHTML = '';
+    
+    artiRamasDisponibili.forEach((arte) => {
+        const card = document.createElement('div');
+        card.className = 'rama-card';
+        card.dataset.arte = arte.nome;
+        card.innerHTML = `
+            <span class="rama-card-icon">${arte.icona}</span>
+            <span class="rama-card-name">${arte.nome}</span>
+            <span class="rama-card-check">✓</span>
+        `;
+        card.onclick = () => handleRamaClick(card, arte);
+        grid.appendChild(card);
     });
 }
 
-function checkCharacterReady() {
-    const hasComb = gameState.player.combattività > 0;
-    const hasRes = gameState.player.resistenza > 0;
-    const selectedRamas = document.querySelectorAll('#ramas-choices input:checked').length;
+function handleRamaClick(card, arte) {
+    showRamaDescription(arte);
     
-    // Aggiorna contatore
+    const isSelected = card.classList.contains('selected');
+    const selectedCount = document.querySelectorAll('.rama-card.selected').length;
+    
+    if (isSelected) {
+        card.classList.remove('selected');
+    } else {
+        if (selectedCount >= 5) {
+            card.style.borderColor = '#c9302c';
+            setTimeout(() => { card.style.borderColor = ''; }, 500);
+            return;
+        }
+        card.classList.add('selected');
+    }
+    
+    document.querySelectorAll('.rama-card').forEach(c => c.classList.remove('focused'));
+    card.classList.add('focused');
+    
+    updateRamasCounter();
+    updateConfirmButton();
+}
+
+function showRamaDescription(arte) {
+    const descBox = document.getElementById('ramas-description');
+    if (!descBox) return;
+    descBox.innerHTML = `
+        <div class="description-icon">${arte.icona}</div>
+        <h3 class="description-title">${arte.nome}</h3>
+        <p class="description-text">${arte.descrizione}</p>
+    `;
+}
+
+function updateRamasCounter() {
     const counter = document.getElementById('ramas-counter');
-    if (counter) {
-        counter.textContent = `Selezionate: ${selectedRamas} / 5`;
-        counter.style.color = selectedRamas === 5 ? '#5cb85c' : '#d4af37';
-    }
-    
+    if (!counter) return;
+    const selectedCount = document.querySelectorAll('.rama-card.selected').length;
+    counter.textContent = `Selezionate: ${selectedCount} / 5`;
+    counter.style.color = selectedCount === 5 ? '#5cb85c' : 'var(--accent-color)';
+}
+
+function updateConfirmButton() {
     const confirmBtn = document.getElementById('confirm-character-btn');
-    if (confirmBtn) {
-        confirmBtn.disabled = !(hasComb && hasRes && selectedRamas === 5);
-    }
+    if (!confirmBtn) return;
+    const selectedCount = document.querySelectorAll('.rama-card.selected').length;
+    confirmBtn.disabled = selectedCount !== 5;
+}
+
+function goToRamasStep() {
+    const stepStats = document.getElementById('creation-step-stats');
+    const stepRamas = document.getElementById('creation-step-ramas');
+    if (stepStats) stepStats.style.display = 'none';
+    if (stepRamas) stepRamas.style.display = 'flex';
+}
+
+function goToStatsStep() {
+    const stepStats = document.getElementById('creation-step-stats');
+    const stepRamas = document.getElementById('creation-step-ramas');
+    if (stepStats) stepStats.style.display = 'flex';
+    if (stepRamas) stepRamas.style.display = 'none';
 }
 
 function rollForCombattività() {
@@ -486,9 +554,23 @@ function rollForResistenza() {
     checkCharacterReady();
 }
 
+function checkCharacterReady() {
+    const hasComb = gameState.player.combattività > 0;
+    const hasRes = gameState.player.resistenza > 0;
+    const goToRamasBtn = document.getElementById('go-to-ramas-btn');
+    if (goToRamasBtn) {
+        goToRamasBtn.disabled = !(hasComb && hasRes);
+    }
+}
+
 function confirmCharacter() {
-    const selectedRamas = document.querySelectorAll('#ramas-choices input:checked');
-    gameState.player.artiRamas = Array.from(selectedRamas).map(cb => cb.value);
+    const selectedCards = document.querySelectorAll('.rama-card.selected');
+    gameState.player.artiRamas = Array.from(selectedCards).map(card => card.dataset.arte);
+    
+    if (gameState.player.artiRamas.length !== 5) {
+        alert('⚠️ Devi selezionare esattamente 5 Arti Ramas!');
+        return;
+    }
     
     // Equipaggiamento iniziale
     gameState.player.armi = ['Ascia'];
@@ -533,13 +615,13 @@ function renderPage(pageId) {
         applyOnEnterEffects(page.onEnter);
     }
 
-    // Gestione game over
+    // Game over
     if (page.gameOver) {
         renderGameOver();
         return;
     }
 
-    // Gestione fine libro
+    // Fine libro
     if (page.isEnding) {
         renderEnding(page);
         return;
@@ -552,33 +634,32 @@ function renderPage(pageId) {
 
     updateHeader();
 
-    // Mostra testo
+    // Testo
     let contentHTML = `<p>${page.testo}</p>`;
     pageContent.innerHTML = contentHTML;
 
-    // Gestione combattimento
+    // Combattimento
     if (page.combat) {
         startCombat(page.combat);
         return;
     }
 
-    // Gestione tiro dado
+    // Tiro dado
     if (page.dice) {
         renderDiceChoices(page.dice);
         return;
     }
 
-    // Gestione scelte condizionali
+    // Scelte condizionali
     if (page.conditional) {
         renderConditionalChoices(page.conditional);
         return;
     }
 
-    // Gestione scelte normali
+    // Scelte normali
     choicesArea.innerHTML = '';
     if (page.choices) {
         page.choices.forEach(choice => {
-            // Controlla requisiti
             if (choice.requisito && !gameState.player.artiRamas.includes(choice.requisito)) {
                 return;
             }
@@ -606,7 +687,7 @@ function handleChoice(choice) {
     }
 }
 
-// ==================== GESTIONE TIRO DADO ====================
+// ==================== TIRO DADO ====================
 function renderDiceChoices(diceConfig) {
     choicesArea.innerHTML = '';
     
@@ -615,7 +696,6 @@ function renderDiceChoices(diceConfig) {
     btn.textContent = '🎲 Lancia il dado';
     btn.onclick = () => {
         openDiceModal((roll) => {
-            // Trova il range corrispondente
             for (const range of Object.keys(diceConfig)) {
                 const parts = range.split('-').map(Number);
                 const min = parts[0];
@@ -626,7 +706,6 @@ function renderDiceChoices(diceConfig) {
                     return;
                 }
             }
-            // Fallback
             const firstKey = Object.keys(diceConfig)[0];
             renderPage(diceConfig[firstKey]);
         });
@@ -634,7 +713,7 @@ function renderDiceChoices(diceConfig) {
     choicesArea.appendChild(btn);
 }
 
-// ==================== GESTIONE SCELTE CONDIZIONALI ====================
+// ==================== SCELTE CONDIZIONALI ====================
 function renderConditionalChoices(conditional) {
     choicesArea.innerHTML = '';
     
@@ -673,8 +752,6 @@ function applyOnEnterEffects(effects) {
         effects.addItems.forEach(item => {
             if (gameState.player.zaino.length < 8) {
                 gameState.player.zaino.push(item);
-            } else {
-                console.warn(`Zaino pieno, oggetto ${item} non aggiunto`);
             }
         });
     }
@@ -721,34 +798,14 @@ function applyOnEnterEffects(effects) {
 function startCombat(combatData) {
     inCombat = true;
     
-    let enemyCombattività = combatData.combattività;
-    
-    // Applica modificatori
-    if (combatData.modificatori && combatData.modificatori.combattività) {
-        const annullaCon = combatData.modificatori.annullaCon;
-        const annullaSe = combatData.modificatori.annullaSe;
-        
-        let annullato = false;
-        if (annullaCon && gameState.player.artiRamas.includes(annullaCon)) annullato = true;
-        if (annullaSe && annullaSe.every(item => 
-            gameState.player.zaino.includes(item) || 
-            gameState.player.oggettiSpeciali.includes(item))) annullato = true;
-        
-        if (!annullato) {
-            // Il modificatore si applica alla Combattività del giocatore
-            // ma per il calcolo lo teniamo tracciato separatamente
-        }
-    }
-    
     enemyState = {
         name: combatData.name,
-        combattività: enemyCombattività,
+        combattività: combatData.combattività,
         resistenza: combatData.resistenza,
         resistenzaIniziale: combatData.resistenza,
         nextEnemy: combatData.nextEnemy,
         onWin: combatData.onWin,
         onWinChoices: combatData.onWinChoices,
-        onWinAfterRounds: combatData.onWinAfterRounds,
         onFlee: combatData.onFlee,
         modificatori: combatData.modificatori,
         round: 0
@@ -775,7 +832,6 @@ function renderCombatChoices(combatData) {
     attackBtn.onclick = () => performAttack();
     choicesArea.appendChild(attackBtn);
     
-    // Pulsante fuga
     if (enemyState && enemyState.onFlee) {
         const fleeBtn = document.createElement('button');
         fleeBtn.id = 'flee-btn';
@@ -788,7 +844,6 @@ function renderCombatChoices(combatData) {
 
 function performAttack() {
     openDiceModal((diceRoll) => {
-        // Calcola Combattività effettiva del giocatore con modificatori
         let playerCombattività = gameState.player.combattività;
         
         if (enemyState.modificatori && enemyState.modificatori.combattività) {
@@ -828,7 +883,6 @@ function performAttack() {
         if (enemyState.resistenza <= 0) {
             inCombat = false;
             
-            // Controlla se ci sono altri nemici
             if (enemyState.nextEnemy) {
                 let next;
                 if (Array.isArray(enemyState.nextEnemy)) {
@@ -839,7 +893,7 @@ function performAttack() {
                 
                 const remainingNext = Array.isArray(enemyState.nextEnemy) && enemyState.nextEnemy.length > 0 
                     ? enemyState.nextEnemy 
-                    : (Array.isArray(enemyState.nextEnemy) ? null : null);
+                    : null;
                 
                 const onWin = enemyState.onWin;
                 const modificatori = enemyState.modificatori;
@@ -851,7 +905,6 @@ function performAttack() {
                     resistenzaIniziale: next.resistenza,
                     nextEnemy: remainingNext,
                     onWin: onWin,
-                    onWinChoices: enemyState.onWinChoices,
                     modificatori: modificatori,
                     round: 0
                 };
@@ -906,14 +959,12 @@ function showCombatMessage(message, type) {
 
 // ==================== TABELLA COMBATTIMENTO ====================
 function calcolaRisultatoCombattimento(rapportoForza, dado) {
-    // Limita il rapporto di forza
     if (rapportoForza > 11) rapportoForza = 11;
     if (rapportoForza < -11) rapportoForza = -11;
     
     let dannoLS = 0;
     let dannoN = 0;
     
-    // Formula basata sulla tabella originale
     if (rapportoForza >= 0) {
         dannoLS = Math.max(0, Math.floor((10 - dado) / 3));
         dannoN = Math.max(1, Math.floor((dado + rapportoForza) / 2));
@@ -922,7 +973,6 @@ function calcolaRisultatoCombattimento(rapportoForza, dado) {
         dannoN = Math.max(0, Math.floor((dado + rapportoForza) / 2));
     }
     
-    // Limita i danni massimi
     dannoLS = Math.min(Math.max(dannoLS, 0), 6);
     dannoN = Math.min(Math.max(dannoN, 0), 12);
     
@@ -1000,7 +1050,7 @@ function renderEnding(page) {
     choicesArea.appendChild(menuBtn);
 }
 
-// ==================== PASSA AL PROSSIMO LIBRO ====================
+// ==================== PROSSIMO LIBRO ====================
 function goToNextBook(nextBookId) {
     const playerState = { ...gameState.player };
     const unlockedBooks = [...gameState.unlockedBooks];
@@ -1100,7 +1150,7 @@ function rollDice(callback) {
     }, 1000);
 }
 
-// ==================== NAVIGAZIONE STORIA ====================
+// ==================== NAVIGAZIONE ====================
 function navigateHistory(direction) {
     if (direction === -1 && gameState.history.length > 0) {
         const prevPage = gameState.history.pop();
@@ -1204,7 +1254,6 @@ function saveGame() {
     alert("💾 Partita salvata! Il file è stato scaricato.");
 }
 
-// ==================== AUTO-SALVATAGGIO ====================
 function autoSave() {
     try {
         localStorage.setItem(SAVE_KEY, JSON.stringify(gameState));
