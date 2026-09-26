@@ -1,6 +1,6 @@
 /* ===================================================================
    LUPO SOLITARIO - MOTORE DI GIOCO
-   Versione: 3.0 - Copertine da /Copertina/*.jpeg
+   Versione: 4.0 - Con Google Drive Sync (DriveDB)
    =================================================================== */
 
 // ==================== COSTANTI ====================
@@ -9,6 +9,7 @@ const COVERS_FOLDER = 'Copertina/';
 const SAVE_KEY = 'lupo_solitario_save';
 const FONT_KEY = 'lupo_solitario_fontSize';
 const DEFAULT_FONT_SIZE = '20';
+const GOOGLE_CLIENT_ID = '1061090074111-2d0ebutt2ri4tdah2qdefq7bpmra37qb.apps.googleusercontent.com';
 
 // ==================== STATO GLOBALE ====================
 let gameState = createEmptyGameState();
@@ -17,6 +18,11 @@ let currentBookData = null;
 let inCombat = false;
 let enemyState = null;
 let pendingDiceCallback = null;
+
+// DriveDB
+let drivedb = null;
+let googleToken = null;
+let syncStatus = 'disconnected';
 
 // ==================== CREAZIONE STATO VUOTO ====================
 function createEmptyGameState() {
@@ -51,56 +57,16 @@ function createEmptyGameState() {
 
 // ==================== ARTI RAMAS ====================
 const artiRamasDisponibili = [
-    { 
-        nome: 'Mimetismo', 
-        icona: '🌿',
-        descrizione: 'Ti permette di nasconderti e mimetizzarti con l\'ambiente circostante. Utile per evitare combattimenti e imboscate, e per seguire nemici senza essere visto.'
-    },
-    { 
-        nome: 'Caccia', 
-        icona: '🏹',
-        descrizione: 'Ti consente di seguire tracce e di riconoscere le impronte degli animali e delle creature. Utile per orientarti nella foresta e prevedere i pericoli.'
-    },
-    { 
-        nome: 'Sesto Senso', 
-        icona: '👁️',
-        descrizione: 'Ti avverte dei pericoli imminenti e ti permette di percepire presenze ostili prima che si manifestino. Ti dà un vantaggio nelle situazioni ambigue.'
-    },
-    { 
-        nome: 'Orientamento', 
-        icona: '🧭',
-        descrizione: 'Ti dà sempre la percezione esatta della direzione e della posizione. Non ti perderai mai nei boschi o nelle paludi, e saprai sempre quale strada prendere.'
-    },
-    { 
-        nome: 'Guarigione', 
-        icona: '💊',
-        descrizione: 'Ti permette di recuperare 1 punto di Resistenza ogni volta che superi una tappa senza combattimenti. Non puoi superare il tuo punteggio iniziale di Resistenza.'
-    },
-    { 
-        nome: 'Scherma', 
-        icona: '⚔️',
-        descrizione: 'Scegli un\'arma in cui sei maestro. Se la impugni durante un combattimento, aggiungi 2 punti alla tua Combattività. Se combatti disarmato, sottrai 4 punti.'
-    },
-    { 
-        nome: 'Psicoschermo', 
-        icona: '🛡️',
-        descrizione: 'Ti protegge dagli attacchi Psicolaser dei Signori delle Tenebre e dei loro accoliti. Non perdi punti di Resistenza se vieni attaccato con questa forma di attacco mentale.'
-    },
-    { 
-        nome: 'Psicolaser', 
-        icona: '🧠',
-        descrizione: 'Ti permette di attaccare i nemici con la forza della tua mente, in aggiunta alle armi normali. Aggiunge 2 punti alla tua Combattività. Non tutte le creature sono sensibili.'
-    },
-    { 
-        nome: 'Affinità Animale', 
-        icona: '🐺',
-        descrizione: 'Ti permette di comunicare con alcuni animali e di comprendere le loro intenzioni. Puoi ottenere informazioni preziose da creature selvatiche che altrimenti ti eviterebbero.'
-    }, 
-    { 
-        nome: 'Telecinesi', 
-        icona: '✨',
-        descrizione: 'Ti consente di muovere piccoli oggetti con la sola forza del pensiero. Utile per aprire serrature, spostare meccanismi e superare ostacoli a distanza.'
-    }
+    { nome: 'Mimetismo', icona: '🌿', descrizione: 'Ti permette di nasconderti e mimetizzarti con l\'ambiente circostante.' },
+    { nome: 'Caccia', icona: '🏹', descrizione: 'Ti consente di seguire tracce e riconoscere le impronte degli animali e delle creature.' },
+    { nome: 'Sesto Senso', icona: '👁️', descrizione: 'Ti avverte dei pericoli imminenti e ti permette di percepire presenze ostili.' },
+    { nome: 'Orientamento', icona: '🧭', descrizione: 'Ti dà sempre la percezione esatta della direzione e della posizione.' },
+    { nome: 'Guarigione', icona: '💊', descrizione: 'Ti permette di recuperare 1 punto di Resistenza ogni volta che superi una tappa senza combattimenti.' },
+    { nome: 'Scherma', icona: '⚔️', descrizione: 'Scegli un\'arma in cui sei maestro. Se la impugni, aggiungi 2 punti alla tua Combattività.' },
+    { nome: 'Psicoschermo', icona: '🛡️', descrizione: 'Ti protegge dagli attacchi Psicolaser dei Signori delle Tenebre.' },
+    { nome: 'Psicolaser', icona: '🧠', descrizione: 'Ti permette di attaccare i nemici con la forza della tua mente.' },
+    { nome: 'Affinità Animale', icona: '🐺', descrizione: 'Ti permette di comunicare con alcuni animali e comprendere le loro intenzioni.' },
+    { nome: 'Telecinesi', icona: '✨', descrizione: 'Ti consente di muovere piccoli oggetti con la sola forza del pensiero.' }
 ];
 
 // ==================== POSIZIONI MAPPA ====================
@@ -157,12 +123,148 @@ async function init() {
     setupEventListeners();
     createClickZones();
     checkAutoSave();
+    
+    // Inizializza Google Drive se connesso
+    await initGoogleDrive();
+}
+
+// ==================== GOOGLE DRIVE (DriveDB) ====================
+async function initGoogleDrive() {
+    const savedToken = localStorage.getItem('gdrive_token');
+    const tokenExpiry = localStorage.getItem('gdrive_token_expiry');
+    
+    if (savedToken && tokenExpiry && Date.now() < parseInt(tokenExpiry)) {
+        googleToken = savedToken;
+        await setupDriveDB(savedToken);
+        updateGDriveStatus('synced', 'Connesso a Google Drive');
+    } else {
+        updateGDriveStatus('disconnected', 'Non connesso');
+    }
+}
+
+async function setupDriveDB(token) {
+    try {
+        if (typeof window.DriveDB === 'undefined') {
+            console.warn('DriveDB non ancora caricato');
+            return;
+        }
+        
+        drivedb = new window.DriveDB({
+            dbName: 'lupo_solitario',
+            tableName: 'game_state',
+            gdriveFolderName: 'Lupo Solitario Save',
+            accessToken: () => googleToken,
+            syncDebounceMs: 2000
+        });
+        
+        await drivedb.init();
+        console.log('✅ DriveDB inizializzato');
+        
+        drivedb.onSyncChange(({ status, error }) => {
+            if (status === 'syncing') {
+                updateGDriveStatus('syncing', 'Sincronizzazione...');
+            } else if (status === 'synced') {
+                updateGDriveStatus('synced', 'Sincronizzato');
+            } else if (status === 'error') {
+                updateGDriveStatus('error', `Errore: ${error || 'sconosciuto'}`);
+            }
+        });
+        
+        await loadFromDrive();
+        
+    } catch (err) {
+        console.error('Errore inizializzazione DriveDB:', err);
+        updateGDriveStatus('error', 'Errore connessione');
+    }
+}
+
+function updateGDriveStatus(status, message) {
+    syncStatus = status;
+    const statusEl = document.getElementById('gdrive-sync-info');
+    const connectBtn = document.getElementById('gdrive-connect-btn');
+    
+    if (statusEl) {
+        statusEl.textContent = message;
+        statusEl.className = 'gdrive-sync-info ' + status;
+    }
+    
+    if (connectBtn) {
+        if (status === 'disconnected' || status === 'error') {
+            connectBtn.innerHTML = '<span class="btn-icon">☁️</span><span>Connetti a Google Drive</span>';
+            connectBtn.disabled = false;
+        } else {
+            connectBtn.innerHTML = '<span class="btn-icon">✅</span><span>Connesso</span>';
+            connectBtn.disabled = true;
+        }
+    }
+}
+
+async function connectGoogleDrive() {
+    if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes('IL_TUO_CLIENT_ID')) {
+        alert('⚠️ Devi configurare il Client ID di Google nel file script.js!');
+        return;
+    }
+    
+    try {
+        const client = google.accounts.oauth2.initTokenClient({
+            client_id: GOOGLE_CLIENT_ID,
+            scope: 'https://www.googleapis.com/auth/drive.appdata',
+            callback: async (response) => {
+                if (response.error) {
+                    console.error('Errore OAuth:', response.error);
+                    updateGDriveStatus('error', 'Autorizzazione negata');
+                    return;
+                }
+                
+                googleToken = response.access_token;
+                
+                localStorage.setItem('gdrive_token', googleToken);
+                localStorage.setItem('gdrive_token_expiry', (Date.now() + 3500 * 1000).toString());
+                
+                await setupDriveDB(googleToken);
+                updateGDriveStatus('synced', 'Connesso a Google Drive');
+            },
+        });
+        
+        client.requestAccessToken();
+    } catch (err) {
+        console.error('Errore connessione Google:', err);
+        updateGDriveStatus('error', 'Errore connessione');
+    }
+}
+
+async function loadFromDrive() {
+    if (!drivedb) return;
+    
+    try {
+        const docs = drivedb.list();
+        if (docs.length > 0) {
+            const latest = docs[0];
+            gameState = { ...createEmptyGameState(), ...latest.data };
+            console.log('✅ Salvataggio caricato da Google Drive');
+            
+            if (gameState.currentBook) {
+                await loadCurrentBook();
+            }
+        }
+    } catch (err) {
+        console.warn('Nessun salvataggio remoto trovato:', err);
+    }
+}
+
+async function saveToDrive() {
+    if (!drivedb) return;
+    
+    try {
+        await drivedb.set('main_save', gameState);
+        console.log('💾 Salvataggio inviato a Google Drive');
+    } catch (err) {
+        console.error('Errore salvataggio Drive:', err);
+    }
 }
 
 // ==================== CARICAMENTO LIBRI ====================
 async function loadAllBooks() {
-    // Lista dei libri disponibili
-    // Quando aggiungi un nuovo libro, aggiungi qui il nome del file JSON
     const bookFiles = [
         '01-signori-tenebre.json'
     ];
@@ -182,12 +284,9 @@ async function loadAllBooks() {
             const bookData = await response.json();
             console.log(`✅ Libro caricato: ${bookData.titolo || bookData.id}`);
             
-            // Determina il nome della copertina (stesso nome del JSON, ma .jpeg)
             const coverName = file.replace('.json', '.jpeg');
-            
             booksData[bookData.id] = {
                 ...bookData,
-                pdf: BOOKS_FOLDER + file.replace('.json', '.pdf'), // fallback
                 cover: COVERS_FOLDER + coverName
             };
         } catch (err) {
@@ -207,7 +306,6 @@ async function loadBooksToMenu() {
         bookList.innerHTML = `
             <div class="loading-books">
                 <p>📭 Nessun libro trovato nella cartella <strong>Libri/</strong></p>
-                <p style="font-size: 0.85em; margin-top: 15px;">Controlla che il file JSON esista e sia valido.</p>
             </div>
         `;
         return;
@@ -221,35 +319,28 @@ async function loadBooksToMenu() {
         coverDiv.className = 'book-cover';
         if (!isUnlocked) coverDiv.classList.add('locked');
         
-        // Numero del libro
         const numberSpan = document.createElement('span');
         numberSpan.className = 'book-number';
         numberSpan.textContent = `#${bookId}`;
         coverDiv.appendChild(numberSpan);
         
-        // Immagine di copertina
         const img = document.createElement('img');
         img.src = book.cover;
         img.alt = book.titolo || `Libro ${bookId}`;
         img.onerror = function() {
-            // Fallback se l'immagine non esiste
             this.style.display = 'none';
             const fallback = document.createElement('div');
             fallback.className = 'fallback-cover';
-            fallback.innerHTML = `
-                <div class="fallback-icon">📖</div>
-            `;
+            fallback.innerHTML = `<div class="fallback-icon">📖</div>`;
             coverDiv.insertBefore(fallback, titleSpan);
         };
         coverDiv.appendChild(img);
         
-        // Titolo
         const titleSpan = document.createElement('span');
         titleSpan.className = 'book-title';
         titleSpan.textContent = book.titolo || book.title || `Libro ${bookId}`;
         coverDiv.appendChild(titleSpan);
         
-        // Icona lucchetto se bloccato
         if (!isUnlocked) {
             const lockIcon = document.createElement('span');
             lockIcon.className = 'lock-icon';
@@ -257,7 +348,6 @@ async function loadBooksToMenu() {
             coverDiv.appendChild(lockIcon);
         }
         
-        // Click handler
         coverDiv.onclick = () => {
             if (isUnlocked) {
                 startNewGame(bookId);
@@ -272,7 +362,9 @@ async function loadBooksToMenu() {
 
 // ==================== EVENT LISTENERS ====================
 function setupEventListeners() {
-    // Menu principale
+    const gdriveBtn = document.getElementById('gdrive-connect-btn');
+    if (gdriveBtn) gdriveBtn.addEventListener('click', connectGoogleDrive);
+    
     const mainMenuBtn = document.getElementById('main-menu-btn');
     if (mainMenuBtn) {
         mainMenuBtn.addEventListener('click', () => {
@@ -283,14 +375,12 @@ function setupEventListeners() {
         });
     }
 
-    // Impostazioni
     const settingsBtn = document.getElementById('settings-btn');
     if (settingsBtn) settingsBtn.addEventListener('click', () => settingsModal.classList.add('active'));
     
     const settingsMenuBtn = document.getElementById('settings-menu-btn');
     if (settingsMenuBtn) settingsMenuBtn.addEventListener('click', () => settingsModal.classList.add('active'));
     
-    // Inventario, Mappa, Salva, Carica
     const inventoryBtn = document.getElementById('inventory-btn');
     if (inventoryBtn) inventoryBtn.addEventListener('click', showInventory);
     
@@ -298,12 +388,16 @@ function setupEventListeners() {
     if (mapBtn) mapBtn.addEventListener('click', showMap);
     
     const saveBtn = document.getElementById('save-btn');
-    if (saveBtn) saveBtn.addEventListener('click', saveGame);
+    if (saveBtn) saveBtn.addEventListener('click', async () => {
+        saveGame();
+        if (drivedb && googleToken) {
+            await saveToDrive();
+        }
+    });
     
     const loadGameBtn = document.getElementById('load-game-btn');
     if (loadGameBtn) loadGameBtn.addEventListener('click', () => loadFileInput.click());
 
-    // Chiudi modali con X
     document.querySelectorAll('.close-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const modal = e.target.closest('.modal');
@@ -311,14 +405,12 @@ function setupEventListeners() {
         });
     });
 
-    // Chiudi cliccando fuori
     window.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal')) {
             e.target.classList.remove('active');
         }
     });
 
-    // Slider dimensione font
     if (fontSizeSlider) {
         fontSizeSlider.addEventListener('input', (e) => {
             const size = e.target.value;
@@ -329,12 +421,8 @@ function setupEventListeners() {
         });
     }
 
-    // Dado
-    if (rollDiceBtn) {
-        rollDiceBtn.addEventListener('click', () => rollDice());
-    }
+    if (rollDiceBtn) rollDiceBtn.addEventListener('click', () => rollDice());
 
-    // Reset partita
     const resetBtn = document.getElementById('reset-game-btn');
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
@@ -345,7 +433,6 @@ function setupEventListeners() {
         });
     }
 
-    // Carica salvataggio
     if (loadFileInput) {
         loadFileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -369,7 +456,6 @@ function setupEventListeners() {
         });
     }
 
-    // Creazione personaggio
     const rollCombBtn = document.getElementById('roll-comb-btn');
     if (rollCombBtn) rollCombBtn.addEventListener('click', rollForCombattività);
     
@@ -449,10 +535,7 @@ function showCharacterCreation() {
 
 function generateRamasGrid() {
     const grid = document.getElementById('ramas-grid');
-    if (!grid) {
-        console.error('❌ Elemento #ramas-grid non trovato!');
-        return;
-    }
+    if (!grid) return;
     grid.innerHTML = '';
     
     artiRamasDisponibili.forEach((arte) => {
@@ -572,7 +655,6 @@ function confirmCharacter() {
         return;
     }
     
-    // Equipaggiamento iniziale
     gameState.player.armi = ['Ascia'];
     gameState.player.zaino = ['Pasto'];
     gameState.player.oggettiSpeciali = ['Mappa di Sommerlund'];
@@ -580,6 +662,10 @@ function confirmCharacter() {
     characterCreationModal.classList.remove('active');
     showScreen('game-screen');
     renderPage('1');
+    
+    if (drivedb && googleToken) {
+        saveToDrive();
+    }
 }
 
 // ==================== MOSTRA SCHERMATA ====================
@@ -604,59 +690,49 @@ function renderPage(pageId) {
         return;
     }
 
-    // Salva nella cronologia
     if (gameState.currentPage !== pageId && gameState.currentPage) {
         gameState.history.push(gameState.currentPage);
     }
     gameState.currentPage = pageId;
 
-    // Applica effetti onEnter
     if (page.onEnter) {
         applyOnEnterEffects(page.onEnter);
     }
 
-    // Game over
     if (page.gameOver) {
         renderGameOver();
         return;
     }
 
-    // Fine libro
     if (page.isEnding) {
         renderEnding(page);
         return;
     }
 
-    // Aggiorna location
     if (page.location) {
         updatePlayerLocation(page.location);
     }
 
     updateHeader();
 
-    // Testo
     let contentHTML = `<p>${page.testo}</p>`;
     pageContent.innerHTML = contentHTML;
 
-    // Combattimento
     if (page.combat) {
         startCombat(page.combat);
         return;
     }
 
-    // Tiro dado
     if (page.dice) {
         renderDiceChoices(page.dice);
         return;
     }
 
-    // Scelte condizionali
     if (page.conditional) {
         renderConditionalChoices(page.conditional);
         return;
     }
 
-    // Scelte normali
     choicesArea.innerHTML = '';
     if (page.choices) {
         page.choices.forEach(choice => {
@@ -674,6 +750,10 @@ function renderPage(pageId) {
     
     document.getElementById('content-area').scrollTop = 0;
     autoSave();
+    
+    if (drivedb && googleToken) {
+        saveToDrive();
+    }
 }
 
 // ==================== GESTIONE SCELTA ====================
