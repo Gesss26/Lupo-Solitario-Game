@@ -2225,7 +2225,7 @@
         { "text": "Vai al 328.", "target": "328" }
       ]
     },
-   "329": {
+"329": {
     "testo": "Scendendo tra le rocce verso il Cimitero degli Antichi, ti accorgi che una strana foschia avvolge questo luogo sinistro, offuscando la luce del sole e dando al Cimitero un'aria di mestizia. Un gelido soffio ti dà il benvenuto. Con un senso di inquieto timore ti inoltri nella cupa necropoli.",
     "location": "cimitero_antichi",
     "choices": [
