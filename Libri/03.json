@@ -874,7 +874,7 @@
         "immunePsicolaser": true,
         "onWin": "3"
       }
-    }
+    },
     "121": {
       "testo": "Il passaggio prosegue in leggera discesa, e dopo due ore di cammino calcoli di essere sceso all'incirca sessanta metri. Arrivi in una vasta caverna di ghiaccio, con al centro un lago ghiacciato; la crosta è molto sottile, e sotto si intravede un'acqua scura e profonda. Ti inginocchi sul bordo e scruti dentro l'abisso, e ad un certo momento, vedi un'ombra scura passare quasi alla superficie. È un essere vivente, ed è gigantesco; mentre cerchi di capire di cosa si tratta, il ruggito di un Kalkoth alle tue spalle ti fa sobbalzare. La belva deve essere nella galleria da cui sei venuto, e l'unica altra uscita sta dall'altra parte del lago.",
       "choices": [
@@ -1478,7 +1478,7 @@
       }
     },
     "205": {
-      "testo": "La belva rotola giù dalla slitta e si accascia sulla neve. Fenor ha acceso una torcia e la agita sotto il naso degli altri Baknar, che fuggono terrorizzati. Manda un urlo di gioia e ti avvicini ai tuoi compagni, ma resti stupito al vedere che stanno già scuoiando la belva morta. Guardo disgustato Kiran aprire con un coltello affilato il ventre dell'animale; poi solleva la pelliccia e vi infila sotto la mano, ritraendola piena di un grasso molto denso. L'odore è terribile, perfino i cani nascondono il muso nella neve, ma non è finita qui: Kiran e Fenor si stanno spalmando la faccia e il corpo con quella fetida sostanza. \"Grasso di Baknar!\" grida Kiran con entusiasmo. \"È la cosa migliore per proteggersi dal freddo e dall'umido\". Estrae la mano dal corpo della bestia e ti porge una manata di grasso.",
+      "testo": "La belva rotola giù dalla slitta e si accascia sulla neve. Fenor ha acceso una torcia e la agita sotto il naso degli altri Baknar, che fuggono terrorizzati. Manda un urlo di gioia e ti avvicini ai tuoi compagni, ma resti stupito al vedere che stanno già scuoiando la belva morta. Guardi disgustato Kiran aprire con un coltello affilato il ventre dell'animale; poi solleva la pelliccia e vi infila sotto la mano, ritraendola piena di un grasso molto denso. L'odore è terribile, perfino i cani nascondono il muso nella neve, ma non è finita qui: Kiran e Fenor si stanno spalmando la faccia e il corpo con quella fetida sostanza. \"Grasso di Baknar!\" grida Kiran con entusiasmo. \"È la cosa migliore per proteggersi dal freddo e dall'umido\". Estrae la mano dal corpo della bestia e ti porge una manata di grasso.",
       "choices": [
         { "text": "Se vuoi accettare la sua offerta, vai all'8.", "target": "8" },
         { "text": "Se non ti va l'idea di trasformarti in un rancidume ambulante, vai al 281.", "target": "281" }
@@ -1722,7 +1722,7 @@
       "choices": [
         { "text": "Vai al 284.", "target": "284" }
       ]
-    }
+    },
     "241": {
       "testo": "Il tuo Sesto Senso ti dice che in quei soldati c'è qualcosa che non va. Ti sembra che abbiano un'aria sinistra. Sono al servizio dei Signori delle Tenebre. Devi scappare prima di essere individuato.",
       "choices": [
@@ -2036,7 +2036,7 @@
         "_modificatori": {
           "artiRamas": [{ "arte": "Caccia", "bonus": 3 }]
         }
-      ]
+      }
     },
     "284": {
       "testo": "Dopo circa trecento metri ti trovi davanti a una caverna enorme, di cui la vista non riesce a cogliere tutta l'estensione. Davanti al tuo sguardo si estende un mondo inesplorato, che ben pochi abitanti di Sommerlund hanno visto, l'intricato sistema di grotte e gallerie che si ramificano negli abissi di Kaltenland. Questo labirinto è stato costruito molte epoche prima che gli abitanti di Sommerlund mettessero piede sulle terre di Magnamund. Queste gallerie e queste grotte, questi spazi sotterranei erano un tempo abitati da una razza di creature per le quali il ghiaccio costituiva l'ambiente naturale. Dalla volta pendono ancora oggi delle bocce luminose, che diffondono un inesauribile sinistro chiarore. Cammini per quasi sei ore verso nord, finché non arrivi sulle sponde di un rapido corso d'acqua. Sulla riva opposta vedi una galleria che si perde nel buio. A quanto pare l'unico modo per oltrepassare il fiume è saltare da uno all'altro dei blocchi di ghiaccio che scendono con la corrente.",
