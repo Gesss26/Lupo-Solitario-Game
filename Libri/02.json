@@ -1658,7 +1658,7 @@
         { "text": "Se vuoi gridare \"Al fuoco\", vai al 236.", "target": "236" },
         { "text": "Se vuoi avvertire il capitano, vai al 101.", "target": "101" }
       ]
-    }
+    },
     "241": {
       "testo": "Cade un improvviso silenzio mentre l'uomo si volta. \"Hai la lingua lunga, straniero\" dice minaccioso. \"Se continui così, qualcuno potrebbe tagliartela\". Ed estraendo un pugnale ricurvo si lancia su di te. Gli avventori si stringono in cerchio intorno a voi, non c'è modo di evitare lo scontro. Devi combattere fino alla morte.",
       "combat": {
