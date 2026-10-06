@@ -18,7 +18,7 @@
         "name": "Predone",
         "combattività": 15,
         "resistenza": 26,
-        "onWin": "2"
+        "onWin": "146"
       }
     },
     "3": {
@@ -27,7 +27,7 @@
         "name": "Cani da combattimento",
         "combattività": 18,
         "resistenza": 30,
-        "onWin": "311"
+        "onWin": "137"
       }
     },
     "4": {
@@ -421,7 +421,7 @@
     "60": {
       "testo": "Il tuo intuito ti dice che la strada giusta è quella a sinistra. Lo imbocchi senza esitare, e dopo un centinaio di metri il tunnel si allarga in un'ampia caverna. Al centro della caverna c'è un antico altare di pietra, con sopra incisi simboli che non riesci a decifrare. Decidi di non toccare nulla e di continuare per la tua strada.",
       "choices": [
-        { "text": "Vai al 224.", "target": "224" }
+        { "text": "Vai al 199.", "target": "199" }
       ]
     },
     "61": {
@@ -734,7 +734,7 @@
       "testo": "Improvvisamente in cima alle scale compare un gruppetto di guardie armate, che ti ordina di fermarti. Appena vedono che esiti imbracciano le balestre.",
       "choices": [
         { "text": "Se vuoi attaccarli, vai al 285.", "target": "285" },
-        { "text": "Se vuoi alzare le mani e arrenderti, vai al 267.", "target": "267" }
+        { "text": "Se vuoi alzare le mani e arrenderti, vai al 71.", "target": "71" }
       ]
     },
     "106": {
@@ -805,7 +805,7 @@
     "115": {
       "testo": "Passando sotto l'arco ti stringi nel mantello e tiri su il cappuccio. Dalla volta cadono grosse gocce d'acqua ricca di minerali, che macchiano le vesti e i capelli di striature color ruggine. Remate per più di un paio di chilometri finché sbucate in una piccola grotta, dove una scala di pietra sale a un portale nella parete.",
       "choices": [
-        { "text": "Se vuoi ormeggiare la barca alla base della scala e salire all'imboccatura del tunnel, vai all'8.", "target": "8" },
+        { "text": "Se vuoi ormeggiare la barca alla base della scala e salire all'imboccatura del tunnel, vai al 151.", "target": "151" },
         { "text": "Se vuoi continuare a scendere il fiume verso sud, vai al 240.", "target": "240" }
       ]
     },
@@ -1147,7 +1147,7 @@
     "162": {
       "testo": "Nonostante la stanchezza, decidi di continuare. Dopo un po' arrivi a un bivio, e scegli il tunnel di sinistra, che ti sembra più promettente.",
       "choices": [
-        { "text": "Vai al 145.", "target": "145" }
+        { "text": "Vai al 185.", "target": "185" }
       ]
     },
     "163": {
@@ -1585,7 +1585,7 @@
       ]
     },
     "223": {
-      "testo": "Apri la botola ed esci sul tetto della torre. Ti si presenta uno spettacolo terrificante: sparsi qua e là ci sono corpi di soldati di Sommerlund che presentano ferite spaventose. A mezz'aria si libra un uccello di proporzioni gigantesche, con degli artigli come lame; ecco la causa di questa carneficina. Sul dorso porta una sella tempestata di gemme, dove siede un guerriero coperto da un'armatura metallica che brandisce una scimitarra lorda di sangue. Con un rapido volteggio smonta dalla mostruosa cavalcatura e te lo trovi davanti. Nella tua mente echeggia una voce ostile: \"Puoi dire le tue ultime preghiere, amico, ti resta molto poco da vivere!\"",
+      "testo": "Apri la botola ed esci sul tetto della torre. Ti si presenta uno spettacolo terrificante: sparsi qua e là ci sono corpi di soldati di Sommerlund che presentano ferite spaventose. A mezz'aria si libra un uccello di proporzioni gigantesche, con degli artigli come lame; ecco la causa di questa carneficina. Sul dorso porta una sella tempestata di gemme, dove siede un guerriero coperto da un'armatura metallica che brandisce una scimitarra lorda di sangue. Con un rapido volteggio smonta dalla mostruosa cavalcatura e te lo trovi davanti. Nella tua mente echeggia una voce ostile: \"Puoi dire le tue ultime preghiere, amico, ti resta molto poco di vivere!\"",
       "choices": [
         { "text": "Se vuoi accettare il combattimento, vai al 77.", "target": "77" },
         { "text": "Se preferisci fuggire, vai al 128.", "target": "128" }
@@ -2124,7 +2124,6 @@
     "299": {
       "testo": "Disponi gli uomini uno a fianco all'altro davanti all'ingresso della miniera. I loro scudi formano una barriera. I predoni escono dal fitto fogliame e attaccano i tuoi uomini. Sono almeno tre volte superiori di numero, e sarà difficile tirarsi fuori da questa imboscata.",
       "choices": [
-        { "text": "Se vuoi esortare i tuoi uomini a resistere, vai al 299.", "target": "299" },
         { "text": "Se decidi che è meglio ripiegare nella miniera, vai al 52.", "target": "52" }
       ]
     },

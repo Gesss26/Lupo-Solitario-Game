@@ -92,7 +92,7 @@
       "testo": "C'è una leva che esce dal muro e uno spioncino nel mezzo della porta. Dai un'occhiata e ti si presenta una singolare visione. Un uomo vestito di nero è inginocchiato nel centro di una stella a cinque punte disegnata col gesso sul pavimento della stanza. Tiene la testa inclinata e sembra essere in trance.",
       "choices": [
         { "text": "Se vuoi tirare la leva e aprire la porta, vai al 128.", "target": "128" },
-        { "text": "Se vuoi lasciar perdere e continuare ad esplorare il corridoio principale, vai al 254.", "target": "254" }
+        { "text": "Se vuoi lasciar perdere e continuare ad esplorare il corridoio principale, vai al 104.", "target": "104" }
       ]
     },
     "14": {
@@ -341,7 +341,7 @@
     "48": {
       "testo": "Il Barbaro passa a quindici centimetri dal tuo nascondiglio. Si ferma un attimo prima di tornare indietro lungo il corridoio. Emetti un sospiro di sollievo: per questa volta non ti hanno scoperto.",
       "choices": [
-        { "text": "Se vuoi allontanarti in punta di piedi verso nord, vai al 215.", "target": "215" },
+        { "text": "Se vuoi allontanarti in punta di piedi verso nord, vai al 36.", "target": "36" },
         { "text": "Se vuoi assalire il Barbaro alle spalle, vai al 260.", "target": "260" }
       ]
     },
@@ -645,7 +645,7 @@
       "testo": "Soffiando per togliere la polvere, sviti il tappo e annusi il liquido rosso.",
       "choices": [
         { "text": "Se hai l'Arte della Guarigione, vai al 233.", "target": "233", "requisito": "Guarigione" },
-        { "text": "Se non ce l'hai, temi che questa pozione possa essere pericolosa e la metti da parte. Torni al 10 e decidi cosa fare.", "target": "10" }
+        { "text": "Se non ce l'hai, temi che questa pozione possa essere pericolosa e la metti da parte. Torni al 10 e decidi cosa fare.", "target": "11" }
       ]
     },
     "91": {
@@ -658,7 +658,7 @@
     "92": {
       "testo": "Cammini nel passaggio per diversi minuti, fino a una curva a sinistra. Hai una brutta sorpresa: il terreno è franato e ti trovi davanti a un'ampia voragine che si perde nell'oscurità.",
       "choices": [
-        { "text": "Se hai una Fune, vai al 133.", "target": "133", "requisito": "Fune" },
+        { "text": "Se hai una Fune, vai al 297.", "target": "297", "requisito": "Fune" },
         { "text": "Altrimenti devi tornare sui tuoi passi e inoltrarti nell'altra galleria. Vai al 297.", "target": "297" }
       ]
     },
@@ -886,7 +886,7 @@
     "122": {
       "testo": "Con l'Arte del Mimetismo, riesci a confonderti tra le ombre del corridoio. I Barbari passano accanto a te senza vederti, e tu continui indisturbato verso la Sala del Gran Sanghor. Dopo un po' arrivi davanti a una porta tempestata di gemme, con due Barbari di guardia.",
       "choices": [
-        { "text": "Vai al 301.", "target": "301" }
+        { "text": "Vai al 179.", "target": "179" }
       ]
     },
     "123": {
@@ -1237,7 +1237,7 @@
       "testo": "Il tappo si è incastrato e devi stare attento a non rompere il collo della boccetta. Riesci finalmente a stapparla e annusi il liquido arancione.",
       "choices": [
         { "text": "Se hai l'Arte del Sesto Senso, o quella della Scherma, vai al 311.", "target": "311", "requisito": "Sesto Senso" },
-        { "text": "In caso contrario non ti fidi di questa pozione e decidi di scartarla. Torni al 10 e decidi cosa fare.", "target": "10" }
+        { "text": "In caso contrario non ti fidi di questa pozione e decidi di scartarla. Torni al 10 e decidi cosa fare.", "target": "11" }
       ]
     },
     "172": {
@@ -1625,7 +1625,7 @@
       "testo": "Il tappo è sigillato con la cera. Se vuoi rompere il sigillo rischi di frantumare il collo della boccetta.",
       "choices": [
         { "text": "Se vuoi aprirla a tutti i costi, vai al 54.", "target": "54" },
-        { "text": "Se pensi che il contenuto sia pericoloso e non vuoi rischiare di romperla, torna al 10 e tenta un'altra possibilità.", "target": "10" }
+        { "text": "Se pensi che il contenuto sia pericoloso e non vuoi rischiare di romperla, torna all'11 e tenta un'altra possibilità.", "target": "11" }
       ]
     },
     "226": {
@@ -1784,7 +1784,7 @@
       "testo": "Il vetro ti si rompe in mano, e il liquido nero si spande sulla tavola di pietra. Imprecando contro la malasorte, annusi con cautela le poche gocce rimaste su un pezzo di vetro.",
       "choices": [
         { "text": "Se hai messo piede nel Cimitero degli Antichi, vai al 77.", "target": "77" },
-        { "text": "Se non ci sei stato, il pungente odore del liquido ti insospettisce e butti via quel che resta della boccetta. Torna al 10 e decidi la prossima mossa.", "target": "10" }
+        { "text": "Se non ci sei stato, il pungente odore del liquido ti insospettisce e butti via quel che resta della boccetta. Torna all'11 e decidi la prossima mossa.", "target": "11" }
       ]
     },
     "251": {
@@ -1922,7 +1922,7 @@
       "testo": "Riesci a togliere il tappo senza rompere l'imboccatura di vetro sottile. Le esalazioni del liquido nero sono acri e pungenti.",
       "choices": [
         { "text": "Se sei stato nel Cimitero degli Antichi, vai al 177.", "target": "177" },
-        { "text": "Altrimenti tappa subito la Boccetta. Le esalazioni ti hanno procurato un senso di nausea, e decidi di non tenere questa pozione. Torna al 10 e decidi la prossima mossa.", "target": "10" }
+        { "text": "Altrimenti tappa subito la Boccetta. Le esalazioni ti hanno procurato un senso di nausea, e decidi di non tenere questa pozione. Torna all'11 e decidi la prossima mossa.", "target": "11" }
       ]
     },
     "269": {
@@ -2077,7 +2077,7 @@
       "testo": "Riesci a togliere gran parte della cera indurita che copre il tappo e ad aprire la boccetta.",
       "choices": [
         { "text": "Se hai l'Arte dell'Affinità Animale, o hai già raggiunto il grado di Aspirante Ramas (sei cioè maestro in 6 Arti) o più, vai al 156.", "target": "156", "requisito": "Affinità Animale" },
-        { "text": "Se non hai l'Affinità Animale, o se sei ancora un semplice Iniziato, non ti fidi dell'odore di muffa che esce dalla boccetta e la getti via. Ora torna al 10 e decidi cosa fare.", "target": "10" }
+        { "text": "Se non hai l'Affinità Animale, o se sei ancora un semplice Iniziato, non ti fidi dell'odore di muffa che esce dalla boccetta e la getti via. Ora torna all'11 e decidi cosa fare.", "target": "11" }
       ]
     },
     "290": {

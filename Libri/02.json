@@ -1640,7 +1640,7 @@
       "testo": "Di fronte alla stazione di posta c'è una stradina che porta a una casa da gioco. All'ingresso un cartello: VIETATO INTRODURRE ARMI. Allettato dall'idea di vincere qualche Corona decidi di entrare. Devi lasciare le armi al guardiano sulla porta, le prenderai quando esci. Entri in un salone pieno di gente intenta a diversi giochi d'azzardo. Ti attrae il tavolo dove si gioca a Girasoldi. All'estremità di un lungo tavolo una bella ragazza fa girare una ruota su cui sono segnati i numeri da 0 a 9. Poi getta dentro una pallina d'argento che finisce per fermarsi in una delle caselle numerate. Diversi mercanti stanno intorno al tavolo e puntano forte sui numeri che escono. Se vuoi giocare a Girasoldi devi decidere quante Corone vuoi puntare, e su che numero. Adesso scegli un numero dalla Tabella del Destino. Se esce il numero su cui hai puntato vinci otto volte la posta. Se il numero che esce è quello precedente o seguente al tuo, vinci cinque volte la posta. Comunque a questo tavolo non puoi vincere più di 40 Corone. Puoi giocare a Girasoldi quanto ti pare, a meno che tu non perda tutte le Corone.",
       "choices": [
         { "text": "Se hai perso tutto, vai al 169.", "target": "169" },
-        { "text": "Se vuoi incassare le vincite, o se vuoi andartene prima di perdere ancora, vai al 186.", "target": "186" }
+        { "text": "Se vuoi incassare le vincite e uscire dalla città, vai al 32.", "target": "32" }
       ]
     },
     "239": {
@@ -1926,7 +1926,7 @@
     "280": {
       "testo": "Dormi profondamente fino all'alba, quando raccogli le tue cose e raggiungi gli altri che stanno salendo sulla carrozza.",
       "choices": [
-        { "text": "Vai al 249.", "target": "249" }
+        { "text": "Vai al 32.", "target": "32" }
       ]
     },
     "281": {
@@ -2258,7 +2258,7 @@
     "327": {
       "testo": "Mentre ti allontani pensando a cosa fare ti si avvicina un ragazzo. \"Ehi, signore, per poche Corone io posso farti entrare nel porto\". Così dicendo ti fa sbirciare dentro una cartella contenente dei documenti che sembrano autentici. \"Con questi puoi ottenere subito un lasciapassare rosso; sono tuoi per 6 Corone\". Se vuoi comprare i documenti paghi 6 Corone; se non vuoi comprarli, il ragazzo si allontana. In entrambi i casi torni alla porta della torre.",
       "choices": [
-        { "text": "Se vuoi entrare, vai al 318.", "target": "318" },
+        { "text": "Se vuoi entrare, vai al 191.", "target": "191" },
         { "text": "Se preferisci tornare al municipio lungo il viale alberato, e chiedere come arrivare al consolato di Sommerlund, vai all'84.", "target": "84" }
       ]
     },
@@ -2272,7 +2272,7 @@
       ]
     },
     "329": {
-      "testo": "\"Congratulazioni, Lupo Solitario\", dice il capitano passandosi una mano sulla fronte. \"Sei un giocatore molto abile\". Prende dalla tasca un borsellino con 10 Corone e te lo porge. Lo ringrazi per la partita e gli offri la rivincita per la sera seguente. Il capitano accetta con un sorriso forzato e ti augura la buona notte. Torni nella tua cabina.",
+      "testo": "\"Congratulazioni, Lupo Solitario\", dice il capitano passandosi una mano sulla fronte. \"Sei un giocatore molto abile\". Prende dalla tasca un borsellino con 10 Corone e te lo porge. Lo ringrazi per la partita e gli offri la rivincita per la sera seguente. Il capitano accetta con un sorriso forzato e ti augura la buonanotte. Torni nella tua cabina.",
       "onEnter": { "addCorone": 10 },
       "choices": [
         { "text": "Vai al 197.", "target": "197" }
