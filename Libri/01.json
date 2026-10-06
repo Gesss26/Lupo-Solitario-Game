@@ -53,7 +53,7 @@
     "8": {
       "testo": "Il tuo Sesto Senso ti dice che a sud infuria una violenta battaglia. Tuttavia sai che la via più rapida per la capitale è proprio quella che va verso sud.",
       "choices": [
-        { "text": "Vai al 70 e scegli la tua strada.", "target": "70" }
+        { "text": "Vai al 28.", "target": "28" }
       ]
     },
     "9": {
@@ -93,9 +93,8 @@
     "14": {
       "testo": "Sei in una radura dove alcuni alberi sono stati abbattuti per costruire una traballante torretta di osservazione. Dalla torre partono tre sentieri in direzioni diverse.",
       "choices": [
-        { "text": "Se vai a sud, vai al 215.", "target": "215" },
         { "text": "Se vai a est, vai al 252.", "target": "252" },
-        { "text": "Se vai a sud-ovest, vai al 215.", "target": "215" },
+        { "text": "Se vai a sud-ovest, vai al 272.", "target": "272" },
         { "text": "Se decidi di arrampicarti sulla torretta, vai al 36.", "target": "36" }
       ]
     },
@@ -201,7 +200,7 @@
         "combattività": 17,
         "resistenza": 25,
         "modificatori": { "combattività": -2, "annullaCon": "Psicoschermo" },
-        "onWin": "328"
+        "onWin": "239"
       }
     },
     "30": {
@@ -238,7 +237,7 @@
         "combattività": 17,
         "resistenza": 25,
         "modificatori": { "combattività": -2, "annullaCon": "Psicoschermo" },
-        "onWin": "328"
+        "onWin": "239"
       }
     },
     "35": {
@@ -262,7 +261,7 @@
       "testo": "Per più di mezz'ora continui a camminare nella foresta, tra le felci e la ricca vegetazione. Ti imbatti in un ruscello, dove ti fermi un paio di minuti per lavarti il viso e bere un po' d'acqua fresca. Rinfrescato, attraversi il ruscello e avanzi. Dopo un po' senti odore di legna bruciata, e ti sembra che arrivi da nord.",
       "choices": [
         { "text": "Se vuoi scoprire da dove viene l'odore, vai al 128.", "target": "128" },
-        { "text": "Se vuoi tenerti alla larga, vai al 347.", "target": "347" }
+        { "text": "Se vuoi tenerti alla larga, vai al 131.", "target": "131" }
       ]
     },
     "39": {
@@ -302,8 +301,8 @@
     "44": {
       "testo": "Se vuoi seguirlo verso nord, vai al 248. Se vuoi seguirlo verso est, vai al 300.",
       "choices": [
-        { "text": "Vai al 248.", "target": "248" },
-        { "text": "Vai al 300.", "target": "300" }
+        { "text": "Se vuoi seguirlo verso nord, vai al 13.", "target": "13" },
+        { "text": "Se vuoi seguirlo verso est, vai al 300.", "target": "300" }
       ]
     },
     "45": {
@@ -463,7 +462,7 @@
         { "text": "Se vuoi andare a ovest, vai al 130.", "target": "130" },
         { "text": "Se vuoi andare a est, vai al 15.", "target": "15" },
         { "text": "Se vuoi andare a sud, vai al 157.", "target": "157" },
-        { "text": "Se vuoi usare l'Arte del Sesto Senso, vai all'8.", "target": "8", "requisito": "Sesto Senso" }
+        { "text": "Se vuoi usare l'Arte del Sesto Senso, vai al 8.", "target": "8", "requisito": "Sesto Senso" }
       ]
     },
     "69": {
@@ -595,7 +594,7 @@
     "87": {
       "testo": "Concentrando i tuoi poteri sulla serratura tenti di visualizzare il meccanismo interno. Pian piano l'immagine si concretizza sullo schermo della tua mente. È vecchia e arrugginita ma funziona ancora. Stai per perdere la concentrazione quando un leggero scatto ti dice che il tuo sforzo non è stato vano.",
       "choices": [
-        { "text": "Vai al 151.", "target": "151" }
+        { "text": "Vai al 23.", "target": "23" }
       ]
     },
     "88": {
@@ -684,7 +683,7 @@
     "101": {
       "testo": "Il rumore della battaglia si affievolisce, ma il silenzio è presto rotto da una voce dentro di te che ti accusa di essere un codardo e di aver abbandonato nel pericolo un altro essere umano. Tenti di liberarti dall'insistente voce della coscienza dicendoti che la tua missione è molto più importante, e che non solo la vita del giovane mago, ma la vita di tutti i tuoi compatrioti è in pericolo se non raggiungi vivo la capitale. Improvvisamente la vista di una pattuglia di Giak ti costringe a nasconderti. Ma è troppo tardi: ti hanno individuato e devi correr via velocemente.",
       "choices": [
-        { "text": "Vai al 281.", "target": "281" }
+        { "text": "Vai al 50.", "target": "50" }
       ]
     },
     "102": {
@@ -765,8 +764,8 @@
       "testo": "Hai camminato per più di mezz'ora quando vedi dei fiori di un color rosso vivo che crescono su una balza muscosa. Sono fiori di Vigorilla, una pianta rara e molto bella, pregiata per le sue proprietà medicinali. Ti inginocchi e raccogli una manciata di piantine per metterle nello Zaino. Puoi mangiare quest'erba per recuperare i punti di resistenza persi. Ogni volta che ne mangi ti dà 3 punti di Resistenza, e ne hai abbastanza per due Pasti. Chiudi lo Zaino e continui il viaggio.",
       "onEnter": { "addItems": ["Erba Vigorilla", "Erba Vigorilla"] },
       "choices": [
-        { "text": "Se vuoi dirigerti verso nord-est, vai al 347.", "target": "347" },
-        { "text": "Se vuoi andare a est, vai al 295.", "target": "295" }
+        { "text": "Se vuoi dirigerti verso nord-est, vai al 131.", "target": "131" },
+        { "text": "Se vuoi andare a est, vai al 38.", "target": "38" }
       ]
     },
     "114": {
@@ -820,7 +819,7 @@
     "121": {
       "testo": "Dopo aver camminato pochi minuti vedi una figura misteriosa, vestita di rosso, in piedi al centro del sentiero. Ti volta le spalle, e ha la testa coperta dal cappuccio del mantello. Sul suo braccio teso c'è il corvo nero che hai visto prima.",
       "choices": [
-        { "text": "Se vuoi chiamare lo sconosciuto, vai al 342.", "target": "342" },
+        { "text": "Se vuoi chiamare lo sconosciuto, vai al 309.", "target": "309" },
         { "text": "Se vuoi avvicinarti a lui con cautela, vai al 309.", "target": "309" },
         { "text": "Se preferisci estrarre la tua Arma e attaccarlo, vai al 283.", "target": "283" }
       ]
@@ -868,7 +867,7 @@
     "128": {
       "testo": "Sbirciando attraverso il fitto fogliame una scena terrificante ti si presenta alla vista. In una piccola radura tre Giak hanno legato un uomo ad un palo e stanno dando fuoco a una catasta di legna secca ai suoi piedi. Dalla tunica lo riconosci per un Ranger, uno dei soldati del Re che pattugliano la parte occidentale del regno, vicino alle montagne di Dumcrag. È stato picchiato violentemente ed è quasi privo di conoscenza.",
       "choices": [
-        { "text": "Se hai l'Arte della Caccia, vai al 297.", "target": "297", "requisito": "Caccia" },
+        { "text": "Se hai l'Arte della Caccia, vai al 336.", "target": "336", "requisito": "Caccia" },
         { "text": "Altrimenti devi attaccare i Giak adesso, se vuoi salvare la vita del Ranger. Vai al 336.", "target": "336" }
       ]
     },
@@ -965,7 +964,7 @@
       "choices": [
         { "text": "Se vai a sud, vai al 14.", "target": "14" },
         { "text": "Se vai a est, vai al 252.", "target": "252" },
-        { "text": "Se vai a sud-ovest, vai al 215.", "target": "215" },
+        { "text": "Se vai a sud-ovest, vai al 272.", "target": "272" },
         { "text": "Se decidi di arrampicarti sulla torretta, vai al 36.", "target": "36" }
       ]
     },
@@ -1084,9 +1083,9 @@
       ]
     },
     "158": {
-      "testo": "Come raggiungi la porta senti lo schianto di un masso caduto dalla volta. Ti giri e vedi che l'uscita è bloccata. Se hai una Chiave d'Argento puoi tentare di aprire la porta andando al 173. Altrimenti vai al 259.",
+      "testo": "Come raggiungi la porta senti lo schianto di un masso caduto dalla volta. Ti giri e vedi che l'uscita è bloccata. Se hai una Chiave d'Argento puoi tentare di aprire la porta andando al 326. Altrimenti vai al 259.",
       "choices": [
-        { "text": "Se hai una Chiave d'Argento, vai al 173.", "target": "173", "requisito": "Chiave d'Argento" },
+        { "text": "Se hai una Chiave d'Argento, vai al 326.", "target": "326", "requisito": "Chiave d'Argento" },
         { "text": "Altrimenti vai al 259.", "target": "259" }
       ]
     },
@@ -1192,9 +1191,9 @@
       ]
     },
     "173": {
-      "testo": "Come raggiungi la porta senti lo schianto di un masso caduto dalla volta. Ti giri e vedi che l'uscita è bloccata. Se hai una Chiave d'Argento puoi tentare di aprire la porta andando al 158. Altrimenti vai al 259.",
+      "testo": "Come raggiungi la porta senti lo schianto di un masso caduto dalla volta. Ti giri e vedi che l'uscita è bloccata. Se hai una Chiave d'Argento puoi tentare di aprire la porta andando al 326. Altrimenti vai al 259.",
       "choices": [
-        { "text": "Se hai una Chiave d'Argento, vai al 158.", "target": "158", "requisito": "Chiave d'Argento" },
+        { "text": "Se hai una Chiave d'Argento, vai al 326.", "target": "326", "requisito": "Chiave d'Argento" },
         { "text": "Altrimenti vai al 259.", "target": "259" }
       ]
     },
@@ -1357,7 +1356,7 @@
     "196": {
       "testo": "Segui l'uomo, che entra in una piccola biblioteca accanto alla Grande Sala. Preme uno dei libri che coprono tutte e quattro le pareti, e tu senti come uno scatto metallico. Una sezione della libreria scivola indietro rivelando un passaggio segreto.",
       "choices": [
-        { "text": "Se vuoi seguire l'uomo dentro il passaggio, vai al 332.", "target": "332" },
+        { "text": "Se vuoi seguire l'uomo dentro il passaggio, vai al 334.", "target": "334" },
         { "text": "Se non vuoi entrare nel corridoio buio e preferisci tornare sulla strada, vai al 144.", "target": "144" }
       ]
     },
@@ -1455,7 +1454,7 @@
     "210": {
       "testo": "Entri nella Sala del Consiglio. È un grande edificio di pietra, pieno di gente che discute animatamente. Nessuno ti dà retta. Ti avvicini a un ufficiale che sembra essere a capo delle guardie e gli racconti la tua storia. L'uomo ti ascolta con attenzione e poi ti dice: 'Sono stati giorni terribili, ma la tua notizia è la peggiore. Il Re è nella rocca. Ti ci porterò io stesso'.",
       "choices": [
-        { "text": "Vai al 314.", "target": "314" }
+        { "text": "Vai al 350.", "target": "350" }
       ]
     },
     "211": {
@@ -1473,7 +1472,7 @@
     "213": {
       "testo": "Sono due ore che marci nella foresta. La paura di esserti perso diventa sempre più forte. Tranne qualche grido isolato di un Kraan in distanza, non hai visto o udito nulla che lasci supporre la presenza del nemico. Scendendo una collina rocciosa vedi qualcosa di strano tra gli alberi.",
       "choices": [
-        { "text": "Vai al 331.", "target": "331" }
+        { "text": "Vai al 315.", "target": "315" }
       ]
     },
     "214": {
@@ -1485,7 +1484,7 @@
     "215": {
       "testo": "Esci in una piccola radura. Nel mezzo vedi il cadavere di un grande animale. Più in là c'è un sentiero che va verso sud.",
       "choices": [
-        { "text": "Vai al 228.", "target": "228" }
+        { "text": "Vai al 272.", "target": "272" }
       ]
     },
     "216": {
@@ -1568,7 +1567,7 @@
       "testo": "Il sentiero continua verso est ma presto si perde nel fitto sottobosco.",
       "choices": [
         { "text": "Se vuoi continuare verso est aprendoti la strada con l'Ascia, vai al 140.", "target": "140" },
-        { "text": "Se vai verso sud, dove i cespugli sono meno folti, vai al 215.", "target": "215" }
+        { "text": "Se vai verso sud, dove i cespugli sono meno folti, vai al 272.", "target": "272" }
       ]
     },
     "229": {
@@ -1710,7 +1709,7 @@
     "248": {
       "testo": "Arrivi alla base della collina e corri nella foresta. Dopo pochi minuti scopri un sentiero poco battuto.",
       "choices": [
-        { "text": "Se vuoi seguirlo verso nord, vai al 44.", "target": "44" },
+        { "text": "Se vuoi seguirlo verso nord, vai al 13.", "target": "13" },
         { "text": "Se vuoi seguirlo verso est, vai al 300.", "target": "300" }
       ]
     },
@@ -2018,19 +2017,19 @@
     "295": {
       "testo": "Il sentiero si addentra in una zona di foresta più rada. Dopo un po' vedi una radura con un albero solitario.",
       "choices": [
-        { "text": "Vai al 113.", "target": "113" }
+        { "text": "Vai al 38.", "target": "38" }
       ]
     },
     "296": {
       "testo": "Usi l'Arte del Sesto Senso per scrutare il traghettatore. Senti che le sue intenzioni non sono buone: è un Drakkar travestito. Rifiuti l'offerta e ti allontani.",
       "choices": [
-        { "text": "Vai al 46.", "target": "46", "requisito": "Sesto Senso" }
+        { "text": "Vai al 90.", "target": "90" }
       ]
     },
     "297": {
       "testo": "Usi l'Arte della Caccia per avvicinarti furtivamente ai Giak. Li cogli di sorpresa e li elimini prima che possano reagire. Liberi il Ranger e lo curi.",
       "choices": [
-        { "text": "Vai al 128.", "target": "128", "requisito": "Caccia" }
+        { "text": "Vai al 117.", "target": "117" }
       ]
     },
     "298": {
@@ -2048,13 +2047,13 @@
     "300": {
       "testo": "Seguendo il sentiero verso est, arrivi a un incrocio. Da qui puoi proseguire in diverse direzioni.",
       "choices": [
-        { "text": "Vai al 248.", "target": "248" }
+        { "text": "Vai al 13.", "target": "13" }
       ]
     },
     "301": {
       "testo": "Usi l'Arte dell'Orientamento per esaminare le tracce. Scopri che il sentiero a ovest è stato percorso di recente da Giak, mentre quello a sud è più sicuro.",
       "choices": [
-        { "text": "Vai al 125.", "target": "125", "requisito": "Orientamento" }
+        { "text": "Vai al 27.", "target": "27" }
       ]
     },
     "302": {
@@ -2142,7 +2141,7 @@
       "testo": "Avvolto in un fagotto di vesti femminili c'è un borsellino di velluto con dentro 6 Corone d'oro e una tavoletta di Sapone profumato. Puoi prendere questi oggetti e continuare.",
       "onEnter": { "addCorone": 6, "addItems": ["Sapone profumato"] },
       "choices": [
-        { "text": "Vai al 213.", "target": "213" }
+        { "text": "Vai al 131.", "target": "131" }
       ]
     },
     "316": {
@@ -2222,7 +2221,7 @@
     "328": {
       "testo": "Il Vordak giace morto ai tuoi piedi. Il suo corpo si dissolve in una pozza di liquido nero. Riprendi il tuo cammino.",
       "choices": [
-        { "text": "Vai al 29.", "target": "29" }
+        { "text": "Vai al 239.", "target": "239" }
       ]
     },
     "329": {
@@ -2241,13 +2240,13 @@
     "331": {
       "testo": "Dopo due ore di marcia nella foresta, scendendo una collina rocciosa vedi qualcosa di strano tra gli alberi. È una vecchia torre di guardia.",
       "choices": [
-        { "text": "Vai al 213.", "target": "213" }
+        { "text": "Vai al 315.", "target": "315" }
       ]
     },
     "332": {
       "testo": "Segui l'uomo nel passaggio segreto. Dopo un breve corridoio arrivi in una stanza lussuosamente arredata, dove l'uomo ti invita a prepararti per l'udienza con il Re.",
       "choices": [
-        { "text": "Vai al 196.", "target": "196" }
+        { "text": "Vai al 334.", "target": "334" }
       ]
     },
     "333": {
@@ -2318,13 +2317,13 @@
     "342": {
       "testo": "Chiami lo sconosciuto. L'uomo si volta lentamente. Il suo volto è coperto dal cappuccio, ma vedi un sorriso malvagio. È un Vordak! Devi combatterlo o fuggire.",
       "choices": [
-        { "text": "Vai al 121.", "target": "121" }
+        { "text": "Vai al 309.", "target": "309" }
       ]
     },
     "343": {
       "testo": "Inciampi in un ramo basso e finisci dentro un cespuglio. Ti rialzi rapidamente e continui a correre.",
       "choices": [
-        { "text": "Vai al 2.", "target": "2" }
+        { "text": "Vai al 213.", "target": "213" }
       ]
     },
     "344": {
@@ -2346,7 +2345,7 @@
     "347": {
       "testo": "Decidi di tenerti alla larga dall'odore di legna bruciata e continui il tuo cammino nella foresta.",
       "choices": [
-        { "text": "Vai al 38.", "target": "38" }
+        { "text": "Vai al 131.", "target": "131" }
       ]
     },
     "348": {
